@@ -81,22 +81,24 @@ from users.forms import *
 from information.models import ChatMessage
 from information.forms import ChatMessageForm
 
+# import utils form teachers utils
+from teachers.utils import (
+    get_teacher_subjects, get_teacher_grades, get_current_court_for_grade, get_dates_for_user
+)
+
 
 class BoardTeachers(View):
     def get(self, request, *args, **kwargs):
         vista = 'profesores'
         abierto='inicio'
         teacher = request.user.pk
-        materias_teacher = Subjects.objects.filter(teacher_1_id=teacher) | Subjects.objects.filter(teacher_2_id=teacher)
-        grades = Grade.objects.filter(subjects__in=materias_teacher).distinct()
+        teacher_subjects = get_teacher_subjects(request.user)
+        grades = get_teacher_grades(teacher_subjects)
         
         grades_list = []  # [(grade, court, activities)]
 
         for grade in grades:
-            schedule = grade.schedule_parts
-            court = ScheduleCourts.objects.filter(schedule=schedule).first()
-            current_date = get_current_date(request.user)
-            current_court = court.get_current_court(request.user, schedule, current_date)
+            current_court = get_current_court_for_grade(grade, request.user)
 
             # Skip if no active court for this grade
             if not current_court:
@@ -114,11 +116,11 @@ class BoardTeachers(View):
 
 
         #Time zone
-        DateNow, TimeNow = time_zone_user_location(request.user.time_zone)
+        DateNow, TimeNow = get_dates_for_user(request.user)
             
         context = {
             'grades': grades_list,
-            'materias_profesor': materias_teacher,
+            'materias_profesor': teacher_subjects,
             'vista': vista,
             'abierto':abierto,
             'activities': activities,
@@ -146,10 +148,7 @@ class CreateActividades(View):
         total_percentage = sum(activities)
         
         # get current court
-        schedule = ScheduleParts.objects.filter(school_id=request.user.school).first()
-        court = ScheduleCourts.objects.filter(schedule=schedule).first()
-        data_time = get_current_date(request.user)
-        data_court = court.get_current_court(author, schedule, data_time)
+        current_court = get_current_court_for_grade(grade, request.user)
         
         initial_data = {
             'start_date': get_current_date(request.user),
@@ -169,7 +168,7 @@ class CreateActividades(View):
             'vista': vista,
             'abierto':abierto,
             'tipo_actividades': tipo_actividades,
-            'current_court': data_court,
+            'current_court': current_court,
         }
         return render(request, 'users/teachers/activities/create_actividades.html', context)
     def post(self, request, pk, *args, **kwargs):
@@ -406,8 +405,8 @@ class EditActividades(View):
 class ProfessorSchedule(View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        subject_professor = Subjects.objects.filter(teacher_1_id=user) | Subjects.objects.filter(teacher_2_id=user)
-        grades = Grade.objects.filter(subjects__in=subject_professor).distinct()
+        teacher_subjects = get_teacher_subjects(request.user)
+        grades = get_teacher_grades(teacher_subjects)
 
         schedules = DailySchedule.objects.filter(grade__in=grades).order_by('start_time')
 

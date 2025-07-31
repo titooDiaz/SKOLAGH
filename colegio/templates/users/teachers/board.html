@@ -44,9 +44,11 @@
           <p class="mb-2">{{ subject.description_1 }}</p>
           <img class="w-full p-2" src="{{ subject.photo.url }}" alt="Imagen de la materia">
           
-          <a href="{% url 'CreateActividades' subject.pk %}" class="block w-full bg-orange-600 text-white font-semibold rounded-lg py-2 mt-4 text-center hover:scale-105 transition">
-            Crear Actividad
-          </a>
+          <div class="flex w-full">
+            <a href="{% url 'CreateActividades' subject.pk %}" class="SkolaghButton-orange w-full">
+              Crear Actividad
+            </a>
+          </div>
 
           <!-- Actividades con collapse -->
           <div class="mt-4">
