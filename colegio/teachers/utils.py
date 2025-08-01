@@ -32,3 +32,21 @@ def get_activity_form_initial(user, activity_types):
         'end_time': get_midnight(user),
         'type': activity_types,
     }
+    
+def get_total_percentage_for_court(author, subject, current_court):
+    """
+    Returns the sum of the percentage of activities authored by 'author' for 'subject'
+    that fall within the date range of 'current_court'.
+    """
+    from information.models import Activities
+
+    if not current_court:
+        return 0
+
+    activities = Activities.objects.filter(
+        author=author,
+        subject=subject,
+        start_date__gte=current_court.start_date,
+        end_date__lte=current_court.end_date
+    ).values_list('percentage', flat=True)
+    return sum(activities)

@@ -83,7 +83,7 @@ from information.forms import ChatMessageForm
 
 # import utils form teachers utils
 from teachers.utils import (
-    get_teacher_subjects, get_teacher_grades, get_current_court_for_grade, get_dates_for_user
+    get_teacher_subjects, get_teacher_grades, get_current_court_for_grade, get_dates_for_user, get_total_percentage_for_court
 )
 
 
@@ -96,7 +96,10 @@ class BoardTeachers(View):
         grades = get_teacher_grades(teacher_subjects)
         
         grades_list = []  # [(grade, court, activities)]
-
+        
+        # this is the main loop to get the activities for each grade :)
+        activities = []
+        
         for grade in grades:
             current_court = get_current_court_for_grade(grade, request.user)
 
@@ -113,6 +116,7 @@ class BoardTeachers(View):
 
             # Append grade, its court, and filtered activities
             grades_list.append((grade, current_court, activities))
+        print(grades_list,"holabb")
 
 
         #Time zone
@@ -142,13 +146,12 @@ class CreateActividades(View):
         author = request.user
         grade = Grade.objects.filter(subjects=materia).first()
         
-        # get percentage
-        tipo_actividades = ActivitiesType.objects.filter(school_id=request.user.school)
-        activities = Activities.objects.filter(author=author,subject=materia).values_list('percentage', flat=True)
-        total_percentage = sum(activities)
-        
         # get current court
         current_court = get_current_court_for_grade(grade, request.user)
+        
+        # get percentage
+        tipo_actividades = ActivitiesType.objects.filter(school_id=request.user.school)
+        total_percentage = get_total_percentage_for_court(author, materia, current_court)
         
         initial_data = {
             'start_date': get_current_date(request.user),
