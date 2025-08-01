@@ -95,35 +95,35 @@ class BoardTeachers(View):
         teacher_subjects = get_teacher_subjects(request.user)
         grades = get_teacher_grades(teacher_subjects)
         
-        grades_list = []  # [(grade, court, activities)]
-        
         # this is the main loop to get the activities for each grade :)
         activities = []
-        
+        grades_list = []  # [(grade, court, activities)]
+        grades_outlist = []
+
         for grade in grades:
             current_court = get_current_court_for_grade(grade, request.user)
 
-            # Skip if no active court for this grade
             if not current_court:
+                # Store grade if there's no active court assigned
+                grades_outlist.append(grade)
                 continue
 
-            # Filter activities that belong to this grade and are within the court's date range
+            # Filter activities linked to the grade and within the current court's date range
             activities = Activities.objects.filter(
                 subject__in=grade.subjects.all(),
                 start_date__gte=current_court.start_date,
                 end_date__lte=current_court.end_date
             ).order_by('start_date')
 
-            # Append grade, its court, and filtered activities
+            # Append tuple of grade, its current court, and filtered activities
             grades_list.append((grade, current_court, activities))
-        print(grades_list,"holabb")
-
 
         #Time zone
         DateNow, TimeNow = get_dates_for_user(request.user)
             
         context = {
             'grades': grades_list,
+            'grades_out': grades_outlist,
             'materias_profesor': teacher_subjects,
             'vista': vista,
             'abierto':abierto,

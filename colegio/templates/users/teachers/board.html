@@ -11,9 +11,6 @@
     <h2 class="text-4xl font-extrabold text-gray-900 lg:py-4">  
         Bienvenido, {{ request.user.first_name }}!
     </h2>
-    <h3 class="text-lg font-medium text-gray-700 mb-6">
-        Aquí tienes todos tus grados para el <span class="font-semibold text-gray-900">periodo del año</span>!
-    </h3>
 </div>
 
 {% for grade, court, activities in grades %}
@@ -23,6 +20,9 @@
       <h2 class="lg:py-2 text-4xl font-bold text-gray-900 mb-2">Grado: {{ grade.grade_name }} ({{ grade.grade_number }})</h2>
 
       {% if court %}
+        <h3 class="text-lg font-medium text-gray-700 mb-6">
+            Aquí tienes todos tus grados para el <span class="font-semibold text-gray-900">periodo del año</span>!
+        </h3>
         <h3 class="text-2xl font-bold text-gray-900 mb-8">Corte: {{ court.court_number }}</h3>
       {% else %}
         <div class="flex flex-col justify-center items-center text-center bg-orange-100 border border-orange-300 text-orange-700 p-4 rounded-lg shadow-md">
@@ -84,9 +84,50 @@
       {% endfor %}
     </div>
   </div>
-
+{% empty %}
+  <div class="flex flex-col justify-center items-center text-center bg-orange-100 border border-orange-300 text-orange-700 p-4 rounded-lg shadow-md">
+    <div class="w-12 h-12 bg-orange-600 flex mask-icon" data-icon="{% static 'icons/information/error.svg' %}"></div>
+    <p class="text-lg font-semibold">No hay cortes activos en este momento para este grado.</p>
+    <p class="text-sm text-orange-600">Cuando se activen nuevos cortes, aparecerán aquí.</p>
+  </div>
 {% endfor %}
 
+<div class="mx-auto max-w-screen-sm text-center">
+    <h2 class="text-4xl font-extrabold text-gray-900 lg:py-4">  
+        Grados fuera del corte ( inactivos )!
+    </h2>
+</div>
+
+{% for grade in grades_out %}
+
+  <div class="p-8 mb-8">
+    <div class="mx-auto max-w-screen-sm text-center">
+      <h2 class="lg:py-2 text-4xl font-bold text-gray-900 mb-2">Grado: {{ grade.grade_name }} ({{ grade.grade_number }})</h2>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+      {% for subject in grade.subjects.all %}
+        {% if subject in materias_profesor %}
+        <div class="relative bg-gray-300 rounded-lg shadow-xl p-4">
+          <!-- Fondo negro detrás -->
+          <span class="absolute top-0 left-0 mt-6 ml-6 h-full w-full rounded bg-gray-700 -z-10"></span>
+
+          <h5 class="font-mono font-bold text-gray-900 text-2xl text-center mb-2">{{ subject.name_1 }}</h5>
+          <p class="mb-2">{{ subject.description_1 }}</p>
+          <img class="w-full p-2" src="{{ subject.photo.url }}" alt="Imagen de la materia">
+
+        </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+{% empty %}
+  <div class="flex flex-col justify-center items-center text-center bg-orange-100 border border-orange-300 text-orange-700 p-4 rounded-lg shadow-md">
+    <div class="w-12 h-12 bg-orange-600 flex mask-icon" data-icon="{% static 'icons/information/error.svg' %}"></div>
+    <p class="text-lg font-semibold">Todos los grados estan activos.</p>
+    <p class="text-sm text-orange-600">No te preocupes, esto es comun en el periodo academico en el que te encuentras.</p>
+  </div>
+{% endfor %}
 
 
 <script src="{% static 'icons/icons.js' %}"></script>
