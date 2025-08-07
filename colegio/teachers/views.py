@@ -357,7 +357,25 @@ class ViewActividades(View):
             archivo.save()
             return redirect('ViewActividades', pk=pk)
         return redirect('ViewActividades', pk=pk)
-    
+
+class ViewActivitiesDetails(View):
+    def get(self, request, pk, student_id, *args, **kwargs):
+        vista = 'profesores'
+        abierto = 'inicio'
+
+        activity = get_object_or_404(Activities, pk=pk)
+        student = get_object_or_404(CustomUserStudent, pk=student_id)
+        responses = StudentResponse.objects.filter(activity=activity, author=student)
+
+        context = {
+            'activity': activity,
+            'vista': vista,
+            'abierto': abierto,
+            'student': student,
+            'responses': responses,
+        }
+        return render(request, 'users/teachers/activities/student_activity.html', context)
+
 class RatingStudentActivity(View):
     def post(self, request, student_pk, activity_pk, *args, **kwargs):
         try:

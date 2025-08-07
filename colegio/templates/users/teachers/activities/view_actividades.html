@@ -296,7 +296,7 @@
             body: new FormData(form)
         })
         .then(function(response) {
-            console.log(response); // Ver la respuesta completa
+            console.log(response); // Ver la response completa
             if (response.ok) {
                 return response.json();
             } else {
@@ -472,6 +472,18 @@
 </div>
 
 <div>
+    <div class="flex justify-center mt-10 mx-11">
+        <div class="relative w-[80vh]">
+            <input 
+                type="text" 
+                placeholder="Buscar..." 
+                class="w-full px-4 py-2 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
+            />
+            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
+                <div class="w-6 h-6 bg-gray-300 p-1 mask-icon" data-icon="{% static 'icons/information/search.svg' %}"></div>
+            </div>
+        </div>
+    </div>
     <div class="grid gap-8 m-6 lg:mb-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {% for author, respuestas, rating in respuestas_agrupadas %}  
     
@@ -528,34 +540,25 @@
                                 </div>
                                 <div data-collapse="collapse-{{author.pk}}" class="h-0 overflow-hidden transition-all duration-100 ease-in-out">
                                     <div class="bg-gray-300">
-                                        {% for respuesta in respuestas %}
+                                        {% for response in respuestas %}
                                             <div class="flex justify-between items-center mb-4">
-                                                {% if final_date == respuesta.delivery_date %}
-                                                    {% if final_hour < respuesta.delivery_time %}
-                                                        <div class="mb-2"><a href="{% url 'ViewActividades' respuesta.pk %}"><i class="text-red-700 fa-solid fa-clock"></i> |</a>
-                                                            <span class="font-bold">{{ respuesta.answer }}:</span> 
-                                                            {{ respuesta.description }}
-                                                        </div>
-                                                    {%else%}
-                                                        <div class="mb-2"><a href="{% url 'ViewActividades' respuesta.pk %}"><i class="text-orange-500 fa-solid fa-clock"></i> |</a>
-                                                            <span class="font-bold">{{ respuesta.answer }}:</span> 
-                                                            {{ respuesta.description }}
-                                                        </div>
-                                                    {%endif%}
-                                                {% else %}
-                                                    {% if final_date < respuesta.delivery_date %}
-                                                        <div class="mb-2"><a href="{% url 'ViewActividades' respuesta.pk %}"><i class="text-red-700 fa-solid fa-clock"></i> |</a>
-                                                            <span class="font-bold">{{ respuesta.answer }}:</span> 
-                                                            {{ respuesta.description }}
-                                                        </div>
-                                                    {%else%}
-                                                        <div class="mb-2"><a href="{% url 'ViewActividades' respuesta.pk %}"><i class="text-green-700 fa-solid fa-clock"></i> |</a>
-                                                            <span class="font-bold">{{ respuesta.answer }}:</span> 
-                                                            {{ respuesta.description }}
-                                                        </div>
-                                                    {%endif%}
-                                                {% endif %}
-                                                
+                                                <div class="mb-2">
+                                                    <a href="{% url 'view_activities_details' actividad.pk author.pk %}">
+                                                        <i class="
+                                                            {% if final_date == response.delivery_date and final_hour < response.delivery_time %}
+                                                                text-red-700
+                                                            {% elif final_date == response.delivery_date %}
+                                                                text-orange-500
+                                                            {% elif final_date < response.delivery_date %}
+                                                                text-red-700
+                                                            {% else %}
+                                                                text-green-700
+                                                            {% endif %}
+                                                            fa-solid fa-clock"></i> |
+                                                    </a>
+                                                    <span class="font-bold">{{ response.answer }}:</span> 
+                                                    {{ response.description }}
+                                                </div>
                                             </div>
                                         {% endfor %}
                                     </div>
@@ -572,6 +575,10 @@
         {% endfor %}
     </div>
 </div>
+
+<!--icons-->
+<script src="{% static 'icons/icons.js' %}"></script>
+<link href="{% static 'icons/icons.css' %}" rel='stylesheet'/>
 
 <!-- ANIMATIONS NOTICE -->
 <script src="{% static 'js/windows/modal_for.js' %}"></script>

@@ -7,6 +7,7 @@ urlpatterns = [
     path('actividades/view/<int:pk>', ViewActividades.as_view(), name='ViewActividades'),
     path('actividades/rating/<int:student_pk>/<int:activity_pk>', RatingStudentActivity.as_view(), name='RatingStudentActivities'),
     path('edit/actividades/<int:pk>', EditActividades.as_view(), name='EditActividades'),
+    path('actividades/<int:pk>/<int:student_id>/', ViewActivitiesDetails.as_view(), name='view_activities_details'),
     
     # es - Ver horario
     # en - View schedule

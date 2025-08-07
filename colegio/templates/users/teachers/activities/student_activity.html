@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% block content %}
+{% load static %}
+
+<div class="max-w-6xl mx-auto mt-10 px-6 lg:px-8">
+  <!-- Header -->
+  <header class="mb-8">
+    <h1 class="text-4xl font-extrabold text-gray-900 leading-tight">Detalles de la Actividad</h1>
+    <p class="mt-2 text-lg text-gray-600">Respuestas de <span class="font-semibold text-gray-800">{{ student.get_full_name|default:student.username }}</span></p>
+  </header>
+
+  <!-- Activity info -->
+  <section class="mb-8">
+    <div class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
+      <h2 class="text-2xl font-semibold text-gray-800">{{ activity.name }}</h2>
+      <p class="mt-2 text-gray-600 text-base">{{ activity.description }}</p>
+    </div>
+  </section>
+
+  <!-- Responses list -->
+  <section>
+    {% if responses %}
+      <div class="grid gap-6">
+        {% for response in responses %}
+          <!-- Card -->
+          <article
+            class="relative bg-white rounded-2xl p-6 lg:p-8 shadow-xl transform transition duration-300 hover:-translate-y-1 hover:shadow-2xl ring-1 ring-gray-100"
+            aria-labelledby="response-{{ response.id }}-title">
+
+            <!-- Top row: answer + status -->
+            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+              <div class="flex items-start gap-4">
+                <div class="min-w-0">
+                  <h3 id="response-{{ response.id }}-title" class="text-lg lg:text-xl font-medium text-gray-900 truncate">
+                    {{ response.answer }}
+                  </h3>
+                  <p class="mt-1 text-gray-600 text-sm leading-relaxed">
+                    {{ response.description }}
+                  </p>
+                </div>
+              </div>
+
+              <!-- Status badge (inline next to answer on wide screens) -->
+              <div class="flex items-center gap-3">
+                {% if final_date == response.delivery_date and final_hour < response.delivery_time %}
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 ring-1 ring-red-100">Tarde</span>
+                {% elif final_date == response.delivery_date %}
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-800 ring-1 ring-yellow-100">Justo a tiempo</span>
+                {% elif final_date < response.delivery_date %}
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 ring-1 ring-red-100">Tarde</span>
+                {% else %}
+                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 ring-1 ring-green-100">A tiempo</span>
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- Divider -->
+            <div class="mt-4 border-t border-gray-100"></div>
+
+            <!-- Meta + Actions -->
+            <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div class="text-sm text-gray-500">
+                <!-- Aquí puedes añadir la fecha/hora exacta si la tienes -->
+                <p class="leading-relaxed">Enviado: <span class="text-gray-700 font-medium">{{ response.delivery_date }} {{ response.delivery_time }}</span></p>
+              </div>
+            </div>
+          </article>
+        {% endfor %}
+        <div class="flex items-center gap-3">
+            <a href="#"
+                class="SkolaghButton-orange">
+                Colocar nota
+            </a>
+
+            <a href=""
+                class="SkolaghButton-green">
+                Ver detalles
+            </a>
+        </div>
+      </div>
+    {% else %}
+      <div class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
+        <p class="text-gray-500 text-lg">Este estudiante no ha entregado respuestas para esta actividad.</p>
+      </div>
+    {% endif %}
+  </section>
+</div>
+{% endblock content %}

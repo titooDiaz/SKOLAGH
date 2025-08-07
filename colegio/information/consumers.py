@@ -355,7 +355,7 @@ class PresenceConsumer(AsyncWebsocketConsumer):
 
         # Marcar usuario como en línea
         r.set(f"user_online_{self.user.id}", "1", ex=60)
-        print(f"[CONNECT] {self.user.id} está en línea")
+        print(f"[CONNECT] {self.user.id} is online")
 
         for channel in watchers.get(str(self.user.id), set()):
             await self.channel_layer.send(channel, {
