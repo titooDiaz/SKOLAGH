@@ -2,87 +2,240 @@
 {% block content %}
 {% load static %}
 
-<div class="max-w-6xl mx-auto mt-10 px-6 lg:px-8">
-  <!-- Header -->
-  <header class="mb-8">
-    <h1 class="text-4xl font-extrabold text-gray-900 leading-tight">Detalles de la Actividad</h1>
-    <p class="mt-2 text-lg text-gray-600">Respuestas de <span class="font-semibold text-gray-800">{{ student.get_full_name|default:student.username }}</span></p>
-  </header>
+<style>
+/* Custom animations for educational theme */
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-  <!-- Activity info -->
-  <section class="mb-8">
-    <div class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
-      <h2 class="text-2xl font-semibold text-gray-800">{{ activity.name }}</h2>
-      <p class="mt-2 text-gray-600 text-base">{{ activity.description }}</p>
-    </div>
-  </section>
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
 
-  <!-- Responses list -->
-  <section>
-    {% if responses %}
-      <div class="grid gap-6">
-        {% for response in responses %}
-          <!-- Card -->
-          <article
-            class="relative bg-white rounded-2xl p-6 lg:p-8 shadow-xl transform transition duration-300 hover:-translate-y-1 hover:shadow-2xl ring-1 ring-gray-100"
-            aria-labelledby="response-{{ response.id }}-title">
+.animate-fade-in-up {
+    animation: fadeInUp 0.6s ease-out forwards;
+}
 
-            <!-- Top row: answer + status -->
-            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
-              <div class="flex items-start gap-4">
-                <div class="min-w-0">
-                  <h3 id="response-{{ response.id }}-title" class="text-lg lg:text-xl font-medium text-gray-900 truncate">
-                    {{ response.answer }}
-                  </h3>
-                  <p class="mt-1 text-gray-600 text-sm leading-relaxed">
-                    {{ response.description }}
-                  </p>
+.animate-float {
+    animation: float 4s ease-in-out infinite;
+}
+
+
+.bg-gradient-card {
+    background: linear-gradient(145deg, #ffffff 0%, #f9fafb 100%);
+}
+</style>
+
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+
+    <div class="max-w-6xl mx-auto pt-8 pb-16 px-6 lg:px-8 relative z-10">
+        <!-- Enhanced Header with academic theme -->
+        <header class="mb-12 text-center animate-fade-in-up my-4">
+            <div class="bg-white/80 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white/20 max-w-4xl mx-auto">
+                <h1 class="text-4xl md:text-5xl font-bold bg-gradient-to-r from-indigo-600 via-purple-600 to-blue-600 bg-clip-text text-black mb-4">
+                    📚 Actividad: {{ activity.name }}
+                </h1>
+                <div class="w-24 h-1 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full mx-auto mb-4"></div>
+                <h3 class="text-xl md:text-2xl text-gray-700 font-medium mb-4">{{ activity.description }}</h3>
+                <div class="inline-flex items-center gap-3 bg-gradient-to-r from-blue-500 to-indigo-500 text-black px-6 py-3 rounded-full shadow-lg">
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"/>
+                    </svg>
+                    <span class="font-semibold">{{ student.get_full_name|default:student.username }}</span>
                 </div>
-              </div>
-
-              <!-- Status badge (inline next to answer on wide screens) -->
-              <div class="flex items-center gap-3">
-                {% if final_date == response.delivery_date and final_hour < response.delivery_time %}
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 ring-1 ring-red-100">Tarde</span>
-                {% elif final_date == response.delivery_date %}
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-yellow-50 text-yellow-800 ring-1 ring-yellow-100">Justo a tiempo</span>
-                {% elif final_date < response.delivery_date %}
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700 ring-1 ring-red-100">Tarde</span>
-                {% else %}
-                  <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-green-50 text-green-700 ring-1 ring-green-100">A tiempo</span>
-                {% endif %}
-              </div>
             </div>
+        </header>
 
-            <!-- Divider -->
-            <div class="mt-4 border-t border-gray-100"></div>
+        <!-- Enhanced Responses Section -->
+        <section>
+            {% if responses %}
+                <div class="space-y-8">
+                    {% for response in responses %}
+                        <!-- Enhanced Response Card with academic styling -->
+                        <div class="group relative animate-fade-in-up" style="animation-delay: {{ forloop.counter0|add:1 }}00ms;">
+                            <!-- Card shadow/background -->
+                            <div class="absolute inset-0 bg-gradient-to-r from-indigo-500/20 to-purple-500/20 rounded-3xl transform rotate-1 group-hover:rotate-2 transition-transform duration-300"></div>
+                            
+                            <article class="relative bg-gradient-card backdrop-blur-sm rounded-3xl p-6 lg:p-8 shadow-xl border border-white/30 transform transition-all duration-500 hover:-translate-y-2 hover:shadow-2xl hover:border-indigo-200">
+                                <!-- Academic header with number -->
+                                <div class="flex items-center gap-4 mb-6">
+                                    <div class="flex-shrink-0">
+                                        <div class="w-12 h-12 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl flex items-center justify-center shadow-lg">
+                                            <span class="text-black font-bold text-lg">{{ forloop.counter }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-2 mb-1">
+                                            <h3 class="text-xl lg:text-2xl font-bold text-gray-900">
+                                                📝 {{ response.answer }}
+                                            </h3>
+                                        </div>
+                                        <p class="text-gray-600 leading-relaxed">
+                                            {{ response.description }}
+                                        </p>
+                                    </div>
+                                    
+                                    <!-- Enhanced Status Badge -->
+                                    <div class="flex-shrink-0">
+                                        {% if final_date == response.delivery_date and final_hour < response.delivery_time %}
+                                            <div class="bg-gradient-to-r from-red-500 to-red-600 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <span class="font-semibold text-sm">Tardía</span>
+                                            </div>
+                                        {% elif final_date == response.delivery_date %}
+                                            <div class="bg-gradient-to-r from-amber-500 to-orange-500 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <span class="font-semibold text-sm">Justo a Tiempo</span>
+                                            </div>
+                                        {% elif final_date < response.delivery_date %}
+                                            <div class="bg-gradient-to-r from-red-500 to-red-600 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <span class="font-semibold text-sm">Tardía</span>
+                                            </div>
+                                        {% else %}
+                                            <div class="bg-gradient-to-r from-emerald-500 to-green-500 text-black px-4 py-2 rounded-full shadow-lg flex items-center gap-2">
+                                                <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                </svg>
+                                                <span class="font-semibold text-sm">A Tiempo</span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
 
-            <!-- Meta + Actions -->
-            <div class="mt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-              <div class="text-sm text-gray-500">
-                <!-- Aquí puedes añadir la fecha/hora exacta si la tienes -->
-                <p class="leading-relaxed">Enviado: <span class="text-gray-700 font-medium">{{ response.delivery_date }} {{ response.delivery_time }}</span></p>
-              </div>
-            </div>
-          </article>
-        {% endfor %}
-        <div class="flex items-center gap-3">
-            <a href="#"
-                class="SkolaghButton-orange">
-                Colocar nota
-            </a>
+                                <!-- Elegant divider -->
+                                <div class="relative">
+                                    <div class="absolute inset-0 flex items-center">
+                                        <div class="w-full border-t border-gradient-to-r from-transparent via-indigo-200 to-transparent"></div>
+                                    </div>
+                                    <div class="relative flex justify-center">
+                                        <span class="bg-white px-4 text-indigo-400">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </span>
+                                    </div>
+                                </div>
 
-            <a href=""
-                class="SkolaghButton-green">
-                Ver detalles
-            </a>
-        </div>
-      </div>
-    {% else %}
-      <div class="bg-white rounded-2xl p-6 shadow-lg ring-1 ring-gray-100">
-        <p class="text-gray-500 text-lg">Este estudiante no ha entregado respuestas para esta actividad.</p>
-      </div>
-    {% endif %}
-  </section>
+                                {% if response.files.all %}
+                                  <h3 class="text-2xl text-gray-600">Archivos enviados:</h3>
+                                  <ul>
+                                    {% for f in response.files.all %}
+                                      <li>
+                                        <a href="{{ f.file.url }}" target="_blank">{{ f.file.name }}</a>
+                                      </li>
+                                    {% empty %}
+                                      <li>No hay archivos adjuntos</li>
+                                    {% endfor %}
+                                  </ul>
+
+                                  <div class="relative">
+                                      <div class="absolute inset-0 flex items-center">
+                                          <div class="w-full border-t border-gradient-to-r from-transparent via-indigo-200 to-transparent"></div>
+                                      </div>
+                                      <div class="relative flex justify-center">
+                                          <span class="bg-white px-4 text-indigo-400">
+                                              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                                  <path fill-rule="evenodd" d="M3 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm0 4a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"/>
+                                              </svg>
+                                          </span>
+                                      </div>
+                                  </div>
+                                {% endif %}
+
+                                <!-- Enhanced metadata and timestamp -->
+                                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                                    <div class="flex items-center gap-3 text-sm text-gray-600">
+                                        <div class="flex items-center gap-2">
+                                            <svg class="w-4 h-4 text-indigo-500" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z" clip-rule="evenodd"/>
+                                            </svg>
+                                            <span class="font-medium">Fecha de envío:</span>
+                                        </div>
+                                        <span class="bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full font-semibold">
+                                            {{ response.delivery_date }} {{ response.delivery_time }}
+                                        </span>
+                                    </div>
+                                </div>
+                            </article>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Summary card -->
+                <div class="mt-12 bg-gradient-to-r from-indigo-500 to-purple-600 rounded-3xl p-8 text-black shadow-2xl">
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h3 class="text-2xl font-bold mb-2">🎓 Resumen de la Actividad</h3>
+                            <p class="text-indigo-100">{{ responses|length }} respuesta{{ responses|length|pluralize:"s" }} enviada{{ responses|length|pluralize:"s" }} por el estudiante</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-4xl font-bold">{{ responses|length }}/{{ responses|length }}</div>
+                            <div class="text-indigo-200 text-sm">Completado</div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <!-- No responses state with academic styling -->
+                <div class="text-center py-16">
+                    <div class="max-w-md mx-auto bg-white/90 backdrop-blur rounded-3xl p-8 shadow-xl border border-white/20">
+                        <div class="w-24 h-24 bg-gradient-to-r from-gray-400 to-gray-500 rounded-2xl mx-auto mb-6 flex items-center justify-center">
+                            <svg class="w-12 h-12 text-black" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">📚 Sin Respuestas Aún</h3>
+                        <p class="text-gray-600 text-lg leading-relaxed">
+                            Este estudiante no ha entregado respuestas para esta actividad escolar. 
+                            Las respuestas aparecerán aquí una vez que sean enviadas.
+                        </p>
+                        <div class="mt-6">
+                            <div class="inline-flex items-center text-sm text-indigo-600 bg-indigo-50 px-4 py-2 rounded-full">
+                                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                                    <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                </svg>
+                                Estado: Pendiente de entrega
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </section>
+    </div>
+
+    <!-- Add some JavaScript for smooth interactions -->
+    <script>
+        // Add stagger animation to cards
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.animate-fade-in-up');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 150}ms`;
+            });
+            
+            // Add click animation to buttons
+            const buttons = document.querySelectorAll('button');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('div');
+                    ripple.classList.add('absolute', 'bg-white', 'bg-opacity-30', 'rounded-full', 'animate-ping');
+                    ripple.style.width = ripple.style.height = '20px';
+                    ripple.style.left = (e.clientX - e.target.getBoundingClientRect().left - 10) + 'px';
+                    ripple.style.top = (e.clientY - e.target.getBoundingClientRect().top - 10) + 'px';
+                    
+                    this.appendChild(ripple);
+                    setTimeout(() => ripple.remove(), 600);
+                });
+            });
+        });
+    </script>
 </div>
 {% endblock content %}
