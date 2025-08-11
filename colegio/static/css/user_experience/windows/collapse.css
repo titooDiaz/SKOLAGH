@@ -1,0 +1,71 @@
+/* ======================================
+   COLLAPSE/ACCORDION SYSTEM STYLES
+   ====================================== */
+
+/* Keyframe animation for smooth slide down */
+@keyframes slideDown {
+    from { height: 0; opacity: 0; }
+    to { height: auto; opacity: 1; }
+}
+
+/* Enhanced collapse animation */
+.collapse-content {
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    overflow: hidden;
+}
+
+.collapse-content.collapsed {
+    height: 0 !important;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+/* Collapse trigger button styles */
+.collapse-trigger {
+    transition: all 0.3s ease;
+}
+
+.collapse-trigger:hover {
+    background-color: rgba(99, 102, 241, 0.05);
+}
+
+/* Icon rotation for collapse state */
+.collapse-icon {
+    transition: transform 0.3s ease;
+}
+
+.collapsed .collapse-icon {
+    transform: rotate(0deg);
+}
+
+.expanded .collapse-icon {
+    transform: rotate(180deg);
+}
+
+/* Content area styling */
+.collapse-body {
+    background: rgba(249, 250, 251, 0.8);
+    backdrop-filter: blur(4px);
+    border-radius: 1rem;
+    margin-top: 0.5rem;
+}
+
+/* Response items within collapsed content */
+.response-item {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 1rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    transition: all 0.3s ease;
+}
+
+.response-item:hover {
+    border-color: #a5b4fc;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.1);
+    transform: translateY(-2px);
+}
+
+.response-item:last-child {
+    margin-bottom: 0;
+}

@@ -471,109 +471,230 @@
     </div>
 </div>
 
-<div>
-    <div class="flex justify-center mt-10 mx-11">
-        <div class="relative w-[80vh]">
-            <input 
-                type="text" 
-                placeholder="Buscar..." 
-                class="w-full px-4 py-2 pr-10 text-sm text-gray-700 bg-white border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200"
-            />
-            <div class="absolute inset-y-0 right-3 flex items-center pointer-events-none">
-                <div class="w-6 h-6 bg-gray-300 p-1 mask-icon" data-icon="{% static 'icons/information/search.svg' %}"></div>
-            </div>
-        </div>
-    </div>
-    <div class="grid gap-8 m-6 lg:mb-4 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {% for author, respuestas, rating in respuestas_agrupadas %}  
-    
-            <div id="information{{author.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">
-                                
-                <div class="flex items-center justify-center min-h-screen">
-                    <div class="bg-white border-2 border-black p-4 rounded-lg">
-                        <button onclick="closeVentana('information', '{{author.pk}}')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
-                            <p class="mr-4">cerrar</p>
-                            <i class="fa-solid fa-circle-xmark"></i>
-                        </button>
-                        <div class="mb-4">
-                            <span class="text-red-500">
-                                {% if rating %}
-                                    {{rating}}<span class="text-green-500">/100</span>
-                                {% else %}
-                                    <span class="text-green-500">
-                                        <a href="#">Sin calificacion</a>
-                                    </span>
-                                {% endif %}
-                            </span>
+<br><br>
+<div class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-orange-50">
+    <div class="relative z-10">
+        <!-- Enhanced Search Section -->
+        <div class="flex justify-center pt-10 px-6">
+            <div class="relative w-full max-w-2xl">
+                <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-orange-500/20 rounded-full blur-xl"></div>
+                <div class="relative bg-white/90 backdrop-blur-sm rounded-full shadow-2xl border border-white/30 p-2">
+                    <input 
+                        type="text" 
+                        placeholder="🔍 Buscar estudiante..." 
+                        class="w-full px-6 py-4 pr-14 text-lg text-gray-700 bg-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300 placeholder-gray-500"
+                    />
+                    <div class="absolute inset-y-0 right-4 flex items-center pointer-events-none">
+                        <div class="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-500 rounded-full flex items-center justify-center">
+                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"/>
+                            </svg>
                         </div>
-                    </div> 
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="relative">
-                <span class="absolute top-0 left-0 mt-2 ml-2 h-full w-full rounded bg-gray-700 "></span>
-                <div class="relative h-full items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl">
-                    <div class="block w-full">
-                        <h5 class="font-mono font-bold text-gray-900 text-4xl text-center">{{author.first_name}} {{author.last_name}}</h5>
+        <!-- Enhanced Student Grid -->
+        <div class="student-grid p-8 mt-8">
+            {% for author, respuestas, rating in respuestas_agrupadas %}  
 
-                        <!-- Mostrar actividades respuestas del estuidiante... -->
-                        <div class="mt-4">
-                            <div class="relative mb-3 border-b border-solid cursor-pointer border-slate-100 items-center w-full font-semibold text-left transition-all ease-in" >
-                                <div class="flex" >
-                                    <a>
-                                        <h5 class="font-bold text-lg mb-4">Respuestas: 
-                                            <span class="text-red-500">
-                                                {% if rating %}
-                                                    {{rating}}<span class="text-green-500">/100</span>
-                                                {% else %}
-                                                    <span class="text-green-500">
-                                                        <a href="#">Sin calificacion</a>
-                                                    </span>
-                                                {% endif %}
-                                            </span>
-                                        </h5>
-                                    </a>
+                <!-- Enhanced Modal for grading -->
+                <div id="information{{author.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-black/60 backdrop-blur-sm">
+                    <div class="flex items-center justify-center min-h-screen p-4">
+                        <div class="bg-white/95 backdrop-blur border border-white/30 p-8 rounded-3xl shadow-2xl max-w-md w-full animate-fade-in-up">
+                            <!-- Modal header -->
+                            <div class="flex items-center justify-between mb-6">
+                                <h3 class="text-2xl font-bold text-gray-900">📊 Calificación</h3>
+                                <button onclick="closeVentana('information', '{{author.pk}}')" class="flex items-center gap-2 px-4 py-2 text-red-600 hover:text-red-800 hover:bg-red-50 rounded-full transition-all duration-200">
+                                    <span>Cerrar</span>
+                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                    </svg>
+                                </button>
+                            </div>
+                            
+                            <!-- Grade display -->
+                            <div class="text-center mb-6">
+                                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-orange-500 to-orange-500 rounded-full mb-4">
+                                    <span class="text-2xl font-bold text-white">
+                                        {% if rating %}
+                                            {{rating}}
+                                        {% else %}
+                                            --
+                                        {% endif %}
+                                    </span>
+                                </div>
+                                <p class="text-gray-600">
+                                    {% if rating %}
+                                        <span class="text-2xl font-bold text-gray-900">{{rating}}</span>
+                                        <span class="text-lg text-gray-500">/100</span>
+                                    {% else %}
+                                        <span class="text-gray-500">Sin calificación asignada</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+
+                <!-- Enhanced Student Card -->
+                <div class="group relative animate-fade-in-up" style="animation-delay: {{ forloop.counter0|add:1 }}00ms;">
+                    <!-- Enhanced 3D shadow -->
+                    <div class="absolute inset-0 bg-gradient-to-r from-orange-600/30 to-orange-600/30 rounded-3xl transform rotate-2 card-shadow"></div>
+                    
+                    <!-- Main card -->
+                    <div class="card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
+                        <!-- Student header with enhanced styling -->
+                        <div class="relative bg-gradient-to-r from-orange-500 to-orange-600 p-6 text-white">
+                            <!-- Decorative elements -->
+                            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+                            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -ml-12 -mb-12"></div>
+                            
+                            <div class="relative z-10">
+                                <div class="flex items-center gap-4 mb-4">
+                                    <div class="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center">
+                                        <img src="{{author.customuserstudent.photo.url}}" alt="Student Image" class="rounded-full object-cover">
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-2xl text-black">{{author.first_name}} {{author.last_name}}</h5>
+                                        <p class="text-black text-sm">Estudiante</p>
+                                    </div>
+                                </div>
+
+                                <!-- Grade indicator -->
+                                <div class="flex items-center gap-2">
+                                    <span class="text-sm text-black">Calificación:</span>
+                                    {% if rating %}
+                                        <span class="bg-white/20 px-3 py-1 rounded-full text-sm font-bold text-black">
+                                            {{rating}}/100
+                                        </span>
+                                    {% else %}
+                                        <span class="bg-amber-500/20 text-black px-3 py-1 rounded-full text-sm font-medium">
+                                            Sin calificar
+                                        </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Enhanced responses section -->
+                        <div class="p-6">
+                            <!-- Collapsible header -->
+                            <div class="relative mb-4 pb-4 border-b border-gray-200 cursor-pointer">
+                                <div class="flex items-center justify-between w-full">
+                                    <div class="flex items-center gap-3">
+                                        <div class="w-8 h-8 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-lg flex items-center justify-center">
+                                            <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </div>
+                                        <span class="font-bold text-lg text-gray-900">Respuestas</span>
+                                    </div>
                                     <button class="flex" data-collapse-target="collapse-{{author.pk}}">
                                         <i class="absolute right-0 pt-1 text-xs fa fa-plus group-open:opacity-0"></i>
                                         <i class="absolute right-0 pt-1 text-xs opacity-0 fa fa-minus group-open:opacity-100"></i>
                                     </button>
                                 </div>
-                                <div data-collapse="collapse-{{author.pk}}" class="h-0 overflow-hidden transition-all duration-100 ease-in-out">
-                                    <div class="bg-gray-300">
+                            </div>
+
+                            <!-- Collapsible content -->
+                            <div data-collapse="collapse-{{author.pk}}" class="h-0 overflow-hidden transition-all duration-100 ease-in-out">
+                                <div class="bg-gray-50 space-y-4 pb-4">
+                                    {% if respuestas %}
                                         {% for response in respuestas %}
-                                            <div class="flex justify-between items-center mb-4">
-                                                <div class="mb-2">
-                                                    <a href="{% url 'view_activities_details' actividad.pk author.pk %}">
-                                                        <i class="
+                                            <div class="bg-white rounded-2xl p-4 border border-gray-200 hover:border-orange-200 transition-all duration-300">
+                                                <div class="flex items-start gap-3">
+                                                    <!-- Status indicator -->
+                                                    <div class="flex-shrink-0 mt-1">
+                                                        <a href="{% url 'view_activities_details' actividad.pk author.pk %}" class="status-indicator inline-flex w-8 h-8 rounded-full items-center justify-center">
                                                             {% if final_date == response.delivery_date and final_hour < response.delivery_time %}
-                                                                text-red-700
+                                                                <div class="w-full h-full bg-red-500 rounded-full flex items-center justify-center">
+                                                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                </div>
                                                             {% elif final_date == response.delivery_date %}
-                                                                text-orange-500
+                                                                <div class="w-full h-full bg-amber-500 rounded-full flex items-center justify-center">
+                                                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                </div>
                                                             {% elif final_date < response.delivery_date %}
-                                                                text-red-700
+                                                                <div class="w-full h-full bg-red-500 rounded-full flex items-center justify-center">
+                                                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                </div>
                                                             {% else %}
-                                                                text-green-700
+                                                                <div class="w-full h-full bg-emerald-500 rounded-full flex items-center justify-center">
+                                                                    <svg class="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                                                                    </svg>
+                                                                </div>
                                                             {% endif %}
-                                                            fa-solid fa-clock"></i> |
-                                                    </a>
-                                                    <span class="font-bold">{{ response.answer }}:</span> 
-                                                    {{ response.description }}
+                                                        </a>
+                                                    </div>
+                                                    
+                                                    <!-- Response content -->
+                                                    <div class="flex-1 min-w-0">
+                                                        <h6 class="font-bold text-gray-900 mb-1">{{ response.answer }}</h6>
+                                                        <p class="text-gray-600 text-sm leading-relaxed">{{ response.description }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         {% endfor %}
-                                    </div>
+                                    {% else %}
+                                        <div class="text-center py-8">
+                                            <div class="w-16 h-16 bg-gray-200 rounded-full mx-auto mb-4 flex items-center justify-center">
+                                                <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                                </svg>
+                                            </div>
+                                            <p class="text-gray-500 font-medium">Sin respuestas</p>
+                                        </div>
+                                    {% endif %}
+                                </div>
                             </div>
-                            <button onclick="showVentana('information', '{{author.pk}}')" type="button" id="active_information" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 py-2 text-center text-lg w-full">
-                                Asignar nota
-                            </button>
-                        </div> 
+
+                            <!-- Enhanced action button -->
+                            <div class="mt-6">
+                                <button onclick="showVentana('information', '{{author.pk}}')" type="button" class="SkolaghButton-orange">
+                                    <span>Asignar Nota</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            </div>
-                    
-        {% endfor %}
+                        
+            {% endfor %}
+        </div>
     </div>
+
+    <!-- Enhanced JavaScript for interactions -->
+    <script>
+        // Enhanced stagger animation on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced search functionality
+            const searchInput = document.querySelector('input[placeholder*="Buscar"]');
+            if (searchInput) {
+                searchInput.addEventListener('input', function() {
+                    const searchTerm = this.value.toLowerCase();
+                    const cards = document.querySelectorAll('.student-grid > div');
+                    
+                    cards.forEach(card => {
+                        const studentName = card.querySelector('h5').textContent.toLowerCase();
+                        if (studentName.includes(searchTerm)) {
+                            card.style.display = 'block';
+                            card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+                });
+            }
+        });
+    </script>
 </div>
 
 <!--icons-->
@@ -587,6 +708,11 @@
 
 <!--Colapse script-->
 <script src="{%static 'js/windows/collapse.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/user_experience/windows/collapse.css' %}">
+
+{% comment %} cards {% endcomment %}
+<link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
+<script src="{%static 'js/cards/students_cards.js' %}"></script>
 
 <script src="{%static 'js/windows/notice.js' %}"></script>
 {% endblock content %}  
