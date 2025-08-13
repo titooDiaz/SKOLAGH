@@ -1,0 +1,31 @@
+<div class="group relative animate-fade-in-up">
+    <div class="absolute inset-0 bg-gradient-to-r from-orange-600/30 to-orange-600/30 rounded-3xl transform rotate-2 card-shadow"></div>
+    <div class="card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
+        <div class="relative bg-gradient-academic p-6 text-white">
+            <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
+            <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -ml-12 -mb-12"></div>
+            <div class="relative z-10 text-center">
+                <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white/30 bg-white/20">
+                    <div class="w-full h-full flex items-center justify-center text-3xl">
+                        <img src="{{ image }}">
+                    </div>
+                </div>
+                <h3 class="text-2xl font-bold mb-2">{{ name|default:"Full Name" }}</h3>
+                <p class="text-orange-100">{{ role|default:"Role" }}</p>
+            </div>
+        </div>
+        <div class="p-6 bg-white">
+            {% if subtitle %}
+                <h4 class="text-xl font-bold text-gray-900 mb-3">{{ subtitle }}</h4>
+            {% endif %}
+            {% if description %}
+                <div class="space-y-3 mb-6">
+                    <p class="text-gray-600">{{ description }}</p>
+                </div>
+            {% endif %}
+            {% if button_text %}
+                <button class="SkolaghButton-orange w-full">{{ button_text }}</button>
+            {% endif %}
+        </div>
+    </div>
+</div>

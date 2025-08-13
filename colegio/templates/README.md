@@ -24,7 +24,7 @@ we created a file called `cards.css`:
 
 ## 💻 JavaScript
 
-we created a file called `student-cards.js`:
+we created a file called `cards.js`:
 
 ```html
 <script src="{%static 'js/cards/students_cards.js' %}"></script>
@@ -38,10 +38,10 @@ we created a file called `student-cards.js`:
 <!-- Single Student Card -->
 <div class="group relative animate-fade-in-up">
     <!-- 3D Shadow -->
-    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-3xl transform rotate-2 student-card-shadow"></div>
+    <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-3xl transform rotate-2 card-shadow"></div>
     
     <!-- Main Card -->
-    <div class="student-card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
+    <div class="card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
         <!-- Student Header with Image -->
         <div class="relative bg-gradient-academic p-6 text-white">
             <!-- Decorative Elements -->
@@ -51,7 +51,7 @@ we created a file called `student-cards.js`:
             <div class="relative z-10 text-center">
                 <!-- Student Image -->
                 <div class="w-20 h-20 mx-auto mb-4 rounded-full overflow-hidden border-4 border-white/30">
-                    <img src="student-photo.jpg" alt="Student Name" class="w-full h-full object-cover">
+                    <img src="photo.jpg" alt="Student Name" class="w-full h-full object-cover">
                 </div>
                 
                 <!-- Student Name -->
@@ -91,18 +91,18 @@ we created a file called `student-cards.js`:
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Cards Example</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="css/student-cards.css">
+    <link rel="stylesheet" href="css/cards.css">
 </head>
 <body class="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
     <!-- Floating Background Elements -->
-    <div class="student-cards-background"></div>
+    <div class="cards-background"></div>
     
     <!-- Cards Container -->
-    <div class="student-cards-grid">
+    <div class="cards-grid">
         <!-- Student Card 1 -->
         <div class="group relative animate-fade-in-up">
-            <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-3xl transform rotate-2 student-card-shadow"></div>
-            <div class="student-card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-3xl transform rotate-2 card-shadow"></div>
+            <div class="card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
                 <div class="relative bg-gradient-academic p-6 text-white">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -ml-12 -mb-12"></div>
@@ -128,8 +128,8 @@ we created a file called `student-cards.js`:
 
         <!-- Student Card 2 -->
         <div class="group relative animate-fade-in-up">
-            <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-3xl transform rotate-2 student-card-shadow"></div>
-            <div class="student-card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
+            <div class="absolute inset-0 bg-gradient-to-r from-indigo-600/30 to-purple-600/30 rounded-3xl transform rotate-2 card-shadow"></div>
+            <div class="card-3d relative bg-gradient-card backdrop-blur-sm rounded-3xl shadow-2xl border border-white/40 overflow-hidden">
                 <div class="relative bg-gradient-academic p-6 text-white">
                     <div class="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16"></div>
                     <div class="absolute bottom-0 left-0 w-24 h-24 bg-white/5 rounded-full -ml-12 -mb-12"></div>
@@ -154,7 +154,7 @@ we created a file called `student-cards.js`:
         </div>
     </div>
 
-    <script src="js/student-cards.js"></script>
+    <script src="js/cards.js"></script>
 </body>
 </html>
 ```
@@ -165,7 +165,7 @@ we created a file called `student-cards.js`:
 
 1. **Cards not showing 3D effect**: Ensure Tailwind CSS is loaded
 2. **Animations not working**: Check that JavaScript file is included after HTML
-3. **Grid layout issues**: Verify container has `student-cards-grid` class
+3. **Grid layout issues**: Verify container has `cards-grid` class
 4. **Button not responsive**: Ensure `SkolaghButton-orange` class is applied
 
 ### Browser Support

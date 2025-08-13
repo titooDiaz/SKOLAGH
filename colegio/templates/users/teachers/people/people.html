@@ -8,6 +8,11 @@
 {% block content %}
 {% load static %}
 
-<h2>Personas relacionadas</h2>
+<h2>Personas relacionadas</h2> {{ 2|add:2 }}
 
-{% endblock content %}  
+{% include "ui/cards/users_cards.html" with image="urlimage" name="Michael Scott" role="Teacher" subtitle="Leadership & Humor" description="Regional Manager with 15 years of experience in sales and team management." button_text="View Profile" %}
+
+<link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
+<script src="{%static 'js/cards/students_cards.js' %}"></script>
+
+{% endblock content %}
