@@ -480,6 +480,7 @@
                 <div class="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-orange-500/20 rounded-full blur-xl"></div>
                 <div class="relative bg-white/90 backdrop-blur-sm rounded-full shadow-2xl border border-white/30 p-2">
                     <input 
+                        id="StudentsSearch"
                         type="text" 
                         placeholder="🔍 Buscar estudiante..." 
                         class="w-full px-6 py-4 pr-14 text-lg text-gray-700 bg-transparent rounded-full focus:outline-none focus:ring-2 focus:ring-orange-500 transition-all duration-300 placeholder-gray-500"
@@ -676,19 +677,19 @@
         // Enhanced stagger animation on load
         document.addEventListener('DOMContentLoaded', function() {
             // Enhanced search functionality
-            const searchInput = document.querySelector('input[placeholder*="Buscar"]');
+            const searchInput = document.getElementById("StudentsSearch");
             if (searchInput) {
                 searchInput.addEventListener('input', function() {
                     const searchTerm = this.value.toLowerCase();
-                    const cards = document.querySelectorAll('.student-grid > div');
-                    
+                    const cards = document.querySelectorAll('.student-grid .card-3d');
+
                     cards.forEach(card => {
-                        const studentName = card.querySelector('h5').textContent.toLowerCase();
+                        const studentName = card.querySelector('h5')?.textContent.toLowerCase() || '';
                         if (studentName.includes(searchTerm)) {
-                            card.style.display = 'block';
-                            card.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                            card.parentElement.style.display = 'block';
+                            card.parentElement.style.animation = 'fadeInUp 0.6s ease-out forwards';
                         } else {
-                            card.style.display = 'none';
+                            card.parentElement.style.display = 'none';
                         }
                     });
                 });
