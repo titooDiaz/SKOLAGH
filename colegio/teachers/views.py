@@ -506,17 +506,34 @@ class ProfessorMessages(View):
         }
         return render(request, 'users/teachers/messages/messages.html', context)
 
-    
 class ProfessorPeople(View):
     def get(self, request, *args, **kwargs):
         view = 'profesores'
         open_section = 'personas'
+        
+        teacher_subjects = get_teacher_subjects(request.user)
+        grades = get_teacher_grades(teacher_subjects)
+
+        students_qs = (
+            CustomUserStudent.objects
+            .filter(grade__in=grades)
+            .select_related('grade')
+            .order_by('grade__grade_name', 'last_name', 'first_name')
+        )
+
+        # Agrupar por grado
+        students_by_grade = {}
+        for grade, group in groupby(students_qs, key=attrgetter('grade')):
+            students_by_grade[grade] = list(group)
+
         context = {
             'vista': view,
             'abierto': open_section,
+            'students_by_grade': students_by_grade,
         }
         
         return render(request, 'users/teachers/people/people.html', context)
+
 
 class ProfessorRatings(View):
     def get(self, request, *args, **kwargs):

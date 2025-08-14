@@ -1,18 +1,19 @@
-<!DOCTYPE html>
-<head>
-    <title>People - Profesores</title>
-</head>
-
 {% extends 'base.html' %}
-
-{% block content %}
 {% load static %}
 
-<h2>Personas relacionadas</h2> {{ 2|add:2 }}
+{% block content %}
 
-{% include "ui/cards/users_cards.html" with image="urlimage" name="Michael Scott" role="Teacher" subtitle="Leadership & Humor" description="Regional Manager with 15 years of experience in sales and team management." button_text="View Profile" %}
+{% include "ui/titles/principal.html" with title="Personas Relacionadas" %}
+
+{% for grade, students in students_by_grade.items %}
+   {% include "ui/titles/subtitle.html" with subtitle=students|length|stringformat:"s"|add:" Estudiantes" title="Estudiantes del grado" description=grade.grade_name %}
+    <div class="student-grid p-8 mt-8">
+        {% for student in students %}
+            {% include "ui/cards/users_cards.html" with image=student.photo.url name=student.get_full_name role="Student" subtitle="Academic Profile" description=grade.grade_name button_text="Ver estudiante" %}
+        {% endfor %}
+    </div>
+{% endfor %}
 
 <link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
-<script src="{%static 'js/cards/students_cards.js' %}"></script>
-
+<script src="{% static 'js/cards/students_cards.js' %}"></script>
 {% endblock content %}
