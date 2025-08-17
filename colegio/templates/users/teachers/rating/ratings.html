@@ -1,25 +1,136 @@
 <!DOCTYPE html>
 <head>
-    <title>Calificaciones - Profesores</title>
+<title>Calificaciones - Profesores</title>
 </head>
-
 {% extends 'base.html' %}
-
 {% block content %}
 {% load static %}
-
 {% include "ui/titles/principal.html" with title="Calificaciones de los estudiantes" %}
 
 {% for grade, students in students_by_grade.items %}
-   {% include "ui/titles/subtitle.html" with subtitle=students|length|stringformat:"s"|add:" Estudiantes" title=grade.grade_name description="%suspendidos:" %}
-    <div class="student-grid p-8 mt-8">
-        {% for student in students %}
-            {% include "ui/cards/users_cards.html" with image=student.photo.url name=student.get_full_name role="Student" subtitle="Academic Profile" description=grade.grade_name button_text="Ver estudiante" %}
-        {% endfor %}
+<!-- Collapse Trigger Button -->
+<div class="collapse-trigger bg-white border border-gray-200 rounded-xl p-4 mb-4 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300" 
+     data-collapse-target="grade-{{ forloop.counter }}">
+    <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+            <div class="collapse-icon text-orange-500 transform transition-transform duration-300">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+            </div>
+            <div>
+                <h3 class="text-xl font-bold text-gray-900">{{ grade.grade_name }}</h3>
+                <p class="text-sm text-gray-500">{{ students|length }} estudiante{{ students|length|pluralize:"s" }}</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">
+                {{ students|length }} estudiante{{ students|length|pluralize:"s" }}
+            </div>
+            <div class="text-sm text-gray-500">
+                % suspendidos: <span class="font-semibold text-orange-600">{{ suspendidos|default:"0" }}</span>
+            </div>
+        </div>
     </div>
+</div>
+
+<!-- Collapse Content -->
+<div class="collapse-content" 
+     data-collapse="grade-{{ forloop.counter }}" 
+     style="height: 0; overflow: hidden;">
+    <div class="collapse-body p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {% for student in students %}
+            <div class="response-item">
+                {% include "ui/cards/users_cards.html" with image=student.photo.url name=student.get_full_name role="Student" subtitle="Academic Profile" description=grade.grade_name button_text="Ver estudiante" %}
+            </div>
+            {% endfor %}
+        </div>
+        
+        <!-- Estadísticas adicionales del grado -->
+        <div class="mt-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-5 border border-orange-200">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+                <div>
+                    <div class="text-2xl font-bold text-orange-600">{{ students|length }}</div>
+                    <div class="text-sm text-gray-600">Total</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-green-600">-</div>
+                    <div class="text-sm text-gray-600">Aprobados</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-red-600">-</div>
+                    <div class="text-sm text-gray-600">Reprobados</div>
+                </div>
+                <div>
+                    <div class="text-2xl font-bold text-yellow-600">-</div>
+                    <div class="text-sm text-gray-600">En riesgo</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 {% endfor %}
+
+<style>
+/* Students view */
+.student-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+/* triggers view */
+.collapse-trigger {
+    position: relative;
+    border-left: 6px solid transparent;
+}
+
+.collapse-trigger::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 6px;
+    background: linear-gradient(to bottom, #f97316, #fb923c); /* naranja degradado */
+    border-radius: 0 4px 4px 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.collapse-trigger:hover::before {
+    opacity: 1;
+}
+
+.collapse-trigger[open] .collapse-icon {
+    transform: rotate(180deg);
+    color: #f97316;
+}
+
+.collapse-trigger:hover {
+    border-color: #fdba74;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.15);
+}
+
+@media (max-width: 768px) {
+    .collapse-trigger .flex {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .collapse-trigger .space-x-4 {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+}
+</style>
 
 <link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
 <script src="{% static 'js/cards/students_cards.js' %}"></script>
-
-{% endblock content %}  
+{% comment %} collapse {% endcomment %}
+<script src="{% static 'js/windows/collapse.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/user_experience/windows/collapse.css' %}">
+{% endblock content %}

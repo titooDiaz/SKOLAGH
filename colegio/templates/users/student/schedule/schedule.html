@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!--EVITAR INUSUALIDADADES EN EL NAVEGADOR-->
+<!DOCTYPE html>
 <head>
     <title>Ver horario</title>
 </head>
@@ -10,173 +10,189 @@
 
 <div id="top"></div>
 
-<div>
-    <!-- Vista de horario para tables o computadoras!-->
+<div class="min-h-screen bg-gradient-to-br from-orange-50 to-gray-50">
+    <!-- Schedule view for tablets and computers - IMPROVED -->
     <div class="hidden lg:block">
-        <div class="mx-auto text-center">
-            <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">{{user.first_name}}, Aqui tienes tu horario.</h2>
-        </div> 
+        <!-- Main title with improved design -->
+        <div class="mx-auto text-center pb-8">
+            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white px-8 py-4 rounded-2xl shadow-lg mb-4">
+                <i class="fa-solid fa-calendar-alt mr-3 text-xl"></i>
+                <h2 class="text-3xl font-bold tracking-tight">{{user.first_name}}, Aquí tienes tu horario</h2>
+            </div>
+        </div>
 
-        <div class="mx-2 lg:mx-20 relative">
-            <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700"></span>
-            <div class="overflow-x-auto shadow-md sm:rounded-lg relative">
+        <div class="mx-4 lg:mx-20 relative">
+            <!-- Enhanced shadow -->
+            <span class="absolute top-0 left-0 mt-6 ml-6 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+            
+            <div class="overflow-x-auto shadow-2xl rounded-2xl relative bg-white border border-gray-100">
                 <table class="w-full text-sm text-left rtl:text-right overflow-x-auto text-gray-800">
-                    <thead class="text-xs text-white uppercase bg-gray-600">
+                    <thead class="text-xs text-white uppercase bg-gradient-to-r from-orange-500 to-orange-600">
                         <tr>
-                            <th scope="col" class="px-2 py-3">
-                                Hora
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-regular fa-clock mr-2"></i>Hora
                             </th>
-                            <th scope="col" class="px-2 py-3">
-                                Lunes
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-solid fa-calendar-day mr-2"></i>Lunes
                             </th>
-                            <th scope="col" class="px-2 py-3">
-                                Martes
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-solid fa-calendar-day mr-2"></i>Martes
                             </th>
-                            <th scope="col" class="px-2 py-3">
-                                Miercoles
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-solid fa-calendar-day mr-2"></i>Miércoles
                             </th>
-                            <th scope="col" class="px-2 py-3">
-                                Jueves
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-solid fa-calendar-day mr-2"></i>Jueves
                             </th>
-                            <th scope="col" class="px-2 py-3">
-                                Viernes
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-solid fa-calendar-day mr-2"></i>Viernes
                             </th>
-                            <th scope="col" class="px-2 py-3">
-                                Sabado
+                            <th scope="col" class="px-4 py-4 font-bold tracking-wide">
+                                <i class="fa-solid fa-calendar-day mr-2"></i>Sábado
                             </th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="divide-y divide-gray-100">
                     {% for horas in horario %}
-                        <tr class="bg-gray-100 border-b hover:bg-gray-200">
-                            <!--HORA-->
-                            <td class="px-2 py-2 font-medium">
-                                {{horas.start_time}} - {{horas.end_time}}
-                                <br>
+                        <tr class="bg-white border-b hover:bg-gradient-to-r hover:from-orange-50 hover:to-gray-50 transition-all duration-300">
+                            
+                            <!-- TIME SLOT -->
+                            <td class="px-4 py-4 font-semibold text-gray-900 bg-gray-50">
+                                <div class="flex items-center">
+                                    <div class="w-2 h-8 bg-gradient-to-b from-orange-400 to-orange-600 rounded-full mr-3"></div>
+                                    <div>
+                                        <div class="text-sm font-bold">{{horas.start_time}}</div>
+                                        <div class="text-xs text-gray-600">{{horas.end_time}}</div>
+                                    </div>
+                                </div>
                             </td>
 
-                            <!--monday-->
+                            <!-- MONDAY -->
                             {% if horas.monday %}
-                                <td class="px-2 py-2">
-                                    {{horas.monday}}
-                                    <br>
-                                </td>
-                            {% else %}
-                                <td class="px-2 py-2">
-                                    <div class="flex">
-                                        <div class="w-[30px] h-[30px] flex">
-                                            <img src="{% static 'img/time/break.png' %}">
-                                        </div>
-                                        <div class="ml-2 flex items-center justify-center">
-                                            <p><span class="font-bold">No</span> Asignado</p>
+                                <td class="px-4 py-4">
+                                    <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                                        <div class="font-semibold text-gray-900 flex items-center">
+                                            <i class="fa-solid fa-book text-orange-600 mr-2"></i>
+                                            {{horas.monday}}
                                         </div>
                                     </div>
-                                    <br>
+                                </td>
+                            {% else %}
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+                                            <img src="{% static 'img/time/break.png' %}" class="w-5 h-5">
+                                        </div>
+                                        <span class="text-gray-500 font-medium"><span class="font-bold">No</span> Asignado</span>
+                                    </div>
                                 </td>
                             {% endif %}
-                            
 
-                            <!--tuesday-->
+                            <!-- TUESDAY -->
                             {% if horas.tuesday %}
-                                <td class="px-2 py-2">
-                                    {{horas.tuesday}}
-                                    <br>
-                                </td>
-                            {% else %}
-                                <td class="px-2 py-2">
-                                    <div class="flex">
-                                        <div class="w-[30px] h-[30px] flex">
-                                            <img src="{% static 'img/time/break.png' %}" alt="">
-                                        </div>
-                                        <div class="ml-2 flex items-center justify-center">
-                                            <p><span class="font-bold">No</span> Asignado</p>
+                                <td class="px-4 py-4">
+                                    <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                                        <div class="font-semibold text-gray-900 flex items-center">
+                                            <i class="fa-solid fa-book text-orange-600 mr-2"></i>
+                                            {{horas.tuesday}}
                                         </div>
                                     </div>
-                                    <br>
+                                </td>
+                            {% else %}
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+                                            <img src="{% static 'img/time/break.png' %}" alt="" class="w-5 h-5">
+                                        </div>
+                                        <span class="text-gray-500 font-medium"><span class="font-bold">No</span> Asignado</span>
+                                    </div>
                                 </td>
                             {% endif %}
 
-                            <!--MIERCOLES-->
+                            <!-- WEDNESDAY -->
                             {% if horas.wednesday %}
-                                <td class="px-2 py-2">
-                                    {{horas.wednesday}}
-                                    <br>
-                                </td>
-                            {% else %}
-                                <td class="px-2 py-2">
-                                    <div class="flex">
-                                        <div class="w-[30px] h-[30px] flex">
-                                            <img src="{% static 'img/time/break.png' %}" alt="">
-                                        </div>
-                                        <div class="ml-2 flex items-center justify-center">
-                                            <p><span class="font-bold">No</span> Asignado</p>
+                                <td class="px-4 py-4">
+                                    <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                                        <div class="font-semibold text-gray-900 flex items-center">
+                                            <i class="fa-solid fa-book text-orange-600 mr-2"></i>
+                                            {{horas.wednesday}}
                                         </div>
                                     </div>
-                                    <br>
+                                </td>
+                            {% else %}
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+                                            <img src="{% static 'img/time/break.png' %}" alt="" class="w-5 h-5">
+                                        </div>
+                                        <span class="text-gray-500 font-medium"><span class="font-bold">No</span> Asignado</span>
+                                    </div>
                                 </td>
                             {% endif %}
 
-                            <!--thursday-->
+                            <!-- THURSDAY -->
                             {% if horas.thursday %}
-                                <td class="px-2 py-2">
-                                    {{horas.thursday}}
-                                    <br>
-                                </td>
-                            {% else %}
-                                <td class="px-2 py-2">
-                                    <div class="flex">
-                                        <div class="w-[30px] h-[30px] flex">
-                                            <img src="{% static 'img/time/break.png' %}" alt="">
-                                        </div>
-                                        <div class="ml-2 flex items-center justify-center">
-                                            <p><span class="font-bold">No</span> Asignado</p>
+                                <td class="px-4 py-4">
+                                    <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                                        <div class="font-semibold text-gray-900 flex items-center">
+                                            <i class="fa-solid fa-book text-orange-600 mr-2"></i>
+                                            {{horas.thursday}}
                                         </div>
                                     </div>
-                                    <br>
+                                </td>
+                            {% else %}
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+                                            <img src="{% static 'img/time/break.png' %}" alt="" class="w-5 h-5">
+                                        </div>
+                                        <span class="text-gray-500 font-medium"><span class="font-bold">No</span> Asignado</span>
+                                    </div>
                                 </td>
                             {% endif %}
-                            
-                            <!--friday-->
+
+                            <!-- FRIDAY -->
                             {% if horas.friday %}
-                                <td class="px-2 py-2">
-                                    {{horas.friday}}
-                                    <br>
-                                </td>
-                            {% else %}
-                                <td class="px-2 py-2">
-                                    <div class="flex">
-                                        <div class="w-[30px] h-[30px] flex">
-                                            <img src="{% static 'img/time/break.png' %}" alt="">
-                                        </div>
-                                        <div class="ml-2 flex items-center justify-center">
-                                            <p><span class="font-bold">No</span> Asignado</p>
+                                <td class="px-4 py-4">
+                                    <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                                        <div class="font-semibold text-gray-900 flex items-center">
+                                            <i class="fa-solid fa-book text-orange-600 mr-2"></i>
+                                            {{horas.friday}}
                                         </div>
                                     </div>
-                                    <br>
+                                </td>
+                            {% else %}
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+                                            <img src="{% static 'img/time/break.png' %}" alt="" class="w-5 h-5">
+                                        </div>
+                                        <span class="text-gray-500 font-medium"><span class="font-bold">No</span> Asignado</span>
+                                    </div>
                                 </td>
                             {% endif %}
-                            
-                            <!--saturday-->
+
+                            <!-- SATURDAY -->
                             {% if horas.satuday %}
-                                <td class="px-2 py-2">
-                                    {{horas.satuday}}
-                                    <br>
-                                </td>
-                            {% else %}
-                                <td class="px-2 py-2">
-                                    <div class="flex">
-                                        <div class="w-[30px] h-[30px] flex">
-                                            <img src="{% static 'img/time/break.png' %}" alt="">
-                                        </div>
-                                        <div class="ml-2 flex items-center justify-center">
-                                            <p><span class="font-bold">No</span> Asignado</p>
+                                <td class="px-4 py-4">
+                                    <div class="bg-gradient-to-r from-orange-100 to-orange-50 p-3 rounded-lg border-l-4 border-orange-400">
+                                        <div class="font-semibold text-gray-900 flex items-center">
+                                            <i class="fa-solid fa-book text-orange-600 mr-2"></i>
+                                            {{horas.satuday}}
                                         </div>
                                     </div>
-                                    <br>
+                                </td>
+                            {% else %}
+                                <td class="px-4 py-4">
+                                    <div class="flex items-center bg-gray-50 p-3 rounded-lg">
+                                        <div class="w-8 h-8 flex items-center justify-center bg-gray-200 rounded-full mr-3">
+                                            <img src="{% static 'img/time/break.png' %}" alt="" class="w-5 h-5">
+                                        </div>
+                                        <span class="text-gray-500 font-medium"><span class="font-bold">No</span> Asignado</span>
+                                    </div>
                                 </td>
                             {% endif %}
                         </tr>
-
                     {% endfor %}
                     </tbody>
                 </table>
@@ -184,225 +200,307 @@
         </div>
     </div>
 
-
-    <!-- Vista de horario para celulares -->
-    <!-- View of schedule for phones -->
-
-    <div class="block lg:hidden py-2 px-4 lg:py-2 lg:px-2">
+    <!-- Mobile schedule view - IMPROVED -->
+    <div class="block lg:hidden py-4 px-4">
         <div class="block">
-
-        <div id="content_schedule" class="block lg:hidden py-2 px-4 lg:py-2 lg:px-2">
-            <!--
-                Day one
-                Dia uno
-            -->
-            {% if day == "1" %}
-                <div id="monday" class="today_schedule">
-            {% else %}
-                <div id="monday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del monday.</h2>
-                    </div> 
-                    {% for horas in horario %}
-                        {% if horas.monday %}
-                            <div class="relative mt-8">
-                                <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                                <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                                    <div class="block w-full">
-                                        <h5 class="font-mono font-bold text-gray-900 text-4xl text-center"><i class="fa-solid fa-book"></i> {{horas.monday}}</h5>
-                                        <p class="text-center"> <i class="fa-regular fa-clock"></i> | {{horas.hora_inicio}} - {{horas.hora_fin}}</p>
-                                        <img class="w-full p-4" src="{{horas.monday.picture1.url }}" alt="Alumno">
+            <div id="content_schedule" class="block lg:hidden py-2 px-2">
+                
+                <!-- Day one - Monday -->
+                {% if day == "1" %}
+                    <div id="monday" class="today_schedule">
+                {% else %}
+                    <div id="monday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-calendar-day mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Lunes</h2>
+                            </div>
+                        </div>
+                        {% for horas in horario %}
+                            {% if horas.monday %}
+                                <div class="relative mt-6">
+                                    <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                                    <div class="relative bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-orange-100 p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                                        <div class="text-center">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                <i class="fa-solid fa-book text-white text-xl"></i>
+                                            </div>
+                                            <h5 class="font-bold text-gray-900 text-2xl mb-2">{{horas.monday}}</h5>
+                                            <div class="flex items-center justify-center text-gray-600 mb-4">
+                                                <i class="fa-regular fa-clock mr-2"></i>
+                                                <span class="font-medium">{{horas.start_time}} - {{horas.end_time}}</span>
+                                            </div>
+                                            <div class="relative overflow-hidden rounded-xl mx-auto w-48 h-48">
+                                                <img class="w-full h-full object-cover object-center" src="{{horas.monday.photo.url }}" alt="Clase">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 
-            <!--
-                Day two
-                Dia 2
-            -->
-            {% if day == "2" %}
-                <div id="tuesday" class="today_schedule">
-            {% else %}
-                <div id="tuesday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del tuesday.</h2>
-                    </div> 
-                    {% for horas in horario %}
-                        {% if horas.tuesday %}
-                            <div class="relative mt-8">
-                                <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                                <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                                    <div class="block w-full">
-                                        <h5 class="font-mono font-bold text-gray-900 text-4xl text-center"><i class="fa-solid fa-book"></i> {{horas.tuesday}}</h5>
-                                        <p class="text-center"> <i class="fa-regular fa-clock"></i> | {{horas.hora_inicio}} - {{horas.hora_fin}}</p>
-                                        <img class="w-full p-4" src="{{horas.monday.picture1.url }}" alt="Alumno">
+                <!-- Day two - Tuesday -->
+                {% if day == "2" %}
+                    <div id="tuesday" class="today_schedule">
+                {% else %}
+                    <div id="tuesday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-calendar-day mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Martes</h2>
+                            </div>
+                        </div>
+                        {% for horas in horario %}
+                            {% if horas.tuesday %}
+                                <div class="relative mt-6">
+                                    <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                                    <div class="relative bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-orange-100 p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                                        <div class="text-center">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                <i class="fa-solid fa-book text-white text-xl"></i>
+                                            </div>
+                                            <h5 class="font-bold text-gray-900 text-2xl mb-2">{{horas.tuesday}}</h5>
+                                            <div class="flex items-center justify-center text-gray-600 mb-4">
+                                                <i class="fa-regular fa-clock mr-2"></i>
+                                                <span class="font-medium">{{horas.start_time}} - {{horas.end_time}}</span>
+                                            </div>
+                                            <div class="relative overflow-hidden rounded-xl mx-auto w-48 h-48">
+                                                <img class="w-full h-full object-cover object-center" src="{{horas.tuesday.photo.url }}" alt="Clase">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 
-            <!--
-                Day three
-                Dia 3
-            -->
-            {% if day == "3" %}
-                <div id="wednesday" class="today_schedule">
-            {% else %}
-                <div id="wednesday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del Miercoles.</h2>
-                    </div> 
-                    {% for horas in horario %}
-                        {% if horas.wednesday %}
-                            <div class="relative mt-8">
-                                <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                                <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                                    <div class="block w-full">
-                                        <h5 class="font-mono font-bold text-gray-900 text-4xl text-center"><i class="fa-solid fa-book"></i> {{horas.wednesday}}</h5>
-                                        <p class="text-center"> <i class="fa-regular fa-clock"></i> | {{horas.hora_inicio}} - {{horas.hora_fin}}</p>
-                                        <img class="w-full p-4" src="{{horas.monday.picture1.url }}" alt="Alumno">
+                <!-- Day three - Wednesday -->
+                {% if day == "3" %}
+                    <div id="wednesday" class="today_schedule">
+                {% else %}
+                    <div id="wednesday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-calendar-day mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Miércoles</h2>
+                            </div>
+                        </div>
+                        {% for horas in horario %}
+                            {% if horas.wednesday %}
+                                <div class="relative mt-6">
+                                    <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                                    <div class="relative bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-orange-100 p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                                        <div class="text-center">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                <i class="fa-solid fa-book text-white text-xl"></i>
+                                            </div>
+                                            <h5 class="font-bold text-gray-900 text-2xl mb-2">{{horas.wednesday}}</h5>
+                                            <div class="flex items-center justify-center text-gray-600 mb-4">
+                                                <i class="fa-regular fa-clock mr-2"></i>
+                                                <span class="font-medium">{{horas.start_time}} - {{horas.end_time}}</span>
+                                            </div>
+                                            <div class="relative overflow-hidden rounded-xl mx-auto w-48 h-48">
+                                                <img class="w-full h-full object-cover object-center" src="{{horas.wednesday.photo.url }}" alt="Clase">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 
-            <!--
-                Day four
-                Dia 4
-            -->
-            {% if day == "4" %}
-                <div id="thursday" class="today_schedule">
-            {% else %}
-                <div id="thursday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del thursday.</h2>
-                    </div> 
-                    {% for horas in horario %}
-                        {% if horas.thursday %}
-                            <div class="relative mt-8">
-                                <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                                <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                                    <div class="block w-full">
-                                        <h5 class="font-mono font-bold text-gray-900 text-4xl text-center"><i class="fa-solid fa-book"></i> {{horas.thursday}}</h5>
-                                        <p class="text-center"> <i class="fa-regular fa-clock"></i> | {{horas.hora_inicio}} - {{horas.hora_fin}}</p>
-                                        <img class="w-full p-4" src="{{horas.monday.picture1.url }}" alt="Alumno">
+                <!-- Day four - Thursday -->
+                {% if day == "4" %}
+                    <div id="thursday" class="today_schedule">
+                {% else %}
+                    <div id="thursday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-calendar-day mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Jueves</h2>
+                            </div>
+                        </div>
+                        {% for horas in horario %}
+                            {% if horas.thursday %}
+                                <div class="relative mt-6">
+                                    <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                                    <div class="relative bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-orange-100 p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                                        <div class="text-center">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                <i class="fa-solid fa-book text-white text-xl"></i>
+                                            </div>
+                                            <h5 class="font-bold text-gray-900 text-2xl mb-2">{{horas.thursday}}</h5>
+                                            <div class="flex items-center justify-center text-gray-600 mb-4">
+                                                <i class="fa-regular fa-clock mr-2"></i>
+                                                <span class="font-medium">{{horas.start_time}} - {{horas.end_time}}</span>
+                                            </div>
+                                            <div class="relative overflow-hidden rounded-xl mx-auto w-48 h-48">
+                                                <img class="w-full h-full object-cover object-center" src="{{horas.thursday.photo.url }}" alt="Clase">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 
-            <!--
-                Day five
-                Dia 5
-            -->
-            {% if day == "5" %}
-                <div id="friday" class="today_schedule">
-            {% else %}
-                <div id="friday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del friday.</h2>
-                    </div> 
-                    {% for horas in horario %}
-                        {% if horas.friday %}
-                            <div class="relative mt-8">
-                                <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                                <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                                    <div class="block w-full">
-                                        <h5 class="font-mono font-bold text-gray-900 text-4xl text-center"><i class="fa-solid fa-book"></i> {{horas.friday}}</h5>
-                                        <p class="text-center"> <i class="fa-regular fa-clock"></i> | {{horas.hora_inicio}} - {{horas.hora_fin}}</p>
-                                        <img class="w-full p-4" src="{{horas.monday.picture1.url }}" alt="Alumno">
+                <!-- Day five - Friday -->
+                {% if day == "5" %}
+                    <div id="friday" class="today_schedule">
+                {% else %}
+                    <div id="friday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-orange-500 to-orange-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-calendar-day mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Viernes</h2>
+                            </div>
+                        </div>
+                        {% for horas in horario %}
+                            {% if horas.friday %}
+                                <div class="relative mt-6">
+                                    <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                                    <div class="relative bg-gradient-to-br from-white to-orange-50 rounded-2xl border border-orange-100 p-6 shadow-xl transform hover:scale-105 transition-all duration-300">
+                                        <div class="text-center">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-orange-400 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                                                <i class="fa-solid fa-book text-white text-xl"></i>
+                                            </div>
+                                            <h5 class="font-bold text-gray-900 text-2xl mb-2">{{horas.friday}}</h5>
+                                            <div class="flex items-center justify-center text-gray-600 mb-4">
+                                                <i class="fa-regular fa-clock mr-2"></i>
+                                                <span class="font-medium">{{horas.start_time}} - {{horas.end_time}}</span>
+                                            </div>
+                                            <div class="relative overflow-hidden rounded-xl mx-auto w-48 h-48">
+                                                <img class="w-full h-full object-cover object-center" src="{{horas.friday.photo.url }}" alt="Clase">
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
 
-            <!--
-                Day six
-                Dia 6
-            --> 
-            {% if day == "6" %}
-                <div id="saturday" class="today_schedule">
-            {% else %}
-                <div id="saturday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del Sabado.</h2>
-                    </div> 
-                    <div class="relative mt-8">
-                        <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                        <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                            <div class="block w-full">
-                                <h5 class="font-mono font-bold text-gray-900 text-4xl text-center">No tienes clases! <br> Es sabado!</h5>
-                                <img class="w-full p-4" src="{% static 'img/usuarios/alumnos.png' %}" alt="Alumno">
+                <!-- Day six - Saturday -->
+                {% if day == "6" %}
+                    <div id="saturday" class="today_schedule">
+                {% else %}
+                    <div id="saturday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-blue-500 to-blue-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-calendar-week mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Sábado</h2>
+                            </div>
+                        </div>
+                        <div class="relative mt-6">
+                            <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                            <div class="relative bg-gradient-to-br from-white to-blue-50 rounded-2xl border border-blue-100 p-8 shadow-xl">
+                                <div class="text-center">
+                                    <div class="w-20 h-20 bg-gradient-to-br from-blue-400 to-blue-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                                        <i class="fa-solid fa-calendar-week text-white text-2xl"></i>
+                                    </div>
+                                    <h5 class="font-bold text-gray-900 text-3xl mb-6">¡No tienes clases!<br>Es Sábado!</h5>
+                                    <div class="relative overflow-hidden rounded-xl mx-auto w-64 h-48">
+                                        <img class="w-full h-full object-cover object-center" src="{% static 'img/usuarios/alumnos.png' %}" alt="Descanso">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
-            <!--
-                Day seven
-                Dia 7
-            --> 
-            {% if day == "7" %}
-                <div id="sunday" class="today_schedule">
-            {% else %}
-                <div id="sunday" class="hidden">
-            {% endif %}
-                    <div class="mx-auto text-center">
-                        <h2 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8 zoom-10">Horario del Domingo.</h2>
-                    </div> 
-                    <div class="relative mt-8">
-                        <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded bg-gray-700 "></span>
-                        <div class="relative items-center bg-gray-300 rounded-lg sm:flex p-4 block shadow-2xl ease-in-out duration-300">
-                            <div class="block w-full">
-                                <h5 class="font-mono font-bold text-gray-900 text-4xl text-center">No tienes clases! <br> Es Domingo!</h5>
-                                <img class="w-full p-4" src="{% static 'img/usuarios/alumnos.png' %}" alt="Alumno">
+                <!-- Day seven - Sunday -->
+                {% if day == "7" %}
+                    <div id="sunday" class="today_schedule">
+                {% else %}
+                    <div id="sunday" class="hidden">
+                {% endif %}
+                        <div class="mx-auto text-center mb-8">
+                            <div class="inline-flex items-center bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-3 rounded-2xl shadow-lg">
+                                <i class="fa-solid fa-bed mr-3 text-lg"></i>
+                                <h2 class="text-2xl font-bold tracking-tight">Horario del Domingo</h2>
+                            </div>
+                        </div>
+                        <div class="relative mt-6">
+                            <span class="absolute top-0 left-0 mt-4 ml-4 h-full w-full rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 opacity-20"></span>
+                            <div class="relative bg-gradient-to-br from-white to-green-50 rounded-2xl border border-green-100 p-8 shadow-xl">
+                                <div class="text-center">
+                                    <div class="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                                        <i class="fa-solid fa-bed text-white text-2xl"></i>
+                                    </div>
+                                    <h5 class="font-bold text-gray-900 text-3xl mb-6">¡No tienes clases!<br>Es Domingo!</h5>
+                                    <div class="relative overflow-hidden rounded-xl mx-auto w-64 h-48">
+                                        <img class="w-full h-full object-cover object-center" src="{% static 'img/usuarios/alumnos.png' %}" alt="Descanso">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
+            </div>
+
+            <!-- Day selector menu - IMPROVED with skolagh-button- class -->
+            <div class="mx-auto text-center mt-12 mb-6">
+                <div class="inline-flex items-center bg-white px-6 py-3 rounded-2xl shadow-lg border border-gray-100">
+                    <i class="fa-solid fa-calendar-week mr-3 text-orange-600"></i>
+                    <h2 class="text-xl font-bold text-gray-900">Si quieres ver otro día puedes usar este menú</h2>
                 </div>
-        </div>
-
-        <div class="mx-auto text-center">
-            <h2 class="lg:py-2 text-2xl tracking-tight font-bold text-gray-900 my-8 zoom-10">Si quieres ver otro dia puedes usar este menu!</h2>
-        </div> 
-            <div class="block">
-            <div class="flex justify-center mb-4">
-                <button onclick="showSection('monday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">monday</button>
-                <div class="mx-2"></div>
-                <button onclick="showSection('tuesday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">tuesday</button>
-                <div class="mx-2"></div>
-                <button onclick="showSection('wednesday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">Miercoles</button>
-            </div>  
-            <div class="flex justify-center mb-4">
-                <button onclick="showSection('thursday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">thursday</button>
-                <div class="mx-2"></div>
-                <button onclick="showSection('friday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">friday</button>
             </div>
-            <hr>
-            <div class="flex justify-center my-4">
-                <button onclick="showSection('saturday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">Sabado</button>
-                <div class="mx-2"></div>
-                <button onclick="showSection('sunday')" type="button" class="myButton font-semibold text-white px-2 rounded-lg bg-orange-600 border-l border-r border-t border-4 border-orange-800 hover:scale-105 transition duration-300 ease-in-out focus:border focus:mt-1 w-full py-2 text-center text-lg">Domingo</button>
+            
+            <div class="bg-white rounded-2xl shadow-lg border border-gray-100 p-6 mx-2">
+                <!-- Weekdays row -->
+                <div class="grid grid-cols-3 gap-3 mb-4">
+                    <button onclick="showSection('monday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 border-2 border-orange-400 hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-day mr-2"></i>
+                        <span class="font-bold">Lunes</span>
+                    </button>
+                    <button onclick="showSection('tuesday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 border-2 border-orange-400 hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-day mr-2"></i>
+                        <span class="font-bold">Martes</span>
+                    </button>
+                    <button onclick="showSection('wednesday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 border-2 border-orange-400 hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-day mr-2"></i>
+                        <span class="font-bold">Miércoles</span>
+                    </button>
+                </div>
+                
+                <!-- Thursday and Friday row -->
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <button onclick="showSection('thursday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 border-2 border-orange-400 hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-day mr-2"></i>
+                        <span class="font-bold">Jueves</span>
+                    </button>
+                    <button onclick="showSection('friday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 border-2 border-orange-400 hover:from-orange-600 hover:to-orange-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-day mr-2"></i>
+                        <span class="font-bold">Viernes</span>
+                    </button>
+                </div>
+                
+                <!-- Divider -->
+                <div class="flex items-center mb-6">
+                    <div class="flex-1 border-t border-gray-200"></div>
+                    <div class="px-4">
+                        <span class="text-sm text-gray-500 font-medium bg-gray-50 px-3 py-1 rounded-full">Fin de semana</span>
+                    </div>
+                    <div class="flex-1 border-t border-gray-200"></div>
+                </div>
+                
+                <!-- Weekend row -->
+                <div class="grid grid-cols-2 gap-3">
+                    <button onclick="showSection('saturday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 border-2 border-blue-400 hover:from-blue-600 hover:to-blue-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-calendar-week mr-2"></i>
+                        <span class="font-bold">Sábado</span>
+                    </button>
+                    <button onclick="showSection('sunday')" type="button" class="skolagh-button- myButton font-semibold text-white px-4 py-3 rounded-xl bg-gradient-to-r from-green-500 to-green-600 border-2 border-green-400 hover:from-green-600 hover:to-green-700 hover:scale-105 transform transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center">
+                        <i class="fa-solid fa-bed mr-2"></i>
+                        <span class="font-bold">Domingo</span>
+                    </button>
+                </div>
             </div>
         </div>
-
     </div>
 </div>
 
@@ -410,4 +508,4 @@
 
 <script src="{%static 'js/schedule/menu.js'%}"></script>
 
-{% endblock content %}  
+{% endblock content %}
