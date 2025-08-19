@@ -139,9 +139,8 @@ class CreateGestor(View):
             username = form.cleaned_data['username']
             ##################### FOTO #########################
             foto = form.cleaned_data.get('photo')
-            print(foto,"hola")
             if foto != 'gestores/profile.png' : #diferente de la imagen por defecto...
-                cords = form['cords'].value()
+                cords = form['photo_scords'].value()
                 cords= cords.split(':')
                 cords = cords[0]
                 
@@ -163,6 +162,7 @@ class CreateGestor(View):
         form = CustomUserManagerForm()
         vista = 'gestor'
         abierto='personas'
+        print(form)
         context = {
             'form': form,
             'vista': vista,
@@ -269,9 +269,8 @@ class CreateProfesor(View):
             
             ##################### FOTO #########################
             foto = form.cleaned_data.get('photo')
-            print(foto,"hola")
             if foto != 'profesores/profile.png' : #diferente de la imagen por defecto...
-                cords = form['cords'].value()
+                cords = form['photo_scords'].value()
                 cords= cords.split(':')
                 cords = cords[0]
                 
@@ -501,7 +500,7 @@ class CreateMaterias(View):
                 foto = form.cleaned_data.get('photo')
 
                 if foto != 'materias/picture.png' : #diferente de la imagen por defecto...
-                    cords = form['cords'].value()
+                    cords = form['photo_scords'].value()
                     cords= cords.split(':')
                     cords = cords[0]
                     

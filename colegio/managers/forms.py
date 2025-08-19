@@ -57,12 +57,15 @@ class CustomUserStudentForm(UserCreationForm):
 
 #Translate: CustomUserGestorForm
 class CustomUserManagerForm(UserCreationForm):
+    def __init__(self, *args, grado=None, **kwargs):
+        super().__init__(*args, **kwargs)
     class Meta:
         model = CustomUserManager
         fields = ('username', 'first_name', 'last_name', 'email', 'password', 'document_type', 'gender','password1','password2', 'school','photo_cords','photo', 'time_zone')
 
         widgets = {
             'time_zone': forms.TextInput(attrs={'id':'time_zone','class': 'hidden'}),
+            
             'username': forms.TextInput(attrs={'autocomplete': 'off','id':'username','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Nombre del usuario'}),
 
             'first_name': forms.TextInput(attrs={'autocomplete': 'off','id':'first_name','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Nombres del usuario'}),
@@ -90,8 +93,6 @@ class CustomUserManagerForm(UserCreationForm):
             'photo_cords': forms.TextInput(attrs={'class': 'cords hidden', 'id':'cords'}),
             'photo': ClearableFileInput(attrs={ "class":"block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-2.5", "id":"input-file", "type":"file","accept":".png,.jpg,.jpeg","name":"input-file"}),
         }
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
         
 class CustomUserManagerEditProfileForm(forms.ModelForm):
     class Meta:
