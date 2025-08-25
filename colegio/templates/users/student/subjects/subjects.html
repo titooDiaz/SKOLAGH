@@ -65,7 +65,7 @@
 
         <!-- Actividades Calificables -->
         <div class="mb-6">
-            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse="collapse-actividades-1">
+            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse-target="collapse-actividades-1">
                 <h4 class="text-xl font-semibold text-gray-700 flex items-center">
                     <i class="fa-solid fa-clipboard-check text-orange-500 mr-2"></i>
                     Actividades Calificables
@@ -74,51 +74,53 @@
             </div>
             
             <div data-collapse="collapse-actividades-1" class="h-auto overflow-hidden transition-all duration-300 ease-in-out space-y-4">
-                <!-- Actividad 1 -->
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h5 class="font-bold text-lg text-gray-800">Examen Parcial - Derivadas</h5>
-                        <div class="flex gap-2">
-                            <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm font-medium">25%</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">4.5/5.0</span>
+                <div>
+                    <!-- Actividad 1 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-lg text-gray-800">Examen Parcial - Derivadas</h5>
+                            <div class="flex gap-2">
+                                <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm font-medium">25%</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">4.5/5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-2">Evaluación sobre conceptos fundamentales de derivadas y sus aplicaciones.</p>
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span><i class="fa-solid fa-calendar mr-1"></i>Fecha límite: 15 Mar 2024 - 11:59 PM</span>
+                            <span class="text-green-600 font-medium"><i class="fa-solid fa-check mr-1"></i>Entregado</span>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-2">Evaluación sobre conceptos fundamentales de derivadas y sus aplicaciones.</p>
-                    <div class="flex justify-between text-sm text-gray-500">
-                        <span><i class="fa-solid fa-calendar mr-1"></i>Fecha límite: 15 Mar 2024 - 11:59 PM</span>
-                        <span class="text-green-600 font-medium"><i class="fa-solid fa-check mr-1"></i>Entregado</span>
-                    </div>
-                </div>
 
-                <!-- Actividad 2 -->
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h5 class="font-bold text-lg text-gray-800">Taller de Límites</h5>
-                        <div class="flex gap-2">
-                            <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm font-medium">15%</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">3.8/5.0</span>
+                    <!-- Actividad 2 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-lg text-gray-800">Taller de Límites</h5>
+                            <div class="flex gap-2">
+                                <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm font-medium">15%</span>
+                                <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-sm font-medium">3.8/5.0</span>
+                            </div>
+                        </div>
+                        <p class="text-gray-600 mb-2">Ejercicios prácticos sobre cálculo de límites y continuidad.</p>
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span><i class="fa-solid fa-calendar mr-1"></i>Fecha límite: 08 Mar 2024 - 11:59 PM</span>
+                            <span class="text-green-600 font-medium"><i class="fa-solid fa-check mr-1"></i>Entregado</span>
                         </div>
                     </div>
-                    <p class="text-gray-600 mb-2">Ejercicios prácticos sobre cálculo de límites y continuidad.</p>
-                    <div class="flex justify-between text-sm text-gray-500">
-                        <span><i class="fa-solid fa-calendar mr-1"></i>Fecha límite: 08 Mar 2024 - 11:59 PM</span>
-                        <span class="text-green-600 font-medium"><i class="fa-solid fa-check mr-1"></i>Entregado</span>
-                    </div>
-                </div>
 
-                <!-- Actividad 3 -->
-                <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-                    <div class="flex justify-between items-start mb-2">
-                        <h5 class="font-bold text-lg text-gray-800">Quiz - Aplicaciones de Derivadas</h5>
-                        <div class="flex gap-2">
-                            <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm font-medium">10%</span>
-                            <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm font-medium">Pendiente</span>
+                    <!-- Actividad 3 -->
+                    <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-lg text-gray-800">Quiz - Aplicaciones de Derivadas</h5>
+                            <div class="flex gap-2">
+                                <span class="bg-orange-500 text-white px-2 py-1 rounded text-sm font-medium">10%</span>
+                                <span class="bg-yellow-100 text-yellow-800 px-2 py-1 rounded text-sm font-medium">Pendiente</span>
+                            </div>
                         </div>
-                    </div>
-                    <p class="text-gray-600 mb-2">Quiz rápido sobre aplicaciones prácticas de derivadas en física y economía.</p>
-                    <div class="flex justify-between text-sm text-gray-500">
-                        <span><i class="fa-solid fa-calendar mr-1"></i>Fecha límite: 22 Mar 2024 - 11:59 PM</span>
-                        <span class="text-yellow-600 font-medium"><i class="fa-solid fa-clock mr-1"></i>Por entregar</span>
+                        <p class="text-gray-600 mb-2">Quiz rápido sobre aplicaciones prácticas de derivadas en física y economía.</p>
+                        <div class="flex justify-between text-sm text-gray-500">
+                            <span><i class="fa-solid fa-calendar mr-1"></i>Fecha límite: 22 Mar 2024 - 11:59 PM</span>
+                            <span class="text-yellow-600 font-medium"><i class="fa-solid fa-clock mr-1"></i>Por entregar</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -126,7 +128,7 @@
 
         <!-- Recursos y Guías -->
         <div class="mb-6">
-            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse="collapse-recursos-1">
+            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse-target="collapse-recursos-1">
                 <h4 class="text-xl font-semibold text-gray-700 flex items-center">
                     <i class="fa-solid fa-book text-orange-500 mr-2"></i>
                     Recursos y Guías de Clase
@@ -135,44 +137,46 @@
             </div>
             
             <div data-collapse="collapse-recursos-1" class="h-0 overflow-hidden transition-all duration-300 ease-in-out space-y-3">
-                <div class="border border-gray-200 rounded-lg p-4 bg-blue-50">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5 class="font-semibold text-gray-800">Guía de Estudio - Límites y Continuidad</h5>
-                            <p class="text-gray-600 text-sm">Material de apoyo para reforzar conceptos básicos</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
-                                <i class="fa-solid fa-download mr-1"></i>Descargar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5 class="font-semibold text-gray-800">Ejercicios Adicionales - Derivadas</h5>
-                            <p class="text-gray-600 text-sm">Práctica extra para mejorar tus habilidades</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
-                                <i class="fa-solid fa-download mr-1"></i>Descargar
-                            </button>
+                <div>
+                    <div class="border border-gray-200 rounded-lg p-4 bg-blue-50">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Guía de Estudio - Límites y Continuidad</h5>
+                                <p class="text-gray-600 text-sm">Material de apoyo para reforzar conceptos básicos</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="bg-blue-500 text-white px-3 py-1 rounded text-sm hover:bg-blue-600">
+                                    <i class="fa-solid fa-download mr-1"></i>Descargar
+                                </button>
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <div class="border border-gray-200 rounded-lg p-4 bg-purple-50">
-                    <div class="flex items-center justify-between">
-                        <div>
-                            <h5 class="font-semibold text-gray-800">Grabación Clase - Introducción a Derivadas</h5>
-                            <p class="text-gray-600 text-sm">Video de la clase del 5 de marzo</p>
+                    <div class="border border-gray-200 rounded-lg p-4 bg-green-50">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Ejercicios Adicionales - Derivadas</h5>
+                                <p class="text-gray-600 text-sm">Práctica extra para mejorar tus habilidades</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="bg-green-500 text-white px-3 py-1 rounded text-sm hover:bg-green-600">
+                                    <i class="fa-solid fa-download mr-1"></i>Descargar
+                                </button>
+                            </div>
                         </div>
-                        <div class="flex gap-2">
-                            <button class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600">
-                                <i class="fa-solid fa-play mr-1"></i>Ver Video
-                            </button>
+                    </div>
+
+                    <div class="border border-gray-200 rounded-lg p-4 bg-purple-50">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h5 class="font-semibold text-gray-800">Grabación Clase - Introducción a Derivadas</h5>
+                                <p class="text-gray-600 text-sm">Video de la clase del 5 de marzo</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <button class="bg-purple-500 text-white px-3 py-1 rounded text-sm hover:bg-purple-600">
+                                    <i class="fa-solid fa-play mr-1"></i>Ver Video
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -193,7 +197,7 @@
 
         <!-- Actividades Calificables -->
         <div class="mb-6">
-            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse="collapse-actividades-2">
+            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse-target="collapse-actividades-2">
                 <h4 class="text-xl font-semibold text-gray-700 flex items-center">
                     <i class="fa-solid fa-clipboard-check text-orange-500 mr-2"></i>
                     Actividades Calificables
@@ -236,7 +240,7 @@
 
         <!-- Recursos y Guías -->
         <div class="mb-6">
-            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse="collapse-recursos-2">
+            <div class="flex items-center justify-between mb-4 cursor-pointer" data-collapse-target="collapse-recursos-2">
                 <h4 class="text-xl font-semibold text-gray-700 flex items-center">
                     <i class="fa-solid fa-book text-orange-500 mr-2"></i>
                     Recursos y Guías de Clase
