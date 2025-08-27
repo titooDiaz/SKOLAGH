@@ -178,6 +178,7 @@ class ActividadesRespuestaView(View):
         # Retorno del contexto
         vista = 'estudiante'
         abierto='inicio'
+        print(user_answers)
         context = {
             'vista': vista,
             'abierto':abierto,

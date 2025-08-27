@@ -212,7 +212,39 @@
                                 {% endif %}
                             </p>
                             <p class="mb-6 lg:mb-8 md:text-lg lg:text-xl">{{actividad.percentage}}%</p>
-
+                            <div class="w-[100%] p-2 bg-white border border-gray-200 rounded-lg shadow sm:p-4">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h5 class="text-xl font-bold leading-none text-gray-900">Respuestas a la actividad</h5>
+                                </div>
+                                <div class="flow-root">
+                                    <ul role="list" class="divide-y divide-gray-200">
+                                        {% for answer in answers %}
+                                            <li class="py-3 sm:py-4">
+                                                <div class="flex items-center">
+                                                    <div class="flex-1 min-w-0 ms-4">
+                                                        <p class="text-sm font-medium text-gray-900">
+                                                            {{answer.answer}}
+                                                        </p>
+                                                        <p class="text-sm text-gray-500 text-wrap">
+                                                            {{answer.description}}
+                                                        </p>
+                                                    </div>
+                                                    <div class="inline-flex items-center text-base font-semibold text-gray-900">
+                                                        {% for file in answer.files.all %}
+                                                            <a href="{{ file.file.url }}" class="relative inline-block">
+                                                                <i class="fa-solid fa-file text-2xl"></i>
+                                                                <span class="absolute top-full left-full transform -translate-x-1/2 -translate-y-2 rounded-full bg-gray-200 w-4 h-4 flex items-center justify-center text-xs">
+                                                                    {{ forloop.counter }}
+                                                                </span>
+                                                            </a>
+                                                        {% endfor %}
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
                             <!--Time info-->
                             <div class="hidden">
                                 <span id="date">{{date}}</span>

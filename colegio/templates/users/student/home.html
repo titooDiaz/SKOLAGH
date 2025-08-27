@@ -370,22 +370,22 @@
 </head>
 <body class="bg-gradient-to-br from-blue-50 to-orange-50 min-h-screen">
     <div class="p-4 mb-8">
-        <!-- Área del cohete flotante -->
+        <!-- rocket area -->
         <div class="relative h-80 mb-8 overflow-hidden rounded-3xl bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 p-8">
             <div class="absolute inset-0 bg-black bg-opacity-10"></div>
             
-            <!-- Estrellas decorativas -->
+            <!-- stars -->
             <div class="absolute top-4 left-4 text-yellow-300 text-2xl bounce-animation">⭐</div>
             <div class="absolute top-16 right-8 text-yellow-200 text-xl bounce-animation" style="animation-delay: 0.5s;">✨</div>
             <div class="absolute bottom-8 left-16 text-yellow-400 text-lg bounce-animation" style="animation-delay: 1s;">💫</div>
             <div class="absolute top-8 right-1/3 text-yellow-300 text-sm bounce-animation" style="animation-delay: 1.5s;">⚡</div>
             
-            <!-- Cohete animado -->
+            <!-- Animate rocket -->
             <div class="absolute top-1/2 left-1/4 transform -translate-y-1/2 rocket-animation">
                 <div class="text-8xl">🚀</div>
             </div>
             
-            <!-- Contenido principal -->
+            <!-- text -->
             <div class="relative z-10 mx-auto max-w-screen-sm text-center text-white">
                 <h6 class="lg:py-2 text-5xl tracking-tight font-bold mb-4 fade-in-up">
                     ¡Potencia tus estudios!
@@ -394,7 +394,7 @@
                     Descubre herramientas increíbles que transformarán tu manera de aprender
                 </p>
                 
-                <!-- Botón principal súper animado -->
+                <!-- button -->
                 <button onclick="toggleTools()" 
                         class="SkolaghButton-orange orange-gradient px-8 py-4 rounded-full font-bold text-xl text-white shadow-2xl pulse-button hover-float sparkle transform transition-all duration-300 hover:scale-110">
                     <i class="fas fa-rocket mr-2"></i>
@@ -404,7 +404,7 @@
             </div>
         </div>
 
-        <!-- Contenedor de herramientas -->
+        <!-- Tools -->
         <div id="tools-container" class="hidden">
             <div class="grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 max-w-6xl mx-auto">
                 <!-- Carta Pomodoro -->
@@ -425,7 +425,7 @@
                     </div>
                 </div>
 
-                <!-- Carta Sofía IA -->
+                <!-- Sofia-->
                 <div onclick="openModal('sofia')" class="tool-card bg-white shadow-xl rounded-2xl p-6 hover-float cursor-pointer transform transition-all duration-300 hover:shadow-2xl fade-in-up" style="animation-delay: 0.2s;">
                     <div class="text-center mb-4">
                         <div class="w-20 h-20 mx-auto mb-4 bg-purple-100 rounded-full flex items-center justify-center">
@@ -443,20 +443,20 @@
                     </div>
                 </div>
 
-                <!-- Carta Hábitos -->
-                <div onclick="openModal('habits')" class="tool-card bg-white shadow-xl rounded-2xl p-6 hover-float cursor-pointer transform transition-all duration-300 hover:shadow-2xl fade-in-up" style="animation-delay: 0.4s;">
+                <!-- VirtualBoard -->
+                <div onclick="openModal('board')" class="tool-card bg-white shadow-xl rounded-2xl p-6 hover-float cursor-pointer transform transition-all duration-300 hover:shadow-2xl fade-in-up" style="animation-delay: 0.4s;">
                     <div class="text-center mb-4">
                         <div class="w-20 h-20 mx-auto mb-4 bg-green-100 rounded-full flex items-center justify-center">
                             <svg class="w-10 h-10 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                                 <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
                         </div>
-                        <h5 class="font-bold text-2xl mb-2 text-gray-800">Hábitos de Estudio</h5>
-                        <p class="text-gray-600">Técnicas que funcionan</p>
+                        <h5 class="font-bold text-2xl mb-2 text-gray-800">Tablero virtual</h5>
+                        <p class="text-gray-600">Unete y estudia con tus amigos de clase!</p>
                     </div>
                     <div class="text-center">
                         <span class="inline-block bg-green-500 text-white px-4 py-2 rounded-full text-sm font-semibold">
-                            ¡Mejora tu rutina!
+                            Probar tablero
                         </span>
                     </div>
                 </div>
@@ -498,7 +498,7 @@
                         <path d="M2 5a2 2 0 012-2h12a2 2 0 012 2v10a2 2 0 01-2 2H4a2 2 0 01-2-2V5zm3.293 1.293a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 01-1.414-1.414L7.586 10 5.293 7.707a1 1 0 010-1.414zM11 12a1 1 0 100 2h3a1 1 0 100-2h-3z"></path>
                     </svg>
                 </div>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Sofía IA</h3>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Sofia IA</h3>
                 <div class="text-6xl mb-4">🤖</div>
                 <p class="text-gray-600 mb-6 text-lg">Tu asistente personal. Te ayudo con resúmenes, explicaciones y tips de estudio personalizados.</p>
                 <div class="space-y-4">
@@ -513,8 +513,8 @@
         </div>
     </div>
 
-    <!-- Modal Hábitos -->
-    <div id="modal-habits" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" onclick="closeModal('habits')">
+    <!-- Modal board -->
+    <div id="modal-board" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50" onclick="closeModal('board')">
         <div class="bg-white rounded-3xl p-8 max-w-md mx-4 modal-slide-in" onclick="event.stopPropagation()">
             <div class="text-center">
                 <div class="w-24 h-24 mx-auto mb-6 bg-green-100 rounded-full flex items-center justify-center">
@@ -522,14 +522,14 @@
                         <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                     </svg>
                 </div>
-                <h3 class="text-3xl font-bold text-gray-800 mb-4">Hábitos de Estudio</h3>
+                <h3 class="text-3xl font-bold text-gray-800 mb-4">Tablero de estudio</h3>
                 <div class="text-6xl mb-4">📚</div>
-                <p class="text-gray-600 mb-6 text-lg">Descubre técnicas probadas que maximizan tu aprendizaje y retención.</p>
+                <p class="text-gray-600 mb-6 text-lg">Estudia con tus amigos de clase en un tablero compartido!</p>
                 <div class="space-y-4">
                     <button class="w-full bg-green-500 text-white py-3 rounded-xl font-semibold text-lg hover:bg-green-600 transition-colors">
-                        <i class="fas fa-lightbulb mr-2"></i>Ver Tips de Estudio
+                        <i class="fas fa-lightbulb mr-2"></i>Ver tablero!
                     </button>
-                    <button onclick="closeModal('habits')" class="w-full bg-gray-200 text-gray-700 py-2 rounded-xl font-semibold hover:bg-gray-300 transition-colors">
+                    <button onclick="closeModal('board')" class="w-full bg-gray-200 text-gray-700 py-2 rounded-xl font-semibold hover:bg-gray-300 transition-colors">
                         Cerrar
                     </button>
                 </div>
@@ -560,10 +560,10 @@
             modal.classList.remove('flex');
         }
 
-        // Cerrar modales con Escape
+        // Esc keyboard
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') {
-                const modals = ['pomodoro', 'sofia', 'habits'];
+                const modals = ['pomodoro', 'sofia', 'board'];
                 modals.forEach(modal => closeModal(modal));
             }
         });
