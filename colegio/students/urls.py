@@ -30,4 +30,9 @@ urlpatterns = [
     # es - Personas
     # en - People
     path('personas/', StudentPeople.as_view(), name='PeopleStudent'),
+    
+    # Menu urls
+    # es - Personas
+    # en - People
+    path('virtual/board/', BoardMenu.as_view(), name='BoardMenu'),
 ]

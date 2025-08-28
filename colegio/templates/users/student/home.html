@@ -13,7 +13,7 @@
 
     <div class="p-4 mb">
         <div class="mx-auto max-w-screen-sm text-center">
-            <h6 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8">Actividades</h2>
+            <h6 class="lg:py-2 text-4xl tracking-tight font-bold text-gray-900 mb-8">Actividades del corte {{current_court.court_number}}</h2>
         </div>
 
         
@@ -478,9 +478,9 @@
                 <div class="text-6xl mb-4">🍅</div>
                 <p class="text-gray-600 mb-6 text-lg">¡Convierte el estudio en un juego! 25 minutos de concentración total, 5 de descanso.</p>
                 <div class="space-y-4">
-                    <button class="w-full bg-red-500 text-white py-3 rounded-xl font-semibold text-lg hover:bg-red-600 transition-colors">
+                    <a href="{% url 'BoardMenu'%}" class="w-full bg-red-500 text-white py-3 rounded-xl font-semibold text-lg hover:bg-red-600 transition-colors">
                         <i class="fas fa-play mr-2"></i>Iniciar Pomodoro
-                    </button>
+                    </a>
                     <button onclick="closeModal('pomodoro')" class="w-full bg-gray-200 text-gray-700 py-2 rounded-xl font-semibold hover:bg-gray-300 transition-colors">
                         Cerrar
                     </button>
@@ -526,12 +526,12 @@
                 <div class="text-6xl mb-4">📚</div>
                 <p class="text-gray-600 mb-6 text-lg">Estudia con tus amigos de clase en un tablero compartido!</p>
                 <div class="space-y-4">
-                    <button class="w-full bg-green-500 text-white py-3 rounded-xl font-semibold text-lg hover:bg-green-600 transition-colors">
+                    <a href="{% url 'BoardMenu'%}" class="w-full bg-green-500 text-white py-3 rounded-xl font-semibold text-lg hover:bg-green-600 transition-colors">
                         <i class="fas fa-lightbulb mr-2"></i>Ver tablero!
                     </button>
                     <button onclick="closeModal('board')" class="w-full bg-gray-200 text-gray-700 py-2 rounded-xl font-semibold hover:bg-gray-300 transition-colors">
                         Cerrar
-                    </button>
+                    </a>
                 </div>
             </div>
         </div>

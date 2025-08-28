@@ -70,7 +70,7 @@ class AlumnoBoard(View):
         schedule = grade_user.schedule_parts
         court = ScheduleCourts.objects.filter(schedule=schedule).first()
         current_date = get_current_date(request.user)
-        current_court = court.get_current_court(request.user, schedule, current_date)      
+        current_court = court.get_current_court(request.user, schedule, current_date)
         
         # Obtener la hora actual en la zona horaria del usuario
         ## Obtener la zona horaria local
@@ -95,7 +95,6 @@ class AlumnoBoard(View):
             actividades_user_off_time_grade.append(grade)
 
         actividades_user_off_time = zip(actividades_user_off_time_grade, actividades_user_off_time)
-    
         
         context = {
             'vista': vista,
@@ -106,9 +105,21 @@ class AlumnoBoard(View):
             'activityOff': actividades_user_off_time,
             'fecha_actual': fecha_actual,
             'hora_actual': hora_actual,
+            'current_court': current_court
             
         }
         return render(request, 'users/student/home.html', context)
+    
+class BoardMenu(View):
+    def get(self, request, *args, **kwargs):
+        vista = 'estudiante'
+        abierto='inicio'
+
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+        }
+        return render(request, 'users/student/boards/boardMenu.html', context)
 
 class ActividadesRespuestaView(View):
     def get(self, request, pk, *args, **kwargs):
