@@ -120,6 +120,16 @@ class BoardMenu(View):
             'abierto':abierto,
         }
         return render(request, 'users/student/boards/boardMenu.html', context)
+class TomatoMenu(View):
+    def get(self, request, *args, **kwargs):
+        vista = 'estudiante'
+        abierto='inicio'
+
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+        }
+        return render(request, 'users/student/tomato/tomatoMenu.html', context)
 
 class ActividadesRespuestaView(View):
     def get(self, request, pk, *args, **kwargs):
