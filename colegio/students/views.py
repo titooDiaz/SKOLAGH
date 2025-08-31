@@ -376,25 +376,37 @@ class StudentPeople(View):
     
 class StudentGrades(View):
     def get(self, request, *args, **kwargs):
-        # Grade
         user = request.user
-        grade_user = user.customuserstudent.grade # student's grade
+        grade_user = user.customuserstudent.grade  # grado del estudiante
         
         subjects = grade_user.subjects.all()
         schedule = ScheduleParts.objects.get(school=grade_user.school)
         courts = ScheduleCourts.objects.filter(schedule=schedule)
         
-        vista = 'estudiante'
-        abierto='notas'
+        # here we can iterate the subjects: subject -> court -> activities
+        data = []
+        for subject in subjects:
+            subject.courts_data = []
+            for court in courts:
+                activities = Activities.objects.filter(
+                    subject=subject,
+                    start_date__gte=court.start_date,
+                    end_date__lte=court.end_date,
+                )
+                subject.courts_data.append({
+                    "court": court,
+                    "activities": activities
+                })
         
         context = {
-            'vista': vista,
-            'abierto':abierto,
-            'grade': grade_user,
-            'subjects': subjects,
-            'courts': courts,
+            "vista": "estudiante",
+            "abierto": "notas",
+            "grade": grade_user,
+            "subjects": subjects,
+            "courts": courts,
         }
-        return render(request, 'users/student/grades/grades.html', context)
+        return render(request, "users/student/grades/grades.html", context)
+
 
 # View profile
 class ViewProfile(View):
