@@ -75,12 +75,30 @@
 
                                                         {% if court_data.activities %}
                                                             <ul class="list-disc ml-4">
-                                                                {% for act in court_data.activities %}
+                                                                {% for act_data in court_data.activities %}
                                                                     <li>
-                                                                        <strong>{{ act.name }}</strong> - {{ act.percentage }}% <br>
-                                                                        {{ act.description }}
+                                                                        <strong>{{ act_data.activity.name }}</strong> - {{ act_data.activity.percentage }}% <br>
+                                                                        {{ act_data.activity.description }} <br>
+                                                                        {% if act_data.nota %}
+                                                                            Calificación: {{ act_data.nota }}
+                                                                            {% if act_data.rating_message %}
+                                                                                <br><em>Comentario: {{ act_data.rating_message }}</em>
+                                                                            {% endif %}
+                                                                        {% else %}
+                                                                            Sin calificación
+                                                                        {% endif %}
                                                                     </li>
                                                                 {% endfor %}
+
+                                                                <p><strong>Total porcentaje:</strong> {{court_data.total_percentage}}%</p>
+                                                                <p><strong>Promedio del corte:</strong> 
+                                                                {% if court_data.promedio %}
+                                                                    {{ court_data.promedio|floatformat:2 }}
+                                                                {% else %}
+                                                                    Sin notas aún
+                                                                {% endif %}
+                                                                </p>
+
                                                             </ul>
                                                         {% else %}
                                                             <p>No hay actividades en este corte</p>

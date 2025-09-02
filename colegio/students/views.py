@@ -16,6 +16,8 @@ from users.utils import get_chat_target, get_user1_user2_ids
 from django.db.models import Q
 from users.utils import get_teachers_recursively
 
+from django.db.models import Sum
+
 # dict
 from collections import defaultdict
 
@@ -377,14 +379,11 @@ class StudentPeople(View):
 class StudentGrades(View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        grade_user = user.customuserstudent.grade  # grado del estudiante
-        
+        grade_user = user.customuserstudent.grade
         subjects = grade_user.subjects.all()
         schedule = ScheduleParts.objects.get(school=grade_user.school)
         courts = ScheduleCourts.objects.filter(schedule=schedule)
-        
-        # here we can iterate the subjects: subject -> court -> activities
-        data = []
+
         for subject in subjects:
             subject.courts_data = []
             for court in courts:
@@ -393,11 +392,38 @@ class StudentGrades(View):
                     start_date__gte=court.start_date,
                     end_date__lte=court.end_date,
                 )
+
+                total_percentage = activities.aggregate(total=Sum("percentage"))["total"] or 0
+
+                activities_data = []
+                corte_nota_total = 0
+                corte_porcentaje_total = 0
+
+                for act in activities:
+                    # find student grade
+                    rating = Rating.objects.filter(student=user, activity=act).first()
+                    nota = rating.rating if rating else 0  # si no hay rating, nota será 0
+
+                    corte_nota_total += nota * (act.percentage / 100)
+                    corte_porcentaje_total += act.percentage
+
+                    activities_data.append({
+                        "activity": act,
+                        "nota": nota,
+                        "rating_message": rating.message if rating else None,
+                    })
+
+                promedio_corte = None
+                if corte_porcentaje_total > 0:
+                    promedio_corte = corte_nota_total / (corte_porcentaje_total / 100)
+
                 subject.courts_data.append({
                     "court": court,
-                    "activities": activities
+                    "activities": activities_data,
+                    "total_percentage": total_percentage,
+                    "promedio": promedio_corte
                 })
-        
+
         context = {
             "vista": "estudiante",
             "abierto": "notas",
