@@ -69,39 +69,141 @@
                                                         <p class="mr-4">Close</p>
                                                         <i class="fa-solid fa-circle-xmark"></i>
                                                     </button>
-                                                    <div class="mb-4">
-                                                        <h3 class="font-bold">Corte {{court_data.court.court_number}}</h3>
-                                                        <p>De {{court_data.court.start_date}} a {{court_data.court.end_date}}</p>
+                                                    <!-- Main container for the academic period -->
+                                                    <div class="mb-8 bg-white rounded-xl shadow-sm border border-orange-100 overflow-hidden">
+                                                        <!-- Header section with period info -->
+                                                        <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
+                                                            <h3 class="text-xl font-bold text-white">Corte {{court_data.court.court_number}}</h3>
+                                                            <p class="text-orange-100 text-sm">De {{court_data.court.start_date}} a {{court_data.court.end_date}}</p>
+                                                        </div>
 
                                                         {% if court_data.activities %}
-                                                            <ul class="list-disc ml-4">
-                                                                {% for act_data in court_data.activities %}
-                                                                    <li>
-                                                                        <strong>{{ act_data.activity.name }}</strong> - {{ act_data.activity.percentage }}% <br>
-                                                                        {{ act_data.activity.description }} <br>
-                                                                        {% if act_data.nota %}
-                                                                            Calificación: {{ act_data.nota }}
-                                                                            {% if act_data.rating_message %}
-                                                                                <br><em>Comentario: {{ act_data.rating_message }}</em>
-                                                                            {% endif %}
+                                                            <!-- Activities table container -->
+                                                            <div class="overflow-x-auto">
+                                                                <!-- Beautiful activities table -->
+                                                                <table class="w-full">
+                                                                    <!-- Table header -->
+                                                                    <thead class="bg-orange-50 border-b border-orange-200">
+                                                                        <tr>
+                                                                            <th class="px-6 py-3 text-left text-xs font-semibold text-orange-800 uppercase tracking-wider">
+                                                                                Nombre de la actividad
+                                                                            </th>
+                                                                            <th class="px-6 py-3 text-left text-xs font-semibold text-orange-800 uppercase tracking-wider">
+                                                                                Descipcion
+                                                                            </th>
+                                                                            <th class="px-6 py-3 text-center text-xs font-semibold text-orange-800 uppercase tracking-wider">
+                                                                                Porcentaje %
+                                                                            </th>
+                                                                            <th class="px-6 py-3 text-center text-xs font-semibold text-orange-800 uppercase tracking-wider">
+                                                                                Calificacion
+                                                                            </th>
+                                                                            <th class="px-6 py-3 text-left text-xs font-semibold text-orange-800 uppercase tracking-wider">
+                                                                                Nota del Profe
+                                                                            </th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    
+                                                                    <!-- Table body with activities -->
+                                                                    <tbody class="bg-white divide-y divide-gray-100">
+                                                                        {% for act_data in court_data.activities %}
+                                                                            <!-- Individual activity row -->
+                                                                            <tr class="hover:bg-orange-25 transition-colors duration-150">
+                                                                                <!-- Activity name column -->
+                                                                                <td class="px-6 py-4">
+                                                                                    <div class="flex items-center">
+                                                                                        <div class="w-2 h-2 bg-orange-400 rounded-full mr-3"></div>
+                                                                                        <span class="text-sm font-medium text-gray-900">{{ act_data.activity.name }}</span>
+                                                                                    </div>
+                                                                                </td>
+                                                                                
+                                                                                <!-- Description column -->
+                                                                                <td class="px-6 py-4">
+                                                                                    <p class="text-sm text-gray-600 leading-relaxed">{{ act_data.activity.description }}</p>
+                                                                                </td>
+                                                                                
+                                                                                <!-- Percentage column -->
+                                                                                <td class="px-6 py-4 text-center">
+                                                                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-orange-100 text-orange-800">
+                                                                                        {{ act_data.activity.percentage }}%
+                                                                                    </span>
+                                                                                </td>
+                                                                                
+                                                                                <!-- Grade column -->
+                                                                                <td class="px-6 py-4 text-center">
+                                                                                    {% if act_data.nota %}
+                                                                                        <!-- Show grade with color coding -->
+                                                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold 
+                                                                                            {% if act_data.nota >= 100 %}bg-green-100 text-green-800
+                                                                                            {% elif act_data.nota >= 70 %}bg-yellow-100 text-yellow-800
+                                                                                            {% else %}bg-red-100 text-red-800{% endif %}">
+                                                                                            {{ act_data.nota }}
+                                                                                        </span>
+                                                                                    {% else %}
+                                                                                        <!-- No grade yet -->
+                                                                                        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-500">
+                                                                                            Sin calificación
+                                                                                        </span>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                                
+                                                                                <!-- Comments column -->
+                                                                                <td class="px-6 py-4">
+                                                                                    {% if act_data.rating_message %}
+                                                                                        <p class="text-xs text-gray-500 italic">{{ act_data.rating_message }}</p>
+                                                                                    {% else %}
+                                                                                        <span class="text-xs text-gray-400">-</span>
+                                                                                    {% endif %}
+                                                                                </td>
+                                                                            </tr>
+                                                                        {% endfor %}
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+
+                                                            <!-- Summary section at the bottom -->
+                                                            <div class="bg-orange-25 px-6 py-4 border-t border-orange-100">
+                                                                <div class="flex justify-between items-center">
+                                                                    <!-- Total percentage info -->
+                                                                    <div class="flex items-center space-x-4">
+                                                                        <div class="flex items-center">
+                                                                            <span class="text-sm text-gray-600 mr-2">Total porcentaje:</span>
+                                                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-semibold bg-orange-100 text-orange-800">
+                                                                                {{court_data.total_percentage}}%
+                                                                            </span>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                    <!-- Average grade info -->
+                                                                    <div class="flex items-center">
+                                                                        <span class="text-sm text-gray-600 mr-2">Promedio del corte:</span>
+                                                                        {% if court_data.promedio %}
+                                                                            <!-- Show average with color coding -->
+                                                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-bold 
+                                                                                {% if court_data.promedio >= 4.0 %}bg-green-100 text-green-800
+                                                                                {% elif court_data.promedio >= 3.0 %}bg-yellow-100 text-yellow-800
+                                                                                {% else %}bg-red-100 text-red-800{% endif %}">
+                                                                                {{ court_data.promedio|floatformat:2 }}
+                                                                            </span>
                                                                         {% else %}
-                                                                            Sin calificación
+                                                                            <!-- No average yet -->
+                                                                            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-500">
+                                                                                Sin notas aún
+                                                                            </span>
                                                                         {% endif %}
-                                                                    </li>
-                                                                {% endfor %}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
 
-                                                                <p><strong>Total porcentaje:</strong> {{court_data.total_percentage}}%</p>
-                                                                <p><strong>Promedio del corte:</strong> 
-                                                                {% if court_data.promedio %}
-                                                                    {{ court_data.promedio|floatformat:2 }}
-                                                                {% else %}
-                                                                    Sin notas aún
-                                                                {% endif %}
-                                                                </p>
-
-                                                            </ul>
                                                         {% else %}
-                                                            <p>No hay actividades en este corte</p>
+                                                            <!-- Empty state when no activities -->
+                                                            <div class="px-6 py-12 text-center">
+                                                                <div class="w-12 h-12 mx-auto mb-4 bg-orange-100 rounded-full flex items-center justify-center">
+                                                                    <svg class="w-6 h-6 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                                                    </svg>
+                                                                </div>
+                                                                <p class="text-gray-500 text-sm">No hay actividades en este corte</p>
+                                                            </div>
                                                         {% endif %}
                                                     </div>
                                                 </div> 
