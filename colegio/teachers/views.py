@@ -550,10 +550,17 @@ class ProfessorRatings(View):
             .order_by('grade__grade_name', 'last_name', 'first_name')
         )
 
-        # Agrupar por grado
+        # Group students by grade with statistics
         students_by_grade = {}
         for grade, group in groupby(students_qs, key=attrgetter('grade')):
-            students_by_grade[grade] = list(group)
+            students = list(group)
+
+            students_by_grade[grade] = {
+                "students": students,
+                "approved": grade.get_approved(),
+                "failed": grade.get_failed(),
+                "at_risk": grade.get_at_risk(),
+            }
             
         context = {
             'vista': view,

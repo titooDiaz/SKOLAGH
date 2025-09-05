@@ -7,7 +7,7 @@
 {% load static %}
 {% include "ui/titles/principal.html" with title="Calificaciones de los estudiantes" %}
 
-{% for grade, students in students_by_grade.items %}
+{% for grade, data in students_by_grade.items %}
 <!-- Collapse Trigger Button -->
 <div class="collapse-trigger bg-white border border-gray-200 rounded-xl p-4 mb-4 cursor-pointer shadow-sm hover:shadow-md transition-all duration-300" 
      data-collapse-target="grade-{{ forloop.counter }}">
@@ -20,15 +20,12 @@
             </div>
             <div>
                 <h3 class="text-xl font-bold text-gray-900">{{ grade.grade_name }}</h3>
-                <p class="text-sm text-gray-500">{{ students|length }} estudiante{{ students|length|pluralize:"s" }}</p>
+                <p class="text-sm text-gray-500">{{ data.students|length }} student{{ data.students|length|pluralize:"s" }}</p>
             </div>
         </div>
         <div class="flex items-center gap-4">
             <div class="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm font-medium">
-                {{ students|length }} estudiante{{ students|length|pluralize:"s" }}
-            </div>
-            <div class="text-sm text-gray-500">
-                % suspendidos: <span class="font-semibold text-orange-600">{{ suspendidos|default:"0" }}</span>
+                {{ data.students|length }} student{{ data.students|length|pluralize:"s" }}
             </div>
         </div>
     </div>
@@ -39,38 +36,64 @@
      data-collapse="grade-{{ forloop.counter }}" 
      style="height: 0; overflow: hidden;">
     <div class="collapse-body p-6">
+        <!-- Student cards -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {% for student in students %}
+            {% for student in data.students %}
             <div class="response-item">
-                {% include "ui/cards/users_cards.html" with image=student.photo.url name=student.get_full_name role="Student" subtitle="Academic Profile" description=grade.grade_name button_text="Ver estudiante" %}
+                {% include "ui/cards/users_cards.html" with image=student.photo.url name=student.get_full_name role="Student" subtitle="Academic Profile" description=grade.grade_name button_text="See student" %}
             </div>
             {% endfor %}
         </div>
         
-        <!-- Estadísticas adicionales del grado -->
+        <!-- Grade statistics -->
         <div class="mt-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-5 border border-orange-200">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 <div>
-                    <div class="text-2xl font-bold text-orange-600">{{ students|length }}</div>
+                    <div class="text-2xl font-bold text-orange-600">{{ data.students|length }}</div>
                     <div class="text-sm text-gray-600">Total</div>
                 </div>
-                <div>
-                    <div class="text-2xl font-bold text-green-600">-</div>
-                    <div class="text-sm text-gray-600">Aprobados</div>
+                <div class="relative group">
+                    <div class="text-2xl font-bold text-green-600">{{ data.approved|length }}</div>
+                    <div class="text-sm text-gray-600">Approved</div>
+                    <!-- Tooltip -->
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-800 text-sm border border-gray-200 rounded-lg shadow-lg p-2 max-w-xs">
+                        {% for s in data.approved %}
+                            <div>{{ s.get_full_name }}</div>
+                        {% empty %}
+                            <div>No approved students</div>
+                        {% endfor %}
+                    </div>
                 </div>
-                <div>
-                    <div class="text-2xl font-bold text-red-600">-</div>
-                    <div class="text-sm text-gray-600">Reprobados</div>
+                <div class="relative group">
+                    <div class="text-2xl font-bold text-red-600">{{ data.failed|length }}</div>
+                    <div class="text-sm text-gray-600">Failed</div>
+                    <!-- Tooltip -->
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-800 text-sm border border-gray-200 rounded-lg shadow-lg p-2 max-w-xs">
+                        {% for s in data.failed %}
+                            <div>{{ s.get_full_name }}</div>
+                        {% empty %}
+                            <div>No failed students</div>
+                        {% endfor %}
+                    </div>
                 </div>
-                <div>
-                    <div class="text-2xl font-bold text-yellow-600">-</div>
-                    <div class="text-sm text-gray-600">En riesgo</div>
+                <div class="relative group">
+                    <div class="text-2xl font-bold text-yellow-600">{{ data.at_risk|length }}</div>
+                    <div class="text-sm text-gray-600">At risk</div>
+                    <!-- Tooltip -->
+                    <div class="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 hidden group-hover:block bg-white text-gray-800 text-sm border border-gray-200 rounded-lg shadow-lg p-2 max-w-xs">
+                        {% for s in data.at_risk %}
+                            <div>{{ s.get_full_name }}</div>
+                        {% empty %}
+                            <div>No students at risk</div>
+                        {% endfor %}
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 {% endfor %}
+
 
 <style>
 /* Students view */

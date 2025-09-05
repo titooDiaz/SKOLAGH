@@ -111,7 +111,64 @@ class Grade(models.Model):
 
     def __str__(self):
         return self.grade_name + "(" + self.grade_number + ")"
+    # --- Constants for thresholds ---
+    APPROVED_THRESHOLD = 70
+    AT_RISK_LOW = 55
+    AT_RISK_HIGH = 75
 
+    def get_students(self):
+        """Return all students in this grade."""
+        return CustomUserStudent.objects.filter(grade=self)
+
+    def get_average_for_student(self, student):
+        """
+        Calculate weighted average grade for a student.
+        """
+        subjects = self.subjects.all()
+        total = 0
+        count = 0
+
+        for subject in subjects:
+            ratings = Rating.objects.filter(student=student, activity__subject=subject)
+
+            if ratings.exists():
+                corte_nota_total = 0
+                corte_porcentaje_total = 0
+
+                for r in ratings:
+                    corte_nota_total += r.rating * (r.activity.percentage / 100)
+                    corte_porcentaje_total += r.activity.percentage
+
+                if corte_porcentaje_total > 0:
+                    promedio = corte_nota_total / (corte_porcentaje_total / 100)
+                    total += promedio
+                    count += 1
+
+        return total / count if count > 0 else 0
+
+    # --- Category filters ---
+    def get_approved(self):
+        """Return list of students with average >= APPROVED_THRESHOLD."""
+        return [
+            s for s in self.get_students()
+            if self.get_average_for_student(s) >= self.APPROVED_THRESHOLD
+        ]
+
+    def get_failed(self):
+        """Return list of students with average < APPROVED_THRESHOLD."""
+        return [
+            s for s in self.get_students()
+            if self.get_average_for_student(s) < self.APPROVED_THRESHOLD
+        ]
+
+    def get_at_risk(self):
+        """
+        Return list of students with average between AT_RISK_LOW and AT_RISK_HIGH.
+        """
+        return [
+            s for s in self.get_students()
+            if self.AT_RISK_LOW <= self.get_average_for_student(s) < self.AT_RISK_HIGH
+        ]
 def get_current_date():
     fecha_actual = timezone.now().date()
     # Convertir la fecha a una cadena en el formato 'YYYY-MM-DD'
