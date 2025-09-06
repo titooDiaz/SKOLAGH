@@ -550,16 +550,32 @@ class ProfessorRatings(View):
             .order_by('grade__grade_name', 'last_name', 'first_name')
         )
 
-        # Group students by grade with statistics
         students_by_grade = {}
         for grade, group in groupby(students_qs, key=attrgetter('grade')):
-            students = list(group)
+            group = list(group)
+
+            # Available courts for this grade
+            courts = ScheduleCourts.objects.filter(schedule=grade.schedule_parts).order_by("start_date")
+            
+            # Get active court from GET or fallback to grade.current_court
+            court_id = request.GET.get(f"court_{grade.id}")
+            if court_id:
+                current_court = courts.filter(id=court_id).first() or ScheduleCourts.objects.filter(schedule=grade.schedule_parts).first()
+            else:
+                current_court = ScheduleCourts.objects.filter(schedule=grade.schedule_parts).first()
+
+            # Calculate stats for this court
+            approved = grade.get_approved(current_court)
+            failed = grade.get_failed(current_court)
+            at_risk = grade.get_at_risk(current_court)
 
             students_by_grade[grade] = {
-                "students": students,
-                "approved": grade.get_approved(),
-                "failed": grade.get_failed(),
-                "at_risk": grade.get_at_risk(),
+                "students": group,
+                "courts": courts,
+                "current_court": current_court,
+                "approved": approved,
+                "failed": failed,
+                "at_risk": at_risk,
             }
             
         context = {
@@ -569,6 +585,7 @@ class ProfessorRatings(View):
         }
         
         return render(request, 'users/teachers/rating/ratings.html', context)
+
     
 # View profile
 class ViewProfile(View):

@@ -47,6 +47,20 @@
         
         <!-- Grade statistics -->
         <div class="mt-6 bg-gradient-to-r from-orange-50 to-orange-100 rounded-xl p-5 border border-orange-200">
+            <!-- Court selector -->
+            <div class="mb-4 flex justify-end">
+                <label for="court-{{ forloop.counter }}" class="mr-2 text-sm font-medium text-gray-700">Court:</label>
+                <select id="court-{{ forloop.counter }}" 
+                        class="border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500 text-sm"
+                        onchange="changeCourt('{{ grade.pk }}', this.value)">
+                    {% for court in data.courts %}
+                        <option value="{{ court.pk }}" {% if court == data.current_court %}selected{% endif %}>
+                            {{ court.name }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
                 <div>
                     <div class="text-2xl font-bold text-orange-600">{{ data.students|length }}</div>
@@ -93,6 +107,16 @@
     </div>
 </div>
 {% endfor %}
+
+<script>
+function changeCourt(gradeId, courtId) {
+    const url = new URL(window.location.href);
+    url.searchParams.set("grade", gradeId);
+    url.searchParams.set("court", courtId);
+    window.location.href = url.toString();
+}
+</script>
+
 
 
 <style>

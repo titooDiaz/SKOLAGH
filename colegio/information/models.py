@@ -120,54 +120,58 @@ class Grade(models.Model):
         """Return all students in this grade."""
         return CustomUserStudent.objects.filter(grade=self)
 
-    def get_average_for_student(self, student):
+    def get_average_for_student(self, student, court=None):
         """
         Calculate weighted average grade for a student.
+        If `court` is provided, filter activities only for that court.
         """
         subjects = self.subjects.all()
-        total = 0
-        count = 0
+        total, count = 0, 0
 
         for subject in subjects:
             ratings = Rating.objects.filter(student=student, activity__subject=subject)
 
+            # 🔑 Filter by court if provided
+            if court is not None:
+                ratings = ratings.filter(
+                    activity__start_date__gte=court.start_date,
+                    activity__end_date__lte=court.end_date
+                )
+
+
             if ratings.exists():
-                corte_nota_total = 0
-                corte_porcentaje_total = 0
+                weighted_sum = sum(r.rating * (r.activity.percentage / 100) for r in ratings)
+                total_percentage = sum(r.activity.percentage for r in ratings)
 
-                for r in ratings:
-                    corte_nota_total += r.rating * (r.activity.percentage / 100)
-                    corte_porcentaje_total += r.activity.percentage
-
-                if corte_porcentaje_total > 0:
-                    promedio = corte_nota_total / (corte_porcentaje_total / 100)
-                    total += promedio
+                if total_percentage > 0:
+                    avg = weighted_sum / (total_percentage / 100)
+                    total += avg
                     count += 1
 
         return total / count if count > 0 else 0
 
     # --- Category filters ---
-    def get_approved(self):
+    def get_approved(self, court=None):
         """Return list of students with average >= APPROVED_THRESHOLD."""
         return [
             s for s in self.get_students()
-            if self.get_average_for_student(s) >= self.APPROVED_THRESHOLD
+            if self.get_average_for_student(s, court) >= self.APPROVED_THRESHOLD
         ]
 
-    def get_failed(self):
+    def get_failed(self, court=None):
         """Return list of students with average < APPROVED_THRESHOLD."""
         return [
             s for s in self.get_students()
-            if self.get_average_for_student(s) < self.APPROVED_THRESHOLD
+            if self.get_average_for_student(s, court) < self.APPROVED_THRESHOLD
         ]
 
-    def get_at_risk(self):
+    def get_at_risk(self, court=None):
         """
         Return list of students with average between AT_RISK_LOW and AT_RISK_HIGH.
         """
         return [
             s for s in self.get_students()
-            if self.AT_RISK_LOW <= self.get_average_for_student(s) < self.AT_RISK_HIGH
+            if self.AT_RISK_LOW <= self.get_average_for_student(s, court) < self.AT_RISK_HIGH
         ]
 def get_current_date():
     fecha_actual = timezone.now().date()
