@@ -34,4 +34,5 @@ urlpatterns = [
     # Menu urls (improve your grades!)
     path('virtual/board/', BoardMenu.as_view(), name='BoardMenu'),
     path('virtual/tomato/', TomatoMenu.as_view(), name='TomatoMenu'),
+    path('virtual/sofIA/', SofIAMenu.as_view(), name='SofiaMenu'),
 ]

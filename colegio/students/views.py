@@ -132,6 +132,16 @@ class TomatoMenu(View):
             'abierto':abierto,
         }
         return render(request, 'users/student/tomato/tomatoMenu.html', context)
+class SofIAMenu(View):
+    def get(self, request, *args, **kwargs):
+        vista = 'estudiante'
+        abierto='inicio'
+
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+        }
+        return render(request, 'users/student/sofIA/SofIAMenu.html', context)
 
 class ActividadesRespuestaView(View):
     def get(self, request, pk, *args, **kwargs):
