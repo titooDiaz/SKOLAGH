@@ -1,6 +1,191 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
-{% include "ui/titles/principal.html" with title="Charla con sofia" %}
+    <!-- Main Container -->
+    <div class="flex chat-container">
+        
+        <!-- Sidebar - Chat Selector -->
+        <div class="w-80 bg-white border-r border-gray-200 flex flex-col">
+            <!-- Sidebar Header -->
+            <div class="p-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="font-semibold text-gray-800">Conversaciones</h2>
+                    <button class="text-orange-500 hover:bg-orange-50 p-2 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                        </svg>
+                    </button>
+                </div>
+                <!-- Search -->
+                <div class="mt-3">
+                    <div class="relative">
+                        <input 
+                            type="text" 
+                            placeholder="Buscar chats..." 
+                            class="w-full px-3 py-2 pl-10 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-gray-50"
+                        >
+                        <svg class="w-4 h-4 text-gray-400 absolute left-3 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Chat List -->
+            <div class="flex-1 overflow-y-auto">
+                <!-- Active Chat -->
+                <div class="p-3 border-l-4 border-orange-500 bg-orange-50 cursor-pointer">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-10 h-10 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-medium text-gray-900 text-sm truncate">Asistente IA</h3>
+                            <p class="text-xs text-gray-600 truncate">¿Podrías explicarme cómo resolver...</p>
+                            <span class="text-xs text-orange-600 font-medium">10:33 AM</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Other Chats -->
+                <div class="p-3 hover:bg-gray-50 cursor-pointer border-b border-gray-100">
+                    <div class="flex items-start space-x-3">
+                        <div class="w-10 h-10 bg-gray-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h3 class="font-medium text-gray-900 text-sm truncate">Matemáticas Avanzadas</h3>
+                            <p class="text-xs text-gray-500 truncate">Necesito ayuda con integrales...</p>
+                            <span class="text-xs text-gray-400">Ayer</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+        <!-- Main Chat Area -->
+        <div class="flex-1 flex flex-col bg-white">
+            
+            <!-- Chat Header -->
+            <div class="bg-orange-500 px-6 py-4 flex items-center justify-between border-b">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                        <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h1 class="text-white font-semibold text-lg">Asistente IA</h1>
+                        <p class="text-orange-100 text-sm">Sofia</p>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <button class="text-white hover:bg-white hover:bg-opacity-10 p-2 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </button>
+                    <button class="text-white hover:bg-white hover:bg-opacity-10 p-2 rounded-lg transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
 
+            <!-- Messages Area -->
+            <div class="flex-1 overflow-y-auto p-6 space-y-4">
+                
+                <!-- Welcome message -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-xs md:max-w-md">
+                        <p class="text-gray-800 text-sm">¡Hola! Soy tu asistente de IA. ¿En qué puedo ayudarte hoy?</p>
+                        <span class="text-xs text-gray-500 mt-1 block">10:30 AM</span>
+                    </div>
+                </div>
+
+                <!-- User message -->
+                <div class="flex items-start space-x-3 justify-end">
+                    <div class="bg-orange-500 rounded-2xl rounded-tr-sm px-4 py-3 max-w-xs md:max-w-md">
+                        <p class="text-white text-sm">¿Podrías explicarme cómo resolver ecuaciones cuadráticas?</p>
+                        <span class="text-xs text-orange-100 mt-1 block">10:32 AM</span>
+                    </div>
+                    <div class="w-8 h-8 bg-orange-200 rounded-full flex items-center justify-center flex-shrink-0">
+                        <span class="text-orange-700 text-xs font-semibold">TÚ</span>
+                    </div>
+                </div>
+
+                <!-- AI response -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3 max-w-xs md:max-w-md">
+                        <p class="text-gray-800 text-sm">¡Claro! Las ecuaciones cuadráticas tienen la forma ax² + bx + c = 0. Puedes resolverlas usando la fórmula cuadrática:</p>
+                        <div class="bg-white rounded-lg p-3 mt-2 border border-gray-200">
+                            <p class="text-center text-sm font-mono">x = (-b ± √(b² - 4ac)) / 2a</p>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1 block">10:33 AM</span>
+                    </div>
+                </div>
+
+                <!-- Typing indicator -->
+                <div class="flex items-start space-x-3">
+                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                        </svg>
+                    </div>
+                    <div class="bg-gray-100 rounded-2xl rounded-tl-sm px-4 py-3">
+                        <div class="flex space-x-1">
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                            <div class="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Input Area -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="flex items-center space-x-3">
+                    <!-- Attach button -->
+                    <button class="text-gray-400 hover:text-orange-500 transition-colors p-2 rounded-lg hover:bg-orange-50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"></path>
+                        </svg>
+                    </button>
+                    
+                    <!-- Text input -->
+                    <div class="flex-1 relative">
+                        <input 
+                            type="text" 
+                            placeholder="Escribe tu pregunta..." 
+                            class="w-full px-4 py-3 border border-gray-200 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent bg-gray-50 hover:bg-white transition-colors"
+                        >
+                    </div>
+                    
+                    <!-- Send button -->
+                    <button class="bg-orange-500 hover:bg-orange-600 text-white p-3 rounded-2xl transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock content %}
