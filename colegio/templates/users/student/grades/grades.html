@@ -62,18 +62,20 @@
                                         <!-- Modal -->
                                         <div id="information{{subject.pk}}-{{court_data.court.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">
                                             <div class="flex items-center justify-center min-h-screen">
-                                                <div class="bg-white border-2 border-black p-4 rounded-lg">
-                                                    <button 
-                                                        onclick="closeVentana('information', '{{subject.pk}}-{{court_data.court.pk}}')" 
-                                                        class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
-                                                        <p class="mr-4">Close</p>
-                                                        <i class="fa-solid fa-circle-xmark"></i>
-                                                    </button>
+                                                <div>
                                                     <!-- Main container for the academic period -->
                                                     <div class="mb-8 bg-white rounded-xl shadow-sm border border-orange-100 overflow-hidden">
                                                         <!-- Header section with period info -->
                                                         <div class="bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-4">
-                                                            <h3 class="text-xl font-bold text-white">Corte {{court_data.court.court_number}}</h3>
+                                                            <button 
+                                                                onclick="closeVentana('information', '{{subject.pk}}-{{court_data.court.pk}}')" 
+                                                                class="hover:cursor-pointer w-full flex justify-start text-white">
+                                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                                                </svg>
+                                                                <h3 class="text-xl font-bold">Corte {{court_data.court.court_number}}</h3>
+                                                            </button>
+                                                            
                                                             <p class="text-orange-100 text-sm">De {{court_data.court.start_date}} a {{court_data.court.end_date}}</p>
                                                         </div>
 
