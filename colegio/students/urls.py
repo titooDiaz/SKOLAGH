@@ -16,6 +16,7 @@ urlpatterns = [
     path('calendario/', AlumnoCalendario.as_view(), name='CalendarioAlumno'),
 
     path('student/profile/', ViewProfile.as_view(), name='ViewProfileStudent'),
+    path('student/settings/', ViewSettings.as_view(), name='ViewSettings'),
     # change password
     path('student/profile/password/', ChangePassword.as_view(), name='ChangePasswordStudent'),
     

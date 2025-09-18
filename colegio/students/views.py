@@ -472,7 +472,20 @@ class ViewProfile(View):
         else:
             messages.error(request, 'Error al editar el perfil.')
         return redirect('ViewProfileStudent')
-
+class ViewSettings(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        vista = 'estudiante'
+        abierto='personas'
+        grade_user = user.customuserstudent.grade #student's grade
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+            'user':user,
+            'grade': grade_user,
+        }
+        return render(request, 'users/student/settings/boardSettings.html', context)
+    
 class ChangePassword(View):
     def post(self, request, *args, **kwargs):
         user = request.user
