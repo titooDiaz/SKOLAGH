@@ -262,6 +262,12 @@ class SubjectsView(View):
         grade_user = user.customuserstudent.grade #student's grade
         subject = Subjects.objects.get(pk=pk)
         
+        grade_user = user.customuserstudent.grade
+        schedule = ScheduleParts.objects.get(school=grade_user.school)
+        courts = ScheduleCourts.objects.filter(schedule=schedule)
+        current_date = get_current_date(request.user)
+        current_court = courts[0].get_current_court(request.user, schedule, current_date) # get the current court
+        
         vista = 'estudiante'
         abierto='inicio'
         context = {
@@ -269,6 +275,8 @@ class SubjectsView(View):
             'abierto':abierto,
             'grade': grade_user,
             'subject':subject,
+            'current_court': current_court,
+            'courts': courts,
         }
         return render(request, 'users/student/subjects/subjects.html', context)
     

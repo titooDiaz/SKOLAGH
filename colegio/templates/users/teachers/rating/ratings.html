@@ -55,7 +55,7 @@
                         onchange="changeCourt('{{ grade.pk }}', this.value)">
                     {% for court in data.courts %}
                         <option value="{{ court.pk }}" {% if court == data.current_court %}selected{% endif %}>
-                            {{ court.name }}
+                            {{ court.court_number}}
                         </option>
                     {% endfor %}
                 </select>
