@@ -257,28 +257,38 @@ class ActividadesRespuestaView(View):
 #Subjects View
 class SubjectsView(View):
     def get(self, request, pk, *args, **kwargs):
-        # Grade
         user = request.user
-        grade_user = user.customuserstudent.grade #student's grade
+        grade_user = user.customuserstudent.grade  # student's grade
         subject = Subjects.objects.get(pk=pk)
-        
-        grade_user = user.customuserstudent.grade
+
         schedule = ScheduleParts.objects.get(school=grade_user.school)
         courts = ScheduleCourts.objects.filter(schedule=schedule)
         current_date = get_current_date(request.user)
-        current_court = courts[0].get_current_court(request.user, schedule, current_date) # get the current court
-        
-        vista = 'estudiante'
-        abierto='inicio'
+        current_court = courts[0].get_current_court(request.user, schedule, current_date)
+
+        # activitioes of cort
+        courts_with_activities = []
+        for corte in courts:
+            actividades = Activities.objects.filter(
+                subject=subject,
+                start_date__gte=corte.start_date,
+                end_date__lte=corte.end_date,
+            )
+            courts_with_activities.append({
+                "court": corte,
+                "activities": actividades
+            })
+
         context = {
-            'vista': vista,
-            'abierto':abierto,
-            'grade': grade_user,
-            'subject':subject,
-            'current_court': current_court,
-            'courts': courts,
+            "vista": "estudiante",
+            "abierto": "inicio",
+            "grade": grade_user,
+            "subject": subject,
+            "current_court": current_court,
+            "courts": courts_with_activities,  # ahora llevan actividades
         }
-        return render(request, 'users/student/subjects/subjects.html', context)
+        return render(request, "users/student/subjects/subjects.html", context)
+
     
 class AlumnoCalendario(View):
     def get(self, request, *args, **kwargs):
