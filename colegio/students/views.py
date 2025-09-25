@@ -276,7 +276,8 @@ class SubjectsView(View):
             )
             courts_with_activities.append({
                 "court": corte,
-                "activities": actividades
+                "activities": actividades,
+                "is_current": (corte.id == current_court.id)
             })
 
         context = {

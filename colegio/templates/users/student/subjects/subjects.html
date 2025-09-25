@@ -40,7 +40,12 @@
             {% for corte in courts %}
                 <button onclick="showCorte({{ forloop.counter }})"
                         id="btn-corte-{{ forloop.counter }}"
-                        class="corte-btn px-4 py-2 rounded-md font-medium transition-all duration-200 {% if forloop.first %}bg-orange-500 text-white{% else %}bg-gray-200 text-gray-700 hover:bg-orange-200{% endif %}">
+                        class="corte-btn px-4 py-2 rounded-md font-medium transition-all duration-200
+                               {% if corte.is_current %}
+                                   bg-orange-500 text-white
+                               {% else %}
+                                   bg-gray-200 text-gray-700 hover:bg-orange-200
+                               {% endif %}">
                     Corte {{ forloop.counter }}
                 </button>
             {% endfor %}
@@ -50,14 +55,13 @@
 
 <!-- Contenido de cada Corte -->
 {% for corte in courts %}
-<div id="corte-{{ forloop.counter }}" class="corte-content {% if not forloop.first %}hidden{% endif %}">
+<div id="corte-{{ forloop.counter }}" class="corte-content {% if not corte.is_current %}hidden{% endif %}">
     <div class="bg-white rounded-lg shadow-lg p-6 mb-6">
 
         <!-- Header del Corte -->
         <div class="flex justify-between items-center mb-6">
+            {% include "ui/titles/subtitle.html" with subtitle=corte.court.court_number title=forloop.counter description=corte.court.description %}
 
-            {% include "ui/titles/subtitle.html" with subtitle=corte.court_number title=forloop.counter description=corte.description %}
-            
             <div class="bg-orange-100 px-4 py-2 rounded-lg">
                 {% if corte.promedio %}
                     <span class="text-orange-700 font-bold">Promedio: {{ corte.promedio }}/100</span>
