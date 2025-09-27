@@ -119,6 +119,7 @@ class BoardMenu(View):
 
         context = {
             'vista': vista,
+            "grade": request.user.customuserstudent.grade,
             'abierto':abierto,
         }
         return render(request, 'users/student/boards/boardMenu.html', context)
@@ -129,6 +130,7 @@ class TomatoMenu(View):
 
         context = {
             'vista': vista,
+            "grade": request.user.customuserstudent.grade,
             'abierto':abierto,
         }
         return render(request, 'users/student/tomato/tomatoMenu.html', context)
@@ -139,6 +141,7 @@ class SofIAMenu(View):
 
         context = {
             'vista': vista,
+            "grade": request.user.customuserstudent.grade,
             'abierto':abierto,
         }
         return render(request, 'users/student/sofIA/SofIAMenu.html', context)
