@@ -1,4 +1,348 @@
 {% extends 'base.html' %}
 {% block content %}
 {% load static %}
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        #canvas {
+            cursor: crosshair;
+            background: white;
+        }
+
+        .toolbar {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: white;
+            padding: 12px 20px;
+            border-radius: 50px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .tool-btn {
+            width: 44px;
+            height: 44px;
+            border: none;
+            background: #f1f3f5;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .tool-btn:hover {
+            background: #e9ecef;
+            transform: translateY(-2px);
+        }
+
+        .tool-btn.active {
+            background: #228be6;
+            color: white;
+        }
+
+        .divider {
+            width: 1px;
+            height: 30px;
+            background: #e9ecef;
+            margin: 0 4px;
+        }
+
+        .size-slider {
+            width: 100px;
+            height: 6px;
+            -webkit-appearance: none;
+            appearance: none;
+            background: #e9ecef;
+            outline: none;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .size-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #228be6;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .size-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #228be6;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+        }
+
+        .color-picker {
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            padding: 0;
+            background: none;
+        }
+
+        .color-picker::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+
+        .color-picker::-webkit-color-swatch {
+            border: 3px solid white;
+            border-radius: 10px;
+            box-shadow: 0 0 0 1px #e9ecef;
+        }
+
+        .hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            z-index: 1000;
+        }
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+
+    <canvas id="canvas"></canvas>
+    
+    <div class="toolbar">
+        <button class="tool-btn active" id="pencil" title="Lápiz">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/>
+            </svg>
+        </button>
+        
+        <button class="tool-btn" id="eraser" title="Borrador">
+            <svg fill="currentColor" viewBox="0 0 24 24">
+                <path d="M16.24 3.56l4.95 4.94c.78.79.78 2.05 0 2.84L12 20.53a4.008 4.008 0 0 1-5.66 0L2.81 17c-.78-.79-.78-2.05 0-2.84l10.6-10.6c.79-.78 2.05-.78 2.83 0M4.22 15.58l3.54 3.53c.78.79 2.04.79 2.83 0l3.53-3.53-6.36-6.36-3.54 3.54c-.78.78-.78 2.04 0 2.82z"/>
+            </svg>
+        </button>
+
+        <div class="divider"></div>
+
+        <input type="color" class="color-picker" id="colorPicker" value="#000000" title="Color">
+        
+        <div class="divider"></div>
+
+        <input type="range" class="size-slider" id="sizeSlider" min="1" max="20" value="3" title="Grosor">
+    </div>
+
+    <div class="hint">
+        Arrastra para dibujar • Rueda del mouse para hacer zoom
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const pencilBtn = document.getElementById('pencil');
+        const eraserBtn = document.getElementById('eraser');
+        const colorPicker = document.getElementById('colorPicker');
+        const sizeSlider = document.getElementById('sizeSlider');
+
+        // Variables de estado
+        let isDrawing = false;
+        let currentTool = 'pencil';
+        let currentColor = '#000000';
+        let currentSize = 3;
+        let offsetX = 0;
+        let offsetY = 0;
+        let scale = 1;
+        let isPanning = false;
+        let lastX = 0;
+        let lastY = 0;
+
+        // Configurar canvas
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            redraw();
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Array para guardar los trazos
+        let strokes = [];
+
+        // Herramientas
+        pencilBtn.addEventListener('click', () => {
+            currentTool = 'pencil';
+            pencilBtn.classList.add('active');
+            eraserBtn.classList.remove('active');
+            canvas.style.cursor = 'crosshair';
+        });
+
+        eraserBtn.addEventListener('click', () => {
+            currentTool = 'eraser';
+            eraserBtn.classList.add('active');
+            pencilBtn.classList.remove('active');
+            canvas.style.cursor = 'cell';
+        });
+
+        colorPicker.addEventListener('input', (e) => {
+            currentColor = e.target.value;
+            if (currentTool === 'pencil') {
+                pencilBtn.classList.add('active');
+                eraserBtn.classList.remove('active');
+                currentTool = 'pencil';
+            }
+        });
+
+        sizeSlider.addEventListener('input', (e) => {
+            currentSize = e.target.value;
+        });
+
+        // Funciones de dibujo
+        function startDrawing(e) {
+            if (e.button === 1 || e.button === 2) {
+                isPanning = true;
+                lastX = e.clientX;
+                lastY = e.clientY;
+                canvas.style.cursor = 'grabbing';
+                return;
+            }
+
+            isDrawing = true;
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left - offsetX) / scale;
+            const y = (e.clientY - rect.top - offsetY) / scale;
+
+            strokes.push({
+                tool: currentTool,
+                color: currentColor,
+                size: currentSize,
+                points: [{x, y}]
+            });
+        }
+
+        function draw(e) {
+            if (isPanning) {
+                const dx = e.clientX - lastX;
+                const dy = e.clientY - lastY;
+                offsetX += dx;
+                offsetY += dy;
+                lastX = e.clientX;
+                lastY = e.clientY;
+                redraw();
+                return;
+            }
+
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left - offsetX) / scale;
+            const y = (e.clientY - rect.top - offsetY) / scale;
+
+            const currentStroke = strokes[strokes.length - 1];
+            currentStroke.points.push({x, y});
+
+            redraw();
+        }
+
+        function stopDrawing() {
+            isDrawing = false;
+            isPanning = false;
+            canvas.style.cursor = currentTool === 'pencil' ? 'crosshair' : 'cell';
+        }
+
+        function redraw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(offsetX, offsetY);
+            ctx.scale(scale, scale);
+
+            strokes.forEach(stroke => {
+                if (stroke.points.length < 2) return;
+
+                ctx.beginPath();
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                
+                if (stroke.tool === 'eraser') {
+                    ctx.globalCompositeOperation = 'destination-out';
+                    ctx.lineWidth = stroke.size * 3;
+                } else {
+                    ctx.globalCompositeOperation = 'source-over';
+                    ctx.strokeStyle = stroke.color;
+                    ctx.lineWidth = stroke.size;
+                }
+
+                ctx.moveTo(stroke.points[0].x, stroke.points[0].y);
+                for (let i = 1; i < stroke.points.length; i++) {
+                    ctx.lineTo(stroke.points[i].x, stroke.points[i].y);
+                }
+                ctx.stroke();
+            });
+
+            ctx.restore();
+        }
+
+        // Zoom con rueda del mouse
+        canvas.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const rect = canvas.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            const zoom = e.deltaY < 0 ? 1.1 : 0.9;
+            const newScale = scale * zoom;
+
+            if (newScale >= 0.1 && newScale <= 5) {
+                const worldX = (mouseX - offsetX) / scale;
+                const worldY = (mouseY - offsetY) / scale;
+
+                scale = newScale;
+
+                offsetX = mouseX - worldX * scale;
+                offsetY = mouseY - worldY * scale;
+
+                redraw();
+            }
+        });
+
+        // Event listeners
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        // Ocultar hint después de 3 segundos
+        setTimeout(() => {
+            document.querySelector('.hint').style.opacity = '0';
+            document.querySelector('.hint').style.transition = 'opacity 0.5s';
+        }, 3000);
+    </script>
+
 {% endblock content %}
