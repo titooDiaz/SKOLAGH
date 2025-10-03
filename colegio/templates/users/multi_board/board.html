@@ -16,6 +16,7 @@
 
         #canvas {
             cursor: crosshair;
+            display: block;
             background: white;
         }
 
@@ -45,7 +46,6 @@
             align-items: center;
             justify-content: center;
             transition: all 0.2s;
-            position: relative;
         }
 
         .tool-btn:hover {
@@ -102,17 +102,6 @@
             border-radius: 12px;
             cursor: pointer;
             padding: 0;
-            background: none;
-        }
-
-        .color-picker::-webkit-color-swatch-wrapper {
-            padding: 0;
-        }
-
-        .color-picker::-webkit-color-swatch {
-            border: 3px solid white;
-            border-radius: 10px;
-            box-shadow: 0 0 0 1px #e9ecef;
         }
 
         .hint {
@@ -132,8 +121,26 @@
             width: 24px;
             height: 24px;
         }
-    </style>
 
+        .board-id {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            font-size: 14px;
+            color: #495057;
+            z-index: 1000;
+        }
+
+        .board-id strong {
+            color: #228be6;
+            font-weight: 600;
+        }
+    </style>
+    
     <canvas id="canvas"></canvas>
     
     <div class="toolbar">
@@ -158,11 +165,21 @@
         <input type="range" class="size-slider" id="sizeSlider" min="1" max="20" value="3" title="Grosor">
     </div>
 
+    <div class="board-id">
+        Tablero: <strong id="boardName">demo</strong>
+    </div>
+
     <div class="hint">
-        Arrastra para dibujar • Rueda del mouse para hacer zoom
+        Arrastra para dibujar • Rueda del mouse para zoom • Clic derecho para mover
     </div>
 
     <script>
+        // Configuración del tablero - FÁCIL DE CONECTAR A BACKEND
+        const BOARD_ID = new URLSearchParams(window.location.search).get('board') || 'demo';
+        const API_URL = '/api/boards'; // Endpoint para backend Python
+        
+        document.getElementById('boardName').textContent = BOARD_ID;
+
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const pencilBtn = document.getElementById('pencil');
@@ -170,30 +187,30 @@
         const colorPicker = document.getElementById('colorPicker');
         const sizeSlider = document.getElementById('sizeSlider');
 
-        // Variables de estado
+        // Estado del tablero
+        let strokes = []; // Array de trazos - FÁCIL DE SERIALIZAR A JSON
+        let currentStroke = null;
         let isDrawing = false;
         let currentTool = 'pencil';
         let currentColor = '#000000';
         let currentSize = 3;
+        
+        // Pan y Zoom
         let offsetX = 0;
         let offsetY = 0;
         let scale = 1;
         let isPanning = false;
-        let lastX = 0;
-        let lastY = 0;
+        let lastPanX = 0;
+        let lastPanY = 0;
 
-        // Configurar canvas
+        // Canvas setup
         function resizeCanvas() {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
             redraw();
         }
-
         window.addEventListener('resize', resizeCanvas);
         resizeCanvas();
-
-        // Array para guardar los trazos
-        let strokes = [];
 
         // Herramientas
         pencilBtn.addEventListener('click', () => {
@@ -212,70 +229,21 @@
 
         colorPicker.addEventListener('input', (e) => {
             currentColor = e.target.value;
-            if (currentTool === 'pencil') {
-                pencilBtn.classList.add('active');
-                eraserBtn.classList.remove('active');
-                currentTool = 'pencil';
-            }
         });
 
         sizeSlider.addEventListener('input', (e) => {
-            currentSize = e.target.value;
+            currentSize = parseInt(e.target.value);
         });
 
-        // Funciones de dibujo
-        function startDrawing(e) {
-            if (e.button === 1 || e.button === 2) {
-                isPanning = true;
-                lastX = e.clientX;
-                lastY = e.clientY;
-                canvas.style.cursor = 'grabbing';
-                return;
-            }
-
-            isDrawing = true;
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left - offsetX) / scale;
-            const y = (e.clientY - rect.top - offsetY) / scale;
-
-            strokes.push({
-                tool: currentTool,
-                color: currentColor,
-                size: currentSize,
-                points: [{x, y}]
-            });
+        // Convertir coordenadas de pantalla a mundo
+        function screenToWorld(screenX, screenY) {
+            return {
+                x: (screenX - offsetX) / scale,
+                y: (screenY - offsetY) / scale
+            };
         }
 
-        function draw(e) {
-            if (isPanning) {
-                const dx = e.clientX - lastX;
-                const dy = e.clientY - lastY;
-                offsetX += dx;
-                offsetY += dy;
-                lastX = e.clientX;
-                lastY = e.clientY;
-                redraw();
-                return;
-            }
-
-            if (!isDrawing) return;
-
-            const rect = canvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left - offsetX) / scale;
-            const y = (e.clientY - rect.top - offsetY) / scale;
-
-            const currentStroke = strokes[strokes.length - 1];
-            currentStroke.points.push({x, y});
-
-            redraw();
-        }
-
-        function stopDrawing() {
-            isDrawing = false;
-            isPanning = false;
-            canvas.style.cursor = currentTool === 'pencil' ? 'crosshair' : 'cell';
-        }
-
+        // Dibujar todos los trazos
         function redraw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.save();
@@ -288,10 +256,11 @@
                 ctx.beginPath();
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
-                
+
                 if (stroke.tool === 'eraser') {
                     ctx.globalCompositeOperation = 'destination-out';
-                    ctx.lineWidth = stroke.size * 3;
+                    ctx.lineWidth = stroke.size * 4;
+                    ctx.strokeStyle = 'rgba(0,0,0,1)';
                 } else {
                     ctx.globalCompositeOperation = 'source-over';
                     ctx.strokeStyle = stroke.color;
@@ -308,41 +277,186 @@
             ctx.restore();
         }
 
-        // Zoom con rueda del mouse
+        // Mouse Events
+        canvas.addEventListener('mousedown', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            
+            if (e.button === 2 || e.button === 1) {
+                e.preventDefault();
+                isPanning = true;
+                lastPanX = e.clientX;
+                lastPanY = e.clientY;
+                canvas.style.cursor = 'grabbing';
+                return;
+            }
+
+            if (e.button === 0) {
+                isDrawing = true;
+                const pos = screenToWorld(e.clientX - rect.left, e.clientY - rect.top);
+                
+                currentStroke = {
+                    tool: currentTool,
+                    color: currentColor,
+                    size: currentSize,
+                    points: [pos],
+                    timestamp: Date.now() // Para sincronización
+                };
+                
+                strokes.push(currentStroke);
+                redraw();
+                
+                // AQUÍ SE ENVIARÁ AL BACKEND
+                // sendStrokeStart(currentStroke);
+            }
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+
+            if (isPanning) {
+                const dx = e.clientX - lastPanX;
+                const dy = e.clientY - lastPanY;
+                offsetX += dx;
+                offsetY += dy;
+                lastPanX = e.clientX;
+                lastPanY = e.clientY;
+                redraw();
+                return;
+            }
+
+            if (isDrawing && currentStroke) {
+                const pos = screenToWorld(e.clientX - rect.left, e.clientY - rect.top);
+                currentStroke.points.push(pos);
+                redraw();
+                
+                // AQUÍ SE ENVIARÁ AL BACKEND
+                // sendStrokeUpdate(pos);
+            }
+        });
+
+        canvas.addEventListener('mouseup', () => {
+            if (isDrawing && currentStroke) {
+                // AQUÍ SE FINALIZARÁ EL TRAZO EN EL BACKEND
+                // sendStrokeEnd(currentStroke);
+                currentStroke = null;
+            }
+            isDrawing = false;
+            isPanning = false;
+            canvas.style.cursor = currentTool === 'pencil' ? 'crosshair' : 'cell';
+        });
+
+        canvas.addEventListener('mouseout', () => {
+            isDrawing = false;
+            isPanning = false;
+        });
+
+        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+
+        // Zoom con rueda
         canvas.addEventListener('wheel', (e) => {
             e.preventDefault();
             const rect = canvas.getBoundingClientRect();
             const mouseX = e.clientX - rect.left;
             const mouseY = e.clientY - rect.top;
 
-            const zoom = e.deltaY < 0 ? 1.1 : 0.9;
-            const newScale = scale * zoom;
-
-            if (newScale >= 0.1 && newScale <= 5) {
-                const worldX = (mouseX - offsetX) / scale;
-                const worldY = (mouseY - offsetY) / scale;
-
-                scale = newScale;
-
-                offsetX = mouseX - worldX * scale;
-                offsetY = mouseY - worldY * scale;
-
-                redraw();
-            }
+            const worldPos = screenToWorld(mouseX, mouseY);
+            
+            const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
+            const newScale = Math.min(Math.max(scale * zoomFactor, 0.1), 5);
+            
+            scale = newScale;
+            
+            offsetX = mouseX - worldPos.x * scale;
+            offsetY = mouseY - worldPos.y * scale;
+            
+            redraw();
         });
 
-        // Event listeners
-        canvas.addEventListener('mousedown', startDrawing);
-        canvas.addEventListener('mousemove', draw);
-        canvas.addEventListener('mouseup', stopDrawing);
-        canvas.addEventListener('mouseout', stopDrawing);
-        canvas.addEventListener('contextmenu', (e) => e.preventDefault());
+        // ============================================
+        // FUNCIONES PARA BACKEND (Comentadas por ahora)
+        // ============================================
+        
+        /*
+        // Cargar tablero desde el servidor
+        async function loadBoard() {
+            try {
+                const response = await fetch(`${API_URL}/${BOARD_ID}`);
+                const data = await response.json();
+                strokes = data.strokes || [];
+                redraw();
+            } catch (error) {
+                console.error('Error cargando tablero:', error);
+            }
+        }
 
-        // Ocultar hint después de 3 segundos
+        // Enviar nuevo trazo al servidor
+        async function sendStrokeStart(stroke) {
+            try {
+                await fetch(`${API_URL}/${BOARD_ID}/strokes`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        action: 'start',
+                        stroke: stroke
+                    })
+                });
+            } catch (error) {
+                console.error('Error enviando trazo:', error);
+            }
+        }
+
+        // Actualizar trazo en tiempo real
+        async function sendStrokeUpdate(point) {
+            try {
+                await fetch(`${API_URL}/${BOARD_ID}/strokes/update`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        action: 'update',
+                        point: point,
+                        timestamp: Date.now()
+                    })
+                });
+            } catch (error) {
+                console.error('Error actualizando trazo:', error);
+            }
+        }
+
+        // WebSocket para colaboración en tiempo real
+        function setupWebSocket() {
+            const ws = new WebSocket(`ws://localhost:8000/ws/${BOARD_ID}`);
+            
+            ws.onmessage = (event) => {
+                const data = JSON.parse(event.data);
+                
+                if (data.action === 'new_stroke') {
+                    strokes.push(data.stroke);
+                    redraw();
+                } else if (data.action === 'update_stroke') {
+                    // Actualizar último trazo de otro usuario
+                    const lastStroke = strokes[strokes.length - 1];
+                    if (lastStroke) {
+                        lastStroke.points.push(data.point);
+                        redraw();
+                    }
+                }
+            };
+            
+            return ws;
+        }
+
+        // Inicializar
+        // loadBoard();
+        // const ws = setupWebSocket();
+        */
+
+        // Hint
         setTimeout(() => {
-            document.querySelector('.hint').style.opacity = '0';
-            document.querySelector('.hint').style.transition = 'opacity 0.5s';
+            const hint = document.querySelector('.hint');
+            hint.style.opacity = '0';
+            hint.style.transition = 'opacity 0.5s';
         }, 3000);
     </script>
-
+</body>
+</html>
 {% endblock content %}
