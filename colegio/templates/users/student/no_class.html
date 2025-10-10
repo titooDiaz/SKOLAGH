@@ -33,7 +33,7 @@
             <!-- List of courts -->
             <div class="space-y-3">
                 {% for court in courts %}
-                    <a href="#" class="block">
+                    <a href="{% url 'board_by_court' court.pk %}" class="block">
                         <div class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl p-5 transition-all duration-200 transform hover:scale-105 shadow-md">
                                 <div class="flex items-center justify-between">
                                     <div>

@@ -64,15 +64,21 @@ class AlumnoBoard(View):
         abierto='inicio'
         
         user = request.user
-        
+        courtSh=kwargs.get('court_id', None)
         #vista de estudiantes (obviamente tiene modelo de estudiante)
         grade_user = user.customuserstudent.grade #student's grade
         materias_user = grade_user.subjects.all() #materias del estudainte
-        
         schedule = grade_user.schedule_parts
         court = ScheduleCourts.objects.filter(schedule=schedule).first()
         current_date = get_current_date(request.user)
-        current_court = court.get_current_court(request.user, schedule, current_date)
+        if courtSh == None:
+            current_court = court.get_current_court(request.user, schedule, current_date)
+        else:
+            try:
+                current_court = ScheduleCourts.objects.get(pk=courtSh, schedule=schedule)
+            except ScheduleCourts.DoesNotExist:
+                current_court = None
+            
         if current_court != None:
             # Obtener la hora actual en la zona horaria del usuario
             ## Obtener la zona horaria local

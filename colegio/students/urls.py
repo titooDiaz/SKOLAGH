@@ -5,6 +5,7 @@ from .views import *
 urlpatterns = [
     #vista estudiantes
     path('board/', AlumnoBoard.as_view(), name='BoardAlumno'),
+    path('board/<int:court_id>/', AlumnoBoard.as_view(), name='board_by_court'),
     
     # es - Materias
     # en - Subjects
