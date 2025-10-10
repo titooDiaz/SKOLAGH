@@ -32,20 +32,22 @@
 
             <!-- List of courts -->
             <div class="space-y-3">
-                <a href="#" class="block">
-                    <div class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl p-5 transition-all duration-200 transform hover:scale-105 shadow-md">
-                        <div class="flex items-center justify-between">
-                            <div>
-                                <h3 class="text-xl font-semibold">Corte 1</h3>
-                                <p class="text-blue-100 mt-1">Febrero - Abril 2025</p>
-                            </div>
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                            </svg>
+                {% for court in courts %}
+                    <a href="#" class="block">
+                        <div class="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-xl p-5 transition-all duration-200 transform hover:scale-105 shadow-md">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="text-xl font-semibold">Corte {{court.court_number}}</h3>
+                                        <p class="text-blue-100 mt-1">{{court.start_date}} hasta {{court.end_date}}</p>
+                                    </div>
+                                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </div>
+                            
                         </div>
-                    </div>
-                </a>
-
+                    </a>
+                {% endfor %}
             <!-- Note -->
             <div class="mt-8 text-center text-sm text-gray-500">
                 <p>Si necesitas ayuda, contacta a tu profesor o coordinador</p>

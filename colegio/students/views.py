@@ -112,7 +112,9 @@ class AlumnoBoard(View):
             }
             return render(request, 'users/student/home.html', context)
         else:
+            courts = ScheduleCourts.objects.filter(schedule=grade_user.schedule_parts)
             context = {
+                'courts': courts,
                 'vista': vista,
                 'abierto':abierto,
                 'grade': grade_user,
