@@ -333,7 +333,7 @@ class CreateAdmin(View):
     
 class CreateAcudiente(View):
     def post(self, request, *args, **kwargs):
-        form = CustomUserGuardianForm(request.POST)
+        form = CustomUserGuardianForm(request.POST, school_students=request.user.school.pk)
         print(form.is_valid())
         if form.is_valid():
             username = form.cleaned_data['username']

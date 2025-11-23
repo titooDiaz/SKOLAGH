@@ -128,6 +128,9 @@
             {% if vista == 'profesores' %}
                 {% include 'nav/nav_teachers.html' %}
             {% endif %}
+            {% if vista == 'guardian' %}
+                {% include 'nav/nav_guardian.html' %}
+            {% endif %}
         {% endblock nav %}
 
         <main class="flex-grow p-2 lg:ml-60 h-[100vh]"> 
@@ -145,6 +148,9 @@
                 {% endif %}
                 {% if vista == 'profesores' %}
                     {% include 'aside/aside_profesores.html' %}
+                {% endif %}
+                {% if vista == 'guardian' %}
+                    {% include 'aside/aside_guardian.html' %}
                 {% endif %}
             {% endblock %}
 
