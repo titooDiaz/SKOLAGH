@@ -1,4 +1,4 @@
-<!DOCTYPE html> <!--EVITAR INUSUALIDADADES EN EL NAVEGADOR-->
+<!DOCTYPE html>
 <head>
     <title>Inicio - Estudiantes</title>
 </head>
@@ -7,7 +7,76 @@
 
 {% block content %}
 
-<div class="bg-white p-4 rounded-lg shadow-lg">
-    <h5 class="text-5xl font-mono font-bold mb-4 text-center">Holaa {{request.user.first_name}} 😼</h5>
-</div>
+        <div class="mb-8">
+            <h1 class="text-2xl sm:text-3xl font-bold text-gray-900">Hola, {{request.user.first_name}}</h1>
+            <p class="mt-1 text-gray-500">Aquí tienes el resumen académico de tus hijos hoy.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <div class="col-span-2 space-y-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-900">Mis Estudiantes</h2>
+                    <span class="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full font-medium">Ciclo # ciclo</span>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                    <div class="p-6 sm:flex sm:items-center sm:justify-between">
+                        <div class="flex items-center gap-5">
+                            <div class="relative">
+                                <img class="h-20 w-20 rounded-full object-cover border-4 border-orange-50" src="https://images.unsplash.com/photo-1596962853297-7e40e68fb46a?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Hijo 1">
+                                <span class="absolute bottom-0 right-0 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white" title="Asistió hoy"></span>
+                            </div>
+                            <div>
+                                <h3 class="text-xl font-bold text-gray-900">Nombre estudiante</h3>
+                                <p class="text-sm text-gray-500">Grado: <span class="font-medium text-gray-700">grado</span></p>
+                                <div class="mt-2 flex items-center gap-3">
+                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        Promedio: ##
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-5 sm:mt-0">
+                            <button class="w-full sm:w-auto flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                                Ver Perfil Completo
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 grid grid-cols-3 divide-x divide-gray-200">
+                        <div class="text-center">
+                            <span class="block text-xs text-gray-500 uppercase">Asistencia</span>
+                            <span class="block text-sm font-bold text-gray-900">##%</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-xs text-gray-500 uppercase">Tareas</span>
+                            <span class="block text-sm font-bold text-yellow-600"># tareas</span>
+                        </div>
+                        <div class="text-center">
+                            <span class="block text-xs text-gray-500 uppercase">Boletín</span>
+                            <span class="block text-sm font-bold text-orange-600 cursor-pointer hover:underline">Descargar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                
+                <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
+                    <h3 class="text-sm font-bold text-gray-900 uppercase tracking-wide mb-4">Avisos Importantes</h3>
+                    <ul class="space-y-4">
+                        <li class="flex gap-3">
+                            <div class="flex-shrink-0 w-2 h-2 mt-2 rounded-full bg-red-500"></div>
+                            <div>
+                                <p class="text-sm text-gray-800 font-medium">Titulo Anuncio</p>
+                                <p class="text-xs text-gray-500">fecha</p>
+                            </div>
+                        </li>
+                    </ul>
+                    <button class="w-full mt-6 text-sm text-orange-600 font-medium hover:text-orange-800 text-left">Ver todas las notificaciones &rarr;</button>
+                </div>
+
+            </div>
+        </div>
 {% endblock content %}  

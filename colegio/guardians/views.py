@@ -10,5 +10,5 @@ class AcudienteBoard(View):
             'abierto':abierto,
             'school': request.user.school,
         }
-        return render(request, 'users/admin/inicio.html', context)
+        return render(request, 'users/acudiente/inicio.html', context)
 
