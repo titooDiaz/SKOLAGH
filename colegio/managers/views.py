@@ -337,9 +337,10 @@ class CreateAcudiente(View):
         print(form.is_valid())
         if form.is_valid():
             username = form.cleaned_data['username']
-            profesor = form.save(commit=False)
-            profesor.document_number = username
-            profesor.save()
+            guardian = form.save(commit=False)
+            guardian.document_number = username
+            guardian.school = request.user.school
+            guardian.save()
             messages.success(request, '¡Acudiente agregado correctamente!')
         else:
             mensaje = "¡Hubo un error al agregar el Acudiente!"

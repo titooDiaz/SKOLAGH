@@ -59,6 +59,10 @@
                         </div>
                     </div>
                 </div>
+
+                {% for student in students %}
+                    {{ student.first_name }} {{ student.last_name }}
+                {% endfor %}
             </div>
 
             <div class="space-y-6">
