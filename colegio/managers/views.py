@@ -340,8 +340,13 @@ class CreateAcudiente(View):
             guardian = form.save(commit=False)
             guardian.document_number = username
             guardian.school = request.user.school
-            guardian.save()
-            messages.success(request, '¡Acudiente agregado correctamente!')
+            if form.cleaned_data.get('student'):
+                guardian.save()
+                guardian.student.set(form.cleaned_data.get('student'))
+                messages.success(request, '¡Acudiente agregado correctamente!')
+            else:
+                mensaje = "¡Debes seleccionar al menos un estudiante para el acudiente!"
+                messages_error.errores_formularios(form.errors, mensaje, request)
         else:
             mensaje = "¡Hubo un error al agregar el Acudiente!"
             messages_error.errores_formularios(form.errors, mensaje, request)
