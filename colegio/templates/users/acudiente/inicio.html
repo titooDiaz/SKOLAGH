@@ -17,51 +17,47 @@
             <div class="col-span-2 space-y-6">
                 <div class="flex items-center justify-between mb-4">
                     <h2 class="text-lg font-semibold text-gray-900">Mis Estudiantes</h2>
-                    <span class="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full font-medium">Ciclo # ciclo</span>
+                    <span class="text-sm text-orange-600 bg-orange-50 px-3 py-1 rounded-full font-medium">{{students.count}} estudiantes</span>
                 </div>
-
-                <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
-                    <div class="p-6 sm:flex sm:items-center sm:justify-between">
-                        <div class="flex items-center gap-5">
-                            <div class="relative">
-                                <img class="h-20 w-20 rounded-full object-cover border-4 border-orange-50" src="https://images.unsplash.com/photo-1596962853297-7e40e68fb46a?ixlib=rb-1.2.1&auto=format&fit=crop&w=150&q=80" alt="Hijo 1">
-                                <span class="absolute bottom-0 right-0 block h-4 w-4 rounded-full bg-green-400 ring-2 ring-white" title="Asistió hoy"></span>
-                            </div>
-                            <div>
-                                <h3 class="text-xl font-bold text-gray-900">Nombre estudiante</h3>
-                                <p class="text-sm text-gray-500">Grado: <span class="font-medium text-gray-700">grado</span></p>
-                                <div class="mt-2 flex items-center gap-3">
-                                    <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                        Promedio: ##
-                                    </span>
+                {% for student in students %}
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow duration-300">
+                        <div class="p-6 sm:flex sm:items-center sm:justify-between">
+                            <div class="flex items-center gap-5">
+                                <div class="relative">
+                                    <img class="h-20 w-20 rounded-full object-cover border-4 border-orange-50" src="{{ student.photo.url }}" alt="Hijo 1">
+                                </div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-900">{{ student.first_name }} {{ student.last_name }}</h3>
+                                    <p class="text-sm text-gray-500">Grado: <span class="font-medium text-gray-700">{{student.grade}}</span></p>
+                                    <div class="mt-2 flex items-center gap-3">
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                            Promedio: ##
+                                        </span>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="mt-5 sm:mt-0">
+                                <button class="w-full sm:w-auto flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors">
+                                    Ver Perfil Completo
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                                </button>
+                            </div>
                         </div>
-                        <div class="mt-5 sm:mt-0">
-                            <button class="w-full sm:w-auto flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-lg text-sm font-medium transition-colors">
-                                Ver Perfil Completo
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                            </button>
+                        <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 grid grid-cols-3 divide-x divide-gray-200">
+                            <div class="text-center">
+                                <span class="block text-xs text-gray-500 uppercase">Asistencia</span>
+                                <span class="block text-sm font-bold text-gray-900">##%</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="block text-xs text-gray-500 uppercase">Tareas</span>
+                                <span class="block text-sm font-bold text-yellow-600"># tareas</span>
+                            </div>
+                            <div class="text-center">
+                                <span class="block text-xs text-gray-500 uppercase">Boletín</span>
+                                <span class="block text-sm font-bold text-orange-600 cursor-pointer hover:underline">Descargar</span>
+                            </div>
                         </div>
                     </div>
-                    <div class="bg-gray-50 px-6 py-3 border-t border-gray-100 grid grid-cols-3 divide-x divide-gray-200">
-                        <div class="text-center">
-                            <span class="block text-xs text-gray-500 uppercase">Asistencia</span>
-                            <span class="block text-sm font-bold text-gray-900">##%</span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block text-xs text-gray-500 uppercase">Tareas</span>
-                            <span class="block text-sm font-bold text-yellow-600"># tareas</span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block text-xs text-gray-500 uppercase">Boletín</span>
-                            <span class="block text-sm font-bold text-orange-600 cursor-pointer hover:underline">Descargar</span>
-                        </div>
-                    </div>
-                </div>
-
-                {% for student in students %}
-                    {{ student.first_name }} {{ student.last_name }}
                 {% endfor %}
             </div>
 
