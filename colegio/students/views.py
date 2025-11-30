@@ -73,44 +73,52 @@ class AlumnoBoard(View):
         court = ScheduleCourts.objects.filter(schedule=schedule).first()
         current_date = get_current_date(request.user)
         current_court = court.get_current_court(request.user, schedule, current_date)
-        
-        # Obtener la hora actual en la zona horaria del usuario
-        ## Obtener la zona horaria local
-        fecha_actual, hora_actual = time_zone_user_location(request.user.time_zone)
-        
-        
-        actividades_user_on_time = Activities.objects.filter(
-            subject__in=materias_user,
-            end_date__gte=fecha_actual
-        )
-        
-        actividades_user_off_time = Activities.objects.filter(
-            subject__in=materias_user,
-            end_date__gte=current_court.start_date,
-            end_date__lte=min(fecha_actual, current_court.end_date)
-        )
-        
-        # grade for each activity
-        actividades_user_off_time_grade = []
-        for activity in actividades_user_off_time:
-            grade = Rating.objects.filter(student=request.user, activity=activity).first()
-            actividades_user_off_time_grade.append(grade)
-
-        actividades_user_off_time = zip(actividades_user_off_time_grade, actividades_user_off_time)
-        
-        context = {
-            'vista': vista,
-            'abierto':abierto,
-            'grade': grade_user,
-            'materias': materias_user,
-            'actividades': actividades_user_on_time,
-            'activityOff': actividades_user_off_time,
-            'fecha_actual': fecha_actual,
-            'hora_actual': hora_actual,
-            'current_court': current_court
+        if current_court != None:
+            # Obtener la hora actual en la zona horaria del usuario
+            ## Obtener la zona horaria local
+            fecha_actual, hora_actual = time_zone_user_location(request.user.time_zone)
             
-        }
-        return render(request, 'users/student/home.html', context)
+            
+            actividades_user_on_time = Activities.objects.filter(
+                subject__in=materias_user,
+                end_date__gte=fecha_actual
+            )
+            
+            actividades_user_off_time = Activities.objects.filter(
+                subject__in=materias_user,
+                end_date__gte=current_court.start_date,
+                end_date__lte=min(fecha_actual, current_court.end_date)
+            )
+            
+            # grade for each activity
+            actividades_user_off_time_grade = []
+            for activity in actividades_user_off_time:
+                grade = Rating.objects.filter(student=request.user, activity=activity).first()
+                actividades_user_off_time_grade.append(grade)
+
+            actividades_user_off_time = zip(actividades_user_off_time_grade, actividades_user_off_time)
+            
+            context = {
+                'vista': vista,
+                'abierto':abierto,
+                'grade': grade_user,
+                'materias': materias_user,
+                'actividades': actividades_user_on_time,
+                'activityOff': actividades_user_off_time,
+                'fecha_actual': fecha_actual,
+                'hora_actual': hora_actual,
+                'current_court': current_court
+                
+            }
+            return render(request, 'users/student/home.html', context)
+        else:
+            context = {
+                'vista': vista,
+                'abierto':abierto,
+                'grade': grade_user,
+                'materias': materias_user,
+            }
+            return render(request, 'users/student/no_class.html', context)
     
 class BoardMenu(View):
     def get(self, request, *args, **kwargs):
