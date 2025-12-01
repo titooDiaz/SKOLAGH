@@ -7,35 +7,35 @@
     <!-- Menú de Navegación -->
     <nav class="flex-1">
         <ul class="space-y-2 ml-4">
-          {% if abierto == 'inicio' %}
+          {% if abierto == 'home' %}
             <li class="bg-white text-black rounded-l-lg">
-                <a href="" class="block p-4 transition duration-300 rounded-lg">
+                <a href="{% url 'GuardianBoard' %}" class="block p-4 transition duration-300 rounded-lg">
                     <i class="fas fa-home mr-2"></i> Inicio
                 </a>
             </li>
           {% else %}
             <li>
-                <a href="" class="block hover:bg-gray-700 p-4 transition duration-300 rounded-lg">
+                <a href="{% url 'GuardianBoard' %}" class="block hover:bg-gray-700 p-4 transition duration-300 rounded-lg">
                     <i class="fas fa-home mr-2"></i> Inicio
                 </a>
             </li>
           {% endif %}
 
-          {% if abierto == 'calendario' %}
+          {% if abierto == 'schedule' %}
             <li class="bg-white text-black rounded-l-lg">
-                <a href="" class="block p-4 transition duration-300 rounded-lg">
+                <a href="{% url 'GuardianSchedule' %}" class="block p-4 transition duration-300 rounded-lg">
                   <i class="fas fa-calendar mr-2"></i> Calendario
                 </a>
             </li>
           {% else %}
             <li>
-                <a href="" class="block p-4 hover:bg-gray-700 transition duration-300 rounded-lg">
+                <a href="{% url 'GuardianSchedule' %}" class="block p-4 hover:bg-gray-700 transition duration-300 rounded-lg">
                   <i class="fas fa-calendar mr-2"></i> Calendario
                 </a>
             </li>
           {% endif %}
 
-          {% if abierto == 'mensajes' %}
+          {% if abierto == 'messages' %}
             <li class="bg-white text-black rounded-l-lg">
                 <a href="" class="block p-4 transition duration-300 rounded-lg">
                   <i class="fas fa-envelope mr-2"></i> Mensajes
@@ -49,29 +49,29 @@
             </li>
           {% endif %}
 
-          {% if abierto == 'personas' %}
+          {% if abierto == 'people' %}
             <li class="bg-white text-black rounded-l-lg">
-                <a href="" class="block p-4 transition duration-300 rounded-lg">
+                <a href="{% url 'GuardianPeople' %}" class="block p-4 transition duration-300 rounded-lg">
                   <i class="fas fa-user mr-2"></i> Personas
                 </a>
             </li>
           {% else %}
             <li>
-                <a href="" class="block p-4 hover:bg-gray-700 transition duration-300 rounded-lg">
+                <a href="{% url 'GuardianPeople' %}" class="block p-4 hover:bg-gray-700 transition duration-300 rounded-lg">
                   <i class="fas fa-user mr-2"></i> Personas
                 </a>
             </li>
           {% endif %}
 
-          {% if abierto == 'notas' %}
+          {% if abierto == 'grades' %}
             <li class="bg-white text-black rounded-l-lg">
-              <a href="" class="block p-4 transition duration-300 rounded-lg">
+              <a href="{% url 'GuardianGrades' %}" class="block p-4 transition duration-300 rounded-lg">
                 <i class="fas fa-book mr-2"></i> Notas
               </a>
             </li>
           {% else %}
             <li>
-              <a href="" class="block p-4 hover:bg-gray-700 transition duration-300 rounded-lg">
+              <a href="{% url 'GuardianGrades' %}" class="block p-4 hover:bg-gray-700 transition duration-300 rounded-lg">
                 <i class="fas fa-book mr-2"></i> Notas
               </a>
             </li>
