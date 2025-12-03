@@ -14,7 +14,7 @@ class RedirectUser(View):
             elif hasattr(request.user, 'customusermanager'):
                 return redirect('BoardGestores')
             elif hasattr(request.user, 'customuserguardian'):
-                return redirect('BoardAcudiente')
+                return redirect('GuardianBoard')
             else:
                 return redirect('Colegios')
         else:

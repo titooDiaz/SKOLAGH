@@ -6,5 +6,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    {% include "ui/cards/users_cards.html" with image="hoola" name="name" role="estudiante" subtitle="subtitulo" description="descipcion" button_text="ver perfil" %}
+</div>
 {% endblock content %}  

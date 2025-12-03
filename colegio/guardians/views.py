@@ -44,6 +44,7 @@ class AcudientePeople(View):
         context = {
             'vista': vista,
             'abierto':abierto,
+            'students': students,
             'school': request.user.school,
         }
         return render(request, 'users/acudiente/people.html', context)
