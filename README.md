@@ -25,6 +25,13 @@ This project is a school management system built with Django, designed to stream
 
 ## Installation & Setup
 
+### 0. Install essential things
+
+```
+sudo apt update
+sudo apt install libffi-dev python3-dev build-essential
+```
+
 ### 1. Create a virtual environment
 
 ```bash
