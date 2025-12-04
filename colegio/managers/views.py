@@ -189,7 +189,7 @@ class BoardGestores(View):
             'vista': vista,
             'abierto':abierto,
         }
-        return render(request, 'users/gestores/personas_views.html', context)
+        return render(request, 'users/gestores/board.html', context)
     
 class CalendarioGestores(View):
     def get(self, request, *args, **kwargs):
@@ -199,7 +199,7 @@ class CalendarioGestores(View):
             'vista': vista,
             'abierto':abierto,
         }
-        return render(request, 'users/gestores/personas_views.html', context)
+        return render(request, 'users/gestores/schedule.html', context)
 
 class MensajesGestores(View):
     def get(self, request, *args, **kwargs):
@@ -209,7 +209,7 @@ class MensajesGestores(View):
             'vista': vista,
             'abierto':abierto,
         }
-        return render(request, 'users/gestores/personas_views.html', context)
+        return render(request, 'users/gestores/messages.html', context)
 
 class AjustesGestores(View):
     def get(self, request, *args, **kwargs):
