@@ -8,6 +8,12 @@ from users.models import CustomUserStudent
 from .forms import ScheduleCourtsForm, ActivitiesTypeForm
 from datetime import datetime, timedelta
 from django.urls import reverse
+from collections import defaultdict
+from django.db.models import Q
+from django.core.paginator import Paginator
+from users.utils import get_chat_target, get_teachers_recursively, get_user1_user2_ids
+from information.models import ChatMessage
+from information.forms import ChatMessageForm
 
 # keep session auth
 from django.contrib.auth import update_session_auth_hash
@@ -713,3 +719,49 @@ class CreateActividadTipo(View):
             'actividades': actividades_creadas,
         }
         return render(request, 'informacion/actividades/actividades.html', context)
+
+class ManagersMessages(View):
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        grade_user = user.customuserstudent.grade
+        school_user = grade_user.school
+        
+        # select users
+        teachers_by_subject = defaultdict(list)
+        grade = getattr(user, 'customuserstudent', None).grade if hasattr(user, 'customuserstudent') else None
+        
+        if grade:
+            subjects = grade.subjects.all().select_related('teacher_1', 'teacher_2')
+            teachers_by_subject = get_teachers_recursively(subjects)
+        
+        students = CustomUserStudent.objects.filter(grade=grade_user)
+
+        selected_user = get_chat_target(request)
+        messages = []
+        form = ChatMessageForm()
+        user1_id, user2_id = None, None
+        
+        if selected_user:
+            all_messages = ChatMessage.objects.filter(
+                Q(sender=user, receiver=selected_user) |
+                Q(sender=selected_user, receiver=user)
+            ).order_by('-sent_at')
+            paginator = Paginator(all_messages, 15)
+            page = paginator.get_page(1)
+            messages = list(page.object_list)[::-1]
+        
+            user1_id, user2_id = get_user1_user2_ids(user, selected_user)
+            
+        context = {
+            'vista': 'estudiante',
+            'abierto': 'mensajes',
+            'grade': grade_user,
+            'teachers': teachers_by_subject,
+            'students': students,
+            'selected_user': selected_user,
+            'messages_users': messages,
+            'form': form,
+            'user1Id': user1_id,
+            'user2Id': user2_id,
+        }
+        return render(request, 'users/gestores/messages/messages.html', context)

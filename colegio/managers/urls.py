@@ -31,4 +31,7 @@ urlpatterns = [
     
     # Actividades tipo
     path('crear/actividad/tipo/', CreateActividadTipo.as_view(), name='ActividadTipo'),
+
+    #mensajes
+    path('mensajes/',  ManagersMessages.as_view(), name='MessagesManagers'),
 ]

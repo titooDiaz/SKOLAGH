@@ -387,3 +387,13 @@ class ChatMessage(models.Model):
 
     def __str__(self):
         return f"{self.sender} → {self.receiver}: {self.content[:30]}{'...' if len(self.content) > 30 else ''}"
+    
+class GlobalMessages(models.Model):
+    message = models.TextField()  # message
+    created_on = models.DateTimeField(auto_now_add=True)  # created_on
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creator_global_message')  # author
+    startOn=models.DateTimeField(auto_now_add=True)  # startOn
+    endOn=models.DateTimeField()  # endOn
+
+    def __str__(self):
+        return f"Global message by {self.author}: {self.message[:30]}{'...' if len(self.message) > 30 else ''}"
