@@ -362,6 +362,7 @@ class StudentMessages(View):
             teachers_by_subject = get_teachers_recursively(subjects)
         
         students = CustomUserStudent.objects.filter(grade=grade_user)
+        managers = CustomUserManager.objects.filter(school=grade_user.school)
 
         selected_user = get_chat_target(request)
         messages = []
@@ -385,6 +386,7 @@ class StudentMessages(View):
             'grade': grade_user,
             'teachers': teachers_by_subject,
             'students': students,
+            'managers': managers,
             'selected_user': selected_user,
             'messages_users': messages,
             'form': form,

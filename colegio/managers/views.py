@@ -207,16 +207,6 @@ class CalendarioGestores(View):
         }
         return render(request, 'users/gestores/schedule.html', context)
 
-class MensajesGestores(View):
-    def get(self, request, *args, **kwargs):
-        vista = 'gestor'
-        abierto='mensajes'
-        context = {
-            'vista': vista,
-            'abierto':abierto,
-        }
-        return render(request, 'users/gestores/messages.html', context)
-
 class AjustesGestores(View):
     def get(self, request, *args, **kwargs):
         vista = 'gestor'
@@ -723,8 +713,7 @@ class CreateActividadTipo(View):
 class ManagersMessages(View):
     def get(self, request, *args, **kwargs):
         user = request.user
-        grade_user = user.customuserstudent.grade
-        school_user = grade_user.school
+        school_user = user.school
         
         # select users
         teachers_by_subject = defaultdict(list)
@@ -734,7 +723,7 @@ class ManagersMessages(View):
             subjects = grade.subjects.all().select_related('teacher_1', 'teacher_2')
             teachers_by_subject = get_teachers_recursively(subjects)
         
-        students = CustomUserStudent.objects.filter(grade=grade_user)
+        students = CustomUserStudent.objects.filter(school=school_user)
 
         selected_user = get_chat_target(request)
         messages = []
@@ -753,9 +742,8 @@ class ManagersMessages(View):
             user1_id, user2_id = get_user1_user2_ids(user, selected_user)
             
         context = {
-            'vista': 'estudiante',
+            'vista': 'gestor',
             'abierto': 'mensajes',
-            'grade': grade_user,
             'teachers': teachers_by_subject,
             'students': students,
             'selected_user': selected_user,

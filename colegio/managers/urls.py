@@ -5,7 +5,6 @@ urlpatterns = [
     #ver usuarios para modificar o ...
     path('board/', BoardGestores.as_view(), name='BoardGestores'),
     path('calendario/', CalendarioGestores.as_view(), name='CalendarioGestores'),
-    path('mensajes/', MensajesGestores.as_view(), name='MensajesGestores'),
     path('personas/', ViewUsersSettings.as_view(), name='ViewUsersSettings'),
     path('ajustes/', AjustesGestores.as_view(), name='AjustesGestores'),
     path('manager/profile/', ViewProfile.as_view(), name='ViewProfile'),
