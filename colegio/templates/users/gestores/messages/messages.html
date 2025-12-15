@@ -14,12 +14,15 @@
 
 
 {% block chat_users %}
-    <div>
-        <div class="px-6 py-4 bg-gray-400 flex justify-between items-center rounded-t-xl">
-            <span class="text-sm text-white">Agregar mensaje publico</span>
-            <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition">Agregar</button>
-        </div>
-        <br>
+
+    {% load static %}
+
+    <div class="px-6 py-4 bg-orange-100 flex justify-between items-center rounded-xl mb-4">
+        <span class="text-sm text-black">Agregar mensaje publico</span>
+        <button onclick="showVentana('messages', 'All')" type="button" id="active_messages" class="bg-orange-600 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition">Agregar</button>
+    </div>
+
+    <div class="bg-gray-200 rounded-xl">
         <div class="px-6 py-4 bg-gray-400 flex justify-between items-center rounded-t-xl">
             <span class="text-sm text-white">Profes Disponibles!</span>
             <button class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-900 transition">Buscar</button>
