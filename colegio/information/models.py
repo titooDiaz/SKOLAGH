@@ -95,9 +95,30 @@ class Subjects(models.Model):
 
     def __str__(self):
         return f'{self.name_1}'
+    
+class GradeBase(models.Model):
+    grade_name = models.CharField(max_length=50)
+    grade_number = models.IntegerField()
+    schedule_parts = models.ForeignKey(ScheduleParts, on_delete=models.SET_NULL, blank=True, null=True)
+    school = models.ForeignKey(
+        School,
+        on_delete=models.CASCADE,
+        related_name="grade_bases"
+    )
+
+    def __str__(self):
+        return f"{self.grade_name} ({self.grade_number})"
+
 
 # Translate class: Grado 
 class Grade(models.Model):
+    base = models.ForeignKey(
+        GradeBase,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="grades"
+    )
     year_creation = models.IntegerField(default=ano_actual()) #ano_creacion
     grade_name = models.TextField() #grado_nom
     grade_number = models.TextField() #grado_num
@@ -115,6 +136,14 @@ class Grade(models.Model):
     APPROVED_THRESHOLD = 70
     AT_RISK_LOW = 55
     AT_RISK_HIGH = 75
+    
+    def save(self, *args, **kwargs):
+        if self.base:
+            self.school = self.base.school
+            if not self.schedule_parts:
+                self.schedule_parts = self.base.schedule_parts
+        super().save(*args, **kwargs)  
+
 
     def get_students(self):
         """Return all students in this grade."""
@@ -183,6 +212,18 @@ def get_current_date():
 def get_current_time():
     now = timezone.now()
     return now.replace(second=0, microsecond=0).time()
+
+class StudentAcademicYear(models.Model):
+    student = models.ForeignKey(CustomUserStudent, on_delete=models.CASCADE)
+    grade_base = models.ForeignKey(GradeBase, on_delete=models.CASCADE)
+    grade = models.ForeignKey(Grade, on_delete=models.SET_NULL, null=True, blank=True)
+    year = models.IntegerField()
+
+    approved = models.BooleanField(null=True)
+
+    class Meta:
+        unique_together = ('student', 'year')
+
 
 
 # Translate class: ActividadesTipo

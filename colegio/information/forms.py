@@ -2,6 +2,43 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import DailySchedule
 from users.models import CustomUserStudent
+from .models import GradeBase
+
+
+# Grades Forms
+class GradeBaseForm(forms.ModelForm):
+    class Meta:
+        model = GradeBase
+        fields = [
+            'grade_name',
+            'grade_number',
+            'schedule_parts',
+            'school',
+        ]
+
+        labels = {
+            'grade_name': 'Nombre del grado',
+            'grade_number': 'Número del grado',
+            'schedule_parts': 'Tipo de horario',
+            'school': 'Colegio',
+        }
+
+        widgets = {
+            'grade_name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ej: Undécimo'
+            }),
+            'grade_number': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': 0
+            }),
+            'schedule_parts': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'school': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+        }
 
 class HoraHorarioForm(forms.ModelForm):
     class Meta:
