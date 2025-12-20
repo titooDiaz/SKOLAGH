@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from users.utils import get_chat_target, get_teachers_recursively, get_user1_user2_ids
 from information.models import ChatMessage
-from information.forms import ChatMessageForm
+from information.forms import ChatMessageForm, GradeBaseForm
 
 # keep session auth
 from django.contrib.auth import update_session_auth_hash
@@ -368,6 +368,18 @@ class CreateAcudiente(View):
             return render(request, 'informacion/materias/error_no_estudiantes.html', context)
         return render(request, 'users/acudiente/create_acudiente.html', context)
     
+    
+class GradeOrGradeBase(View):
+    def get(self, request, *args, **kwargs):
+        vista = 'gestor'
+        abierto='ajustes'
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+        }
+        return render(request, 'informacion/grados/gradeOrGradeBase.html', context)
+    
+    
 class CreateGrados(View):
     def post(self, request, *args, **kwargs):
         colegio = request.user.school.pk
@@ -409,11 +421,13 @@ class CreateGrados(View):
         horario_partes = ScheduleParts.objects.filter(school=colegio)
         print(Colores.CYAN + "[+] 'Horario partes':  " + str(horario_partes) + Colores.RESET)
         
-        form = GradeForm(schedule_parts=horario_partes)
+        form = GradeForm()
+        gradeForm = GradeBaseForm(schedule_parts=horario_partes)
         vista = 'gestor'
         abierto='ajustes'
         context = {
             'form': form,
+            'gradeForm': gradeForm,
             'vista': vista,
             'abierto':abierto,
         }
@@ -421,6 +435,45 @@ class CreateGrados(View):
             return render(request, 'errors/error_no_schedules.html', context)
         return render(request, 'informacion/grados/create_grados.html', context)
 
+class CreateGradosBase(View):
+    def post(self, request, *args, **kwargs):
+        school = request.user.school
+        horario_partes = ScheduleParts.objects.filter(school=school)
+
+        form = GradeBaseForm(
+            request.POST,
+            schedule_parts=horario_partes
+        )
+
+        if form.is_valid():
+            grado = form.save(commit=False)
+            grado.school = school
+            grado.save()
+
+            messages.success(request, 'Grade created successfully!')
+        else:
+            messages_error.errores_formularios(
+                form.errors,
+                "Error Creando el grade",
+                request
+            )
+            
+        return redirect('CrearGrado')
+
+    def get(self, request, *args, **kwargs):
+        school = request.user.school
+        horario_partes = ScheduleParts.objects.filter(school=school)
+
+        if not horario_partes.exists():
+            return render(request, 'errors/error_no_schedules.html')
+
+        gradeForm = GradeBaseForm(schedule_parts=horario_partes)
+
+        return render(request, 'informacion/grados/createGradoBase.html', {
+            'gradeForm': gradeForm,
+            'vista': 'gestor',
+            'abierto': 'ajustes',
+        })
 
 def dividir_fechas_en_rangos(num_divisiones):
     # Ano actual

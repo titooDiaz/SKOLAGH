@@ -121,12 +121,10 @@ class Grade(models.Model):
     )
     year_creation = models.IntegerField(default=ano_actual()) #ano_creacion
     grade_name = models.TextField() #grado_nom
-    grade_number = models.TextField() #grado_num
     description = models.TextField() #descripcion
     state = models.BooleanField(default=True) #estado
     created_on = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creador_grado')
-    schedule_parts = models.ForeignKey(ScheduleParts, on_delete=models.SET_NULL, blank=True, null=True) #horario_partes
     subjects = models.ManyToManyField(Subjects, blank=True, related_name='materias_grado') #materias
     school = models.ForeignKey(School, on_delete=models.CASCADE, null=True, blank=True, related_name='ColegioGrado') #COLEGIO AL QUE PERTENECE EL USUARIO #colegio
 

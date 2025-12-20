@@ -7,20 +7,25 @@ from .models import GradeBase
 
 # Grades Forms
 class GradeBaseForm(forms.ModelForm):
+    def __init__(self, *args, schedule_parts, **kwargs):
+        schedule_parts = kwargs.pop('schedule_parts', None)
+        super().__init__(*args, **kwargs)
+
+        if schedule_parts is not None:
+            self.fields['schedule_parts'].queryset = schedule_parts
+            
     class Meta:
         model = GradeBase
         fields = [
             'grade_name',
             'grade_number',
             'schedule_parts',
-            'school',
         ]
 
         labels = {
             'grade_name': 'Nombre del grado',
             'grade_number': 'Número del grado',
             'schedule_parts': 'Tipo de horario',
-            'school': 'Colegio',
         }
 
         widgets = {
@@ -30,12 +35,10 @@ class GradeBaseForm(forms.ModelForm):
             }),
             'grade_number': forms.NumberInput(attrs={
                 'class': 'form-control',
+                'placeholder': '11',
                 'min': 0
             }),
             'schedule_parts': forms.Select(attrs={
-                'class': 'form-control'
-            }),
-            'school': forms.Select(attrs={
                 'class': 'form-control'
             }),
         }

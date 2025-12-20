@@ -253,23 +253,14 @@ class CustomUserGuardianForm(UserCreationForm):
 
 #Tranlate: GradoForm
 class GradeForm(forms.ModelForm):
-    def __init__(self, *args, schedule_parts, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Filtra los estudiantes por los proporcionados
-        self.fields['schedule_parts'].queryset = schedule_parts
-
     class Meta:
         model = Grade
-        fields = ('grade_name', 'grade_number', 'description', 'schedule_parts', 'school')
+        fields = ('grade_name', 'description', 'school')
         widgets = {
              'grade_name': forms.TextInput(attrs={'id':'grado_nom','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Nombre del grado'}),
-
-             'grade_number': forms.TextInput(attrs={'id':'grado_num','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Numero de grado + letra'}),
-
+             
              'description': forms.TextInput(attrs={'id':'descripcion','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Descripcion del grado'}),
-
-             'schedule_parts': forms.Select(attrs={'id':'schedule_parts','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
-        }
+            }
 
 
 #Translate: Horarios_PartesForm

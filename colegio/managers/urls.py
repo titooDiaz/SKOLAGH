@@ -1,4 +1,5 @@
 from django.urls import path
+from django.views.generic import TemplateView
 from .views import *
 
 urlpatterns = [
@@ -18,6 +19,8 @@ urlpatterns = [
     path('crear/acudiente/', CreateAcudiente.as_view(), name='CrearAcudiente'),
     path('crear/admin/', CreateAdmin.as_view(), name='CrearAdmin'),
     path('crear/grados/', CreateGrados.as_view(), name='CrearGrado'),
+    path('crear/gradeOrGradeBase/', GradeOrGradeBase.as_view(), name='GradeOrGradeBase'),
+    path('crear/gradeBase/', CreateGradosBase.as_view(), name='CreateGradeBase'),
     path('crear/materias/<int:pk>', CreateMaterias.as_view(), name='CrearMaterias'),
     
     # Horarios
