@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .forms import *
 from users.forms import *
-from information.models import Grade, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType
+from information.models import Grade, GradeBase, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType
 from django.contrib import messages
 from users.models import CustomUserStudent
 from .forms import ScheduleCourtsForm, ActivitiesTypeForm
@@ -383,30 +383,27 @@ class GradeOrGradeBase(View):
 class CreateGrados(View):
     def post(self, request, *args, **kwargs):
         colegio = request.user.school.pk
-        horario_partes = ScheduleParts.objects.filter(school=colegio)
+        gradesBase = GradeBase.objects.filter(school=colegio)
         
-        form = GradeForm(request.POST, schedule_parts=horario_partes)
-        print(form.is_valid())
+        form = GradeForm(request.POST, grade_base=gradesBase)
         if form.is_valid():
             try:
                 grado = form.save(commit=False)
-                
-                ##############################
-                # OBTENEMOS EL HORARIO SELECCIONADO POR EL FORMULARIO. PARAS PODER CREAR LA TABLA ED LOS HORARIOS DIARIOS
-                horarios = form.cleaned_data.get('schedule_parts')
-                pk = horarios.pk
-                horario = ScheduleParts.objects.get(id=pk)
-                horas = horario.hours
-                ##############################
+
+                grade_base = form.cleaned_data['grade_base']
+                horarios = grade_base.schedule_parts
+                horas = horarios.hours
+
                 grado.school = request.user.school
-                grado.author = request.user  # Asocia el autor con el usuario actual
+                grado.author = request.user
                 grado.save()
 
-                for i in range(int(horas)):
+                for _ in range(int(horas)):
                     DailySchedule.objects.create(grade=grado)
-                    
+
                 messages.success(request, '¡Grado creado correctamente!')
-            except:
+            except Exception as e:
+                print(e, "puata")
                 mensaje = "¡No olvides seleccionar un horario para tu grado!"
                 messages_error.errores_formularios(form.errors, mensaje, request)
         else:
@@ -417,21 +414,17 @@ class CreateGrados(View):
         return redirect('CrearGrado')
     def get(self, request, *args, **kwargs):
         colegio = request.user.school.pk
-        print(Colores.CYAN + "[+] 'Horario partes' Of the 'Colegio':  " + str(colegio) + Colores.RESET)
-        horario_partes = ScheduleParts.objects.filter(school=colegio)
-        print(Colores.CYAN + "[+] 'Horario partes':  " + str(horario_partes) + Colores.RESET)
+        gradesBase = GradeBase.objects.filter(school=colegio)
         
-        form = GradeForm()
-        gradeForm = GradeBaseForm(schedule_parts=horario_partes)
+        form = GradeForm(grade_base=gradesBase)
         vista = 'gestor'
         abierto='ajustes'
         context = {
             'form': form,
-            'gradeForm': gradeForm,
             'vista': vista,
             'abierto':abierto,
         }
-        if not horario_partes:
+        if not gradesBase:
             return render(request, 'errors/error_no_schedules.html', context)
         return render(request, 'informacion/grados/create_grados.html', context)
 

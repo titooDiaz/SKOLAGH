@@ -112,14 +112,14 @@ class GradeBase(models.Model):
 
 # Translate class: Grado 
 class Grade(models.Model):
-    base = models.ForeignKey(
+    grade_base = models.ForeignKey(
         GradeBase,
         on_delete=models.SET_NULL,
         null=True,
         blank=True,
         related_name="grades"
     )
-    year_creation = models.IntegerField(default=ano_actual()) #ano_creacion
+    year_creation = models.IntegerField(default=ano_actual) #ano_creacion
     grade_name = models.TextField() #grado_nom
     description = models.TextField() #descripcion
     state = models.BooleanField(default=True) #estado
@@ -129,19 +129,11 @@ class Grade(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE, null=True, blank=True, related_name='ColegioGrado') #COLEGIO AL QUE PERTENECE EL USUARIO #colegio
 
     def __str__(self):
-        return self.grade_name + "(" + self.grade_number + ")"
+        return self.grade_name
     # --- Constants for thresholds ---
     APPROVED_THRESHOLD = 70
     AT_RISK_LOW = 55
     AT_RISK_HIGH = 75
-    
-    def save(self, *args, **kwargs):
-        if self.base:
-            self.school = self.base.school
-            if not self.schedule_parts:
-                self.schedule_parts = self.base.schedule_parts
-        super().save(*args, **kwargs)  
-
 
     def get_students(self):
         """Return all students in this grade."""
