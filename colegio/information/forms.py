@@ -18,13 +18,11 @@ class GradeBaseForm(forms.ModelForm):
         model = GradeBase
         fields = [
             'grade_name',
-            'grade_number',
             'schedule_parts',
         ]
 
         labels = {
             'grade_name': 'Nombre del grado',
-            'grade_number': 'Número del grado',
             'schedule_parts': 'Tipo de horario',
         }
 
@@ -32,11 +30,6 @@ class GradeBaseForm(forms.ModelForm):
             'grade_name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ej: Undécimo'
-            }),
-            'grade_number': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'placeholder': '11',
-                'min': 0
             }),
             'schedule_parts': forms.Select(attrs={
                 'class': 'form-control'

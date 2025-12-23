@@ -98,7 +98,6 @@ class Subjects(models.Model):
     
 class GradeBase(models.Model):
     grade_name = models.CharField(max_length=50)
-    grade_number = models.IntegerField()
     schedule_parts = models.ForeignKey(ScheduleParts, on_delete=models.SET_NULL, blank=True, null=True)
     school = models.ForeignKey(
         School,
@@ -107,7 +106,7 @@ class GradeBase(models.Model):
     )
 
     def __str__(self):
-        return f"{self.grade_name} ({self.grade_number})"
+        return f"{self.grade_name} (Base)"
 
 
 # Translate class: Grado 
