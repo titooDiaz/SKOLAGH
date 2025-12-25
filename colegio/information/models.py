@@ -40,6 +40,14 @@ class ElectiveYears(models.Model):
     year = models.TextField()
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Creator_Elective_Year')
     state = models.BooleanField(default=True)
+    
+class SchoolYear(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    year = models.IntegerField(default=ano_actual())
+    is_active = models.BooleanField(default=False)
+
+    class Meta:
+        unique_together = ("school", "year")
 
 # Translate class: Horarios_Partes
 class ScheduleParts(models.Model):
@@ -118,6 +126,7 @@ class Grade(models.Model):
         blank=True,
         related_name="grades"
     )
+    school_year = models.ForeignKey(SchoolYear, on_delete=models.CASCADE)
     year_creation = models.IntegerField(default=ano_actual) #ano_creacion
     grade_name = models.TextField() #grado_nom
     description = models.TextField() #descripcion
