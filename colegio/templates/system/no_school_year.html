@@ -1,47 +1,49 @@
+{% load static %}
+{% load tailwind_tags %}
+{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Sistema detenido</title>
+    <title>Año escolar requerido</title>
+    {% tailwind_css %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- Tailwind assumed -->
 </head>
-<body class="bg-gray-950 text-gray-100">
 
-<div class="min-h-screen flex items-center justify-center">
-    <div class="max-w-md w-full text-center space-y-8 px-6">
+<body class="min-h-screen bg-gray-950 text-gray-100 flex items-center justify-center">
 
-        <!-- Icon / Indicator -->
-        <div class="text-6xl font-bold text-orange-500">
-            !
-        </div>
+    <main class="w-full max-w-sm px-6">
+        <section class="bg-gray-900/70 backdrop-blur rounded-2xl p-8 shadow-lg text-center space-y-6">
 
-        <!-- Title -->
-        <h1 class="text-2xl font-semibold tracking-tight">
-            Nuevo año escolar detectado
-        </h1>
+            <!-- Subtle indicator -->
+            <div class="mx-auto w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
+                <span class="text-orange-400 text-xl font-semibold">!</span>
+            </div>
 
-        <!-- Message -->
-        <p class="text-gray-400 text-sm leading-relaxed">
-            El sistema no puede continuar porque no existe un año escolar activo.
-            <br>
-            Esta acción es obligatoria antes de continuar.
-        </p>
+            <!-- Title -->
+            <h1 class="text-xl font-semibold tracking-tight">
+                Año escolar no configurado
+            </h1>
 
-        <!-- Action -->
-        <a href="#"
-           class="inline-block w-full py-3 rounded-lg bg-orange-600 hover:bg-orange-500 transition font-semibold text-sm">
-            Crear año escolar
-        </a>
+            <!-- Description -->
+            <p class="text-sm text-gray-400 leading-relaxed">
+                Para continuar, el sistema necesita un año escolar activo.
+                Esta configuración es obligatoria.
+            </p>
 
-        <!-- Optional role-based message -->
-        <p class="text-xs text-gray-500 mt-4">
-            Contacta a un administrador si no tienes permisos.
-        </p>
+            <!-- Action -->
+            <a href="#"
+               class="block w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-400 transition font-medium text-sm text-gray-950">
+                Crear año escolar
+            </a>
 
-    </div>
-</div>
+            <!-- Footnote -->
+            <p class="text-xs text-gray-500">
+                Si no tienes permisos, contacta a un administrador.
+            </p>
+
+        </section>
+    </main>
 
 </body>
 </html>
