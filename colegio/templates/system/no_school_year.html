@@ -1,15 +1,15 @@
-{% load static %}
-{% load tailwind_tags %}
-{% load crispy_forms_tags %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Año escolar requerido</title>
-    {% tailwind_css %}
+    
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
+{% extends 'base.html' %}
 
+{% block content %}
+{% load static %}
 <body class="min-h-screen bg-gray-950 text-gray-100 flex items-center justify-center">
 
     <main class="w-full max-w-sm px-6">
@@ -47,3 +47,5 @@
 
 </body>
 </html>
+
+{% endblock content %} 

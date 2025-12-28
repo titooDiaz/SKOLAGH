@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import DailySchedule
 from users.models import CustomUserStudent
-from .models import GradeBase
+from .models import GradeBase, StudentAcademicYear
 
 
 # Grades Forms
@@ -91,6 +91,26 @@ from .models import ChatMessage
 class ChatMessageForm(forms.ModelForm):
     class Meta:
         model = ChatMessage
+        fields = ['content', 'file']
+        widgets = {
+            "content": forms.TextInput(attrs={
+                'autocomplete': 'off',
+                'id': 'message_input',
+                'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5',
+                'placeholder': 'Escribe tu mensaje...'
+            }),
+            "file": forms.ClearableFileInput(attrs={
+                'class': 'hidden',
+                'id': 'file_input',
+                'accept': 'image/*,application/pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx,.zip,.rar',
+            }),
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+class ChatMessageForm(forms.ModelForm):
+    class Meta:
+        model = StudentAcademicYear
         fields = ['content', 'file']
         widgets = {
             "content": forms.TextInput(attrs={
