@@ -1,5 +1,6 @@
 from information.models import SchoolYear
 from django.shortcuts import render
+from django.conf import settings
 
 class SchoolYearMiddleware:
 
@@ -8,19 +9,36 @@ class SchoolYearMiddleware:
 
     def __call__(self, request):
 
-        # URLs que NO deben bloquearse
+        # Rutas que NO deben bloquearse
         allowed_paths = [
             '/admin/',
             '/school-year/create/',
             '/logout/',
+            settings.STATIC_URL,
+            settings.MEDIA_URL,
         ]
 
         if any(request.path.startswith(p) for p in allowed_paths):
             return self.get_response(request)
 
-        has_year = SchoolYear.objects.filter(is_active=True).exists()
+        if request.user.is_authenticated:
+            has_year = SchoolYear.objects.filter(is_active=True).exists()
+            if not has_year:
 
-        if not has_year and request.user.is_authenticated:
-            return render(request, 'system/no_school_year.html')
+                context = {}
+                if hasattr(request.user, 'customuserstudent'):
+                    context['vista'] = 'estudiante'
+                elif hasattr(request.user, 'customuserteachers'):
+                    context['vista'] = 'profesores'
+                elif hasattr(request.user, 'customuseradmin'):
+                    context['vista'] = 'admin'
+                elif hasattr(request.user, 'customusermanager'):
+                    context['vista'] = 'gestor'
+                elif hasattr(request.user, 'customuserguardian'):
+                    context['vista'] = 'guardian'
+                else:
+                    context['vista'] = 'plus'
+                print("hola, ", context, request.user)
+            return render(request, 'system/no_school_year.html', context)
 
         return self.get_response(request)

@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<html lang="es">
 <head>
     <meta charset="UTF-8">
     <title>Año escolar requerido</title>
@@ -10,42 +9,35 @@
 
 {% block content %}
 {% load static %}
-<body class="min-h-screen bg-gray-950 text-gray-100 flex items-center justify-center">
+<section class="bg-gray-900/70 backdrop-blur rounded-2xl p-8 shadow-lg text-center space-y-6">
 
-    <main class="w-full max-w-sm px-6">
-        <section class="bg-gray-900/70 backdrop-blur rounded-2xl p-8 shadow-lg text-center space-y-6">
+    <!-- Subtle indicator -->
+    <div class="mx-auto w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
+        <span class="text-orange-400 text-xl font-semibold">!</span>
+    </div>
 
-            <!-- Subtle indicator -->
-            <div class="mx-auto w-12 h-12 rounded-full bg-orange-500/10 flex items-center justify-center">
-                <span class="text-orange-400 text-xl font-semibold">!</span>
-            </div>
+    <!-- Title -->
+    <h1 class="text-xl font-semibold tracking-tight">
+        Año escolar no configurado
+    </h1>
 
-            <!-- Title -->
-            <h1 class="text-xl font-semibold tracking-tight">
-                Año escolar no configurado
-            </h1>
+    <!-- Description -->
+    <p class="text-sm text-gray-400 leading-relaxed">
+        Para continuar, el sistema necesita un año escolar activo.
+        Esta configuración es obligatoria.
+    </p>
 
-            <!-- Description -->
-            <p class="text-sm text-gray-400 leading-relaxed">
-                Para continuar, el sistema necesita un año escolar activo.
-                Esta configuración es obligatoria.
-            </p>
+    <!-- Action -->
+    <a href="#"
+        class="block w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-400 transition font-medium text-sm text-gray-950">
+        Crear año escolar
+    </a>
 
-            <!-- Action -->
-            <a href="#"
-               class="block w-full py-3 rounded-xl bg-orange-500 hover:bg-orange-400 transition font-medium text-sm text-gray-950">
-                Crear año escolar
-            </a>
+    <!-- Footnote -->
+    <p class="text-xs text-gray-500">
+        Si no tienes permisos, contacta a un administrador.
+    </p>
 
-            <!-- Footnote -->
-            <p class="text-xs text-gray-500">
-                Si no tienes permisos, contacta a un administrador.
-            </p>
-
-        </section>
-    </main>
-
-</body>
-</html>
+</section>
 
 {% endblock content %} 
