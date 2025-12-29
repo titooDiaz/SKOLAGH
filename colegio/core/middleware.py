@@ -38,7 +38,6 @@ class SchoolYearMiddleware:
                     context['vista'] = 'guardian'
                 else:
                     context['vista'] = 'plus'
-                print("hola, ", context, request.user)
             return render(request, 'system/no_school_year.html', context)
 
         return self.get_response(request)

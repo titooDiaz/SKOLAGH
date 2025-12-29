@@ -104,6 +104,19 @@ class Subjects(models.Model):
     def __str__(self):
         return f'{self.name_1}'
     
+class SubjectsTemplate(models.Model):
+    name = models.TextField(blank=True, null=False)
+    state = models.BooleanField(default=True) #estado
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    school = models.ForeignKey(
+        School,
+        on_delete=models.CASCADE,
+    )
+
+    def __str__(self):
+        return f'{self.name} ({self.school.name})'    
+
 class GradeBase(models.Model):
     grade_name = models.CharField(max_length=50)
     schedule_parts = models.ForeignKey(ScheduleParts, on_delete=models.SET_NULL, blank=True, null=True)
@@ -115,6 +128,21 @@ class GradeBase(models.Model):
 
     def __str__(self):
         return f"{self.grade_name} (Base)"
+
+class GradeTemplate(models.Model):
+    school = models.ForeignKey(School, on_delete=models.CASCADE)
+    grade_base = models.ForeignKey(GradeBase, on_delete=models.CASCADE)
+
+    name = models.CharField(max_length=50)
+    description = models.TextField(blank=True)
+
+    groups = models.PositiveIntegerField(default=1)
+    is_active = models.BooleanField(default=True)
+    
+    subjects = models.ManyToManyField(SubjectsTemplate, blank=True)
+
+    def __str__(self):
+        return f"{self.name} ({self.groups} grupos)"
 
 
 # Translate class: Grado 
