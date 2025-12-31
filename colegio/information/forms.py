@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import DailySchedule
+from .models import DailySchedule, GradeTemplate, SubjectsTemplate
 from users.models import CustomUserStudent
 from .models import GradeBase, StudentAcademicYear
 
@@ -114,5 +114,53 @@ class StudentAcademicYearForm(forms.ModelForm):
         fields = []
         widgets = {
         }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+class GradeTemplateForm(forms.ModelForm):
+    class Meta:
+        model = GradeTemplate
+        fields = ['grade_base', 'name', 'description', 'groups', 'is_active', 'subjects']
+
+        widgets = {
+            'grade_base': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Ej: Undécimo A'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'placeholder': 'Descripción del grado',
+                'rows': 3
+            }),
+            'groups': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'min': 1
+            }),
+            'is_active': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
+            }),
+            'subjects': forms.SelectMultiple(attrs={
+                'class': 'form-control'
+            }),
+        }
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+class SubjectsTemplateForm(forms.ModelForm):
+    model = SubjectsTemplate
+    fields = ['name', 'author']
+    widgets = {
+        'name': forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Nombre de la materia'
+        }),
+        'author': forms.TextInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Autor de la materia'
+        }),
+    }
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -1,4 +1,4 @@
-from information.models import SchoolYear
+from information.models import SchoolYear, SubjectsTemplate, GradeTemplate
 from django.shortcuts import render
 from django.conf import settings
 
@@ -23,6 +23,9 @@ class SchoolYearMiddleware:
 
         if request.user.is_authenticated:
             has_year = SchoolYear.objects.filter(is_active=True).exists()
+            has_subjects = SubjectsTemplate.objects.filter(school=request.user.school).exists()
+            has_grades = GradeTemplate.objects.filter(school=request.user.school).exists()
+            print("Middleware Check - has_year:", has_year, "has_subjects:", has_subjects, "has_grades:", has_grades)
             if not has_year:
 
                 context = {}
