@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SeeGrades, SeeGradesSchedules, SeeStudentsGrades, SendMessageView
+from .views import SeeGrades, SeeGradesSchedules, SeeStudentsGrades, SendMessageView, CreateGradeBase
 
 #'APIS'
 from .views import EditGradesScheduleHour, EditGradesScheduleSubjects, EditSeeRatingsStudents, upload_chat_file
@@ -23,4 +23,5 @@ urlpatterns = [
     
     # File By AJAX
     path('upload-chat-file/', upload_chat_file, name='upload_chat_file'),
+    path('grades/create/', CreateGradeBase.as_view(), name='createGradeBase'),
 ]

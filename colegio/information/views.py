@@ -8,7 +8,7 @@ from .serializers import ChatMessageSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
-from .forms import HoraHorarioForm, MateriasHorarioForm, EditarVerNotasAlumnosForm
+from .forms import GradeBaseForm, HoraHorarioForm, MateriasHorarioForm, EditarVerNotasAlumnosForm
 
 
 #Translate VerGrados
@@ -197,3 +197,18 @@ def upload_chat_file(request):
         })
 
     return JsonResponse({'error': 'No se subió ningún archivo'}, status=400)
+
+
+# init data!
+class CreateGradeBase(View):
+    def get(self, request, *args, **kwargs):
+        
+        vista = 'gestor'
+        abierto='ajustes'
+        form = GradeBaseForm()
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+            'form': form,
+        }
+        return render(request, 'users/gestores/school/grade_base.html', context)

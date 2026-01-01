@@ -1,7 +1,11 @@
-from information.models import SchoolYear, SubjectsTemplate, GradeTemplate
-from django.shortcuts import render
+from django.contrib import messages
+from django.shortcuts import redirect
+from django.urls import reverse
 from django.conf import settings
-
+from information.models import (
+    SchoolYear, SubjectsTemplate, GradeTemplate, GradeBase, ScheduleParts
+)
+from django.urls import resolve
 class SchoolYearMiddleware:
 
     def __init__(self, get_response):
@@ -9,38 +13,49 @@ class SchoolYearMiddleware:
 
     def __call__(self, request):
 
-        # Rutas que NO deben bloquearse
-        allowed_paths = [
-            '/admin/',
-            '/school-year/create/',
-            '/logout/',
-            settings.STATIC_URL,
-            settings.MEDIA_URL,
-        ]
+        try:
+            resolver_match = resolve(request.path)
+            url_name = resolver_match.url_name
+        except Exception:
+            url_name = None
 
-        if any(request.path.startswith(p) for p in allowed_paths):
+        allowed_names = {
+            'createGradeBase',
+            'CrearHorarios',
+            'logout',
+        }
+
+        if url_name in allowed_names:
+            return self.get_response(request)
+
+        # archivos estáticos
+        if request.path.startswith(settings.STATIC_URL) or \
+           request.path.startswith(settings.MEDIA_URL):
             return self.get_response(request)
 
         if request.user.is_authenticated:
-            has_year = SchoolYear.objects.filter(is_active=True).exists()
-            has_subjects = SubjectsTemplate.objects.filter(school=request.user.school).exists()
+            has_year = SchoolYear.objects.filter(is_active=True).exists() 
+            has_subjects = SubjectsTemplate.objects.filter(school=request.user.school).exists() 
             has_grades = GradeTemplate.objects.filter(school=request.user.school).exists()
-            print("Middleware Check - has_year:", has_year, "has_subjects:", has_subjects, "has_grades:", has_grades)
-            if not has_year:
+            has_year = SchoolYear.objects.filter(is_active=True).exists()
+            has_schedules_parts = ScheduleParts.objects.filter(school=request.user.school).exists()
+            print(not has_schedules_parts, "MIDDLEWARE\n\n\n\n\n")
+            if not has_schedules_parts:
+                messages.warning(
+                    request,
+                    "Parece que es la primera vez que entras. Para continuar, debes completar algunos pasos iniciales"
+                )
+                messages.warning(
+                    request,
+                    "Inicia creando el horario base para los grados."
+                )
+                return redirect('CrearHorarios')
 
-                context = {}
-                if hasattr(request.user, 'customuserstudent'):
-                    context['vista'] = 'estudiante'
-                elif hasattr(request.user, 'customuserteachers'):
-                    context['vista'] = 'profesores'
-                elif hasattr(request.user, 'customuseradmin'):
-                    context['vista'] = 'admin'
-                elif hasattr(request.user, 'customusermanager'):
-                    context['vista'] = 'gestor'
-                elif hasattr(request.user, 'customuserguardian'):
-                    context['vista'] = 'guardian'
-                else:
-                    context['vista'] = 'plus'
-            return render(request, 'system/no_school_year.html', context)
+            if not has_grades:
+                messages.warning(
+                    request,
+                    "No existe un año escolar activo."
+                )
+                return redirect('createGradeBase')
 
         return self.get_response(request)
