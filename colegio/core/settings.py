@@ -96,8 +96,8 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    ###
-    'core.middleware.SchoolYearMiddleware',
+    ### our own middleware ###
+    
 ]
 
 ROOT_URLCONF = 'core.urls'

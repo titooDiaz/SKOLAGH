@@ -31,4 +31,15 @@
 
 </div>
 
+{% comment %} 
+    Here, managers can add the grades templates that have been created
+{% endcomment %}
+{% for grade in gradesBase %}
+    <div>
+        <h3>{{ grade.grade_name }}</h3>
+        <p>{{ grade.schedule_parts}}</p>
+    </div>
+{% endfor %}
+
+
 {% endblock content %}

@@ -29,7 +29,8 @@ from django.core.files.base import ContentFile
 ## MENSAJES DE ERRORES ##
 from message_error import messages_error
 
-
+# mixins
+from .mixins import SchoolSetupRequiredMixin
 
 ############################## RECORTE DE IMAGENES ##################################################
 def recorte_imagenes(cords, foto):
@@ -86,7 +87,9 @@ def obtener_grados_por_colegio(colegio_id):
         return None
 
 ###############################################################################################
-class CreateAlumno(View):
+class CreateAlumno(SchoolSetupRequiredMixin, View):
+    required_roles = ('manager')
+    
     def post(self, request, *args, **kwargs):
         form = CustomUserStudentForm(request.POST, request.FILES)
         print(form.is_valid())
@@ -461,12 +464,14 @@ class CreateGradosBase(View):
             return render(request, 'errors/error_no_schedules.html')
 
         gradeForm = GradeBaseForm(schedule_parts=horario_partes)
-
-        return render(request, 'informacion/grados/createGradoBase.html', {
+        gradesBase = GradeBase.objects.filter(school=school)
+        context ={
             'gradeForm': gradeForm,
             'vista': 'gestor',
             'abierto': 'ajustes',
-        })
+            'gradesBase': gradesBase,
+        }
+        return render(request, 'informacion/grados/createGradoBase.html', context)
 
 def dividir_fechas_en_rangos(num_divisiones):
     # Ano actual

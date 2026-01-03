@@ -2,13 +2,13 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from utils.services import school_setup_status
 
+
 class SchoolSetupRequiredMixin:
     """
-    Applies access rules based on the school's setup status
-    ONLY to the specified roles
+    Enforce school setup rules ONLY for specific user types
     """
 
-    required_roles = ()
+    required_user_types = ()  # ej: ('Administrador', 'Gestor')
     redirect_url = 'CrearHorarios'
 
     def dispatch(self, request, *args, **kwargs):
@@ -17,11 +17,25 @@ class SchoolSetupRequiredMixin:
         if not user.is_authenticated:
             return redirect('login')
 
-        if not self.required_roles:
+        # if no user types are specified, let it pass
+        if not self.required_user_types:
             return super().dispatch(request, *args, **kwargs)
 
-        if user.role not in self.required_roles:
+        # if user has no user_type attribute, let it pass
+        if not hasattr(user, "user_type"):
             return super().dispatch(request, *args, **kwargs)
+
+        # if user type does not apply, let it pass
+        if user.user_type not in self.required_user_types:
+            return super().dispatch(request, *args, **kwargs)
+
+        # if user has no school assigned, it's a logical error
+        if not user.school:
+            messages.error(
+                request,
+                "Tu usuario no está asociado a ningún colegio."
+            )
+            return redirect("logout")
 
         status = school_setup_status(user.school)
 
