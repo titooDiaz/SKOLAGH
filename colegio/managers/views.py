@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from users.utils import get_chat_target, get_teachers_recursively, get_user1_user2_ids
 from information.models import ChatMessage
-from information.forms import ChatMessageForm, GradeBaseForm
+from information.forms import ChatMessageForm, GradeBaseForm, GradeTemplateForm
 
 # keep session auth
 from django.contrib.auth import update_session_auth_hash
@@ -465,13 +465,47 @@ class CreateGradosBase(View):
 
         gradeForm = GradeBaseForm(schedule_parts=horario_partes)
         gradesBase = GradeBase.objects.filter(school=school)
+        gradeTemplateForm = GradeTemplateForm()
         context ={
             'gradeForm': gradeForm,
             'vista': 'gestor',
             'abierto': 'ajustes',
             'gradesBase': gradesBase,
+            'gradeTemplateForm': gradeTemplateForm,
         }
         return render(request, 'informacion/grados/createGradoBase.html', context)
+
+class CreateGradeTemplate(View):
+    def post(self, request, grade_base_id):
+        school = request.user.school
+
+        grade_base = GradeBase.objects.get(
+            id=grade_base_id,
+            school=school
+        )
+
+        form = GradeTemplateForm(
+            request.POST,
+            school=school
+        )
+
+        if form.is_valid():
+            grade = form.save(commit=False)
+            grade.school = school
+            grade.grade_base = grade_base
+            grade.save()
+            form.save_m2m()
+
+            messages.success(request, "Grado creado correctamente")
+        else:
+            messages_error.error(
+                form.errors,
+                "Error creando el grado",
+                request
+            )
+
+        return redirect('CrearGrado')
+
 
 def dividir_fechas_en_rangos(num_divisiones):
     # Ano actual

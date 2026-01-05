@@ -35,11 +35,54 @@
     Here, managers can add the grades templates that have been created
 {% endcomment %}
 {% for grade in gradesBase %}
-    <div>
-        <h3>{{ grade.grade_name }}</h3>
-        <p>{{ grade.schedule_parts}}</p>
+    <div class="card mb-4">
+        <div class="card-body">
+            <h3>{{ grade.grade_name }}</h3>
+            <p>{{ grade.schedule_parts }}</p>
+
+            <button onclick="showVentana('information', '{{grade.pk}}')" type="button" class="SkolaghButton-green">Crear Plantilla para los grados</button>
+        </div>
+    </div>
+
+    <div id="information{{grade.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
+        <div class="flex items-center justify-center min-h-screen">
+            <div class="bg-white border-2 border-black p-4 rounded-lg">
+                <button onclick="closeVentana('information', '{{grade.pk}}')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
+                    <p class="mr-4">cerrar</p>
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </button>
+                
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <form method="post" action="{% url 'create_grade_template' grade.pk %}">
+                            {% csrf_token %}
+
+                            <div class="modal-header">
+                            <h5 class="modal-title">
+                                Crear grados para {{ grade.grade_name }}
+                            </h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                            {{ gradeTemplateForm.as_p }}
+                            </div>
+
+                            <button class="btn btn-success">
+                                Guardar
+                            </button>
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div> 
+        </div>
+        
     </div>
 {% endfor %}
 
+<script src="{% static 'js/windows/modal_for.js' %}"></script>
 
 {% endblock content %}

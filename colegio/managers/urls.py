@@ -22,6 +22,8 @@ urlpatterns = [
     path('crear/gradeOrGradeBase/', GradeOrGradeBase.as_view(), name='GradeOrGradeBase'),
     path('crear/gradeBase/', CreateGradosBase.as_view(), name='CreateGradeBase'),
     path('crear/materias/<int:pk>', CreateMaterias.as_view(), name='CrearMaterias'),
+    path('grados-template/create/<int:grade_base_id>/', CreateGradeTemplate.as_view(), name='create_grade_template'),
+
     
     # Horarios
     path('crear/horario/', CreateHorarios.as_view(), name='CrearHorarios'),

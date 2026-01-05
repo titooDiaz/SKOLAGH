@@ -120,12 +120,9 @@ class StudentAcademicYearForm(forms.ModelForm):
 class GradeTemplateForm(forms.ModelForm):
     class Meta:
         model = GradeTemplate
-        fields = ['grade_base', 'name', 'description', 'groups', 'is_active', 'subjects']
+        fields = ['name', 'description', 'groups', 'subjects']
 
         widgets = {
-            'grade_base': forms.Select(attrs={
-                'class': 'form-control'
-            }),
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Ej: Undécimo A'
@@ -139,15 +136,18 @@ class GradeTemplateForm(forms.ModelForm):
                 'class': 'form-control',
                 'min': 1
             }),
-            'is_active': forms.CheckboxInput(attrs={
-                'class': 'form-check-input'
-            }),
             'subjects': forms.SelectMultiple(attrs={
                 'class': 'form-control'
             }),
         }
     def __init__(self, *args, **kwargs):
+        school = kwargs.pop('school', None)
         super().__init__(*args, **kwargs)
+
+        if school:
+            self.fields['subjects'].queryset = SubjectsTemplate.objects.filter(
+                school=school,
+            )
         
 class SubjectsTemplateForm(forms.ModelForm):
     model = SubjectsTemplate
