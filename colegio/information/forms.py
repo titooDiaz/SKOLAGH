@@ -120,7 +120,7 @@ class StudentAcademicYearForm(forms.ModelForm):
 class GradeTemplateForm(forms.ModelForm):
     class Meta:
         model = GradeTemplate
-        fields = ['name', 'description', 'groups', 'subjects']
+        fields = ['name', 'description', 'subjects']
 
         widgets = {
             'name': forms.TextInput(attrs={
@@ -131,10 +131,6 @@ class GradeTemplateForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Descripción del grado',
                 'rows': 3
-            }),
-            'groups': forms.NumberInput(attrs={
-                'class': 'form-control',
-                'min': 1
             }),
             'subjects': forms.SelectMultiple(attrs={
                 'class': 'form-control'

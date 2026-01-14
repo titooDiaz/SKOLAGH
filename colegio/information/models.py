@@ -135,14 +135,12 @@ class GradeTemplate(models.Model):
 
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
-
-    groups = models.PositiveIntegerField(default=1)
     is_active = models.BooleanField(default=True)
     
     subjects = models.ManyToManyField(SubjectsTemplate, blank=True)
 
     def __str__(self):
-        return f"{self.name} ({self.groups} grupos)"
+        return f"{self.name}"
 
 
 # Translate class: Grado 
