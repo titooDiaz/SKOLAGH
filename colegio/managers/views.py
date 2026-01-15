@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .forms import *
 from users.forms import *
-from information.models import Grade, GradeBase, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType
+from information.models import Grade, GradeBase, GradeTemplate, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType
 from django.contrib import messages
 from users.models import CustomUserStudent
 from .forms import ScheduleCourtsForm, ActivitiesTypeForm
@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.core.paginator import Paginator
 from users.utils import get_chat_target, get_teachers_recursively, get_user1_user2_ids
 from information.models import ChatMessage
-from information.forms import ChatMessageForm, GradeBaseForm, GradeTemplateForm
+from information.forms import ChatMessageForm, GradeBaseForm, GradeTemplateForm, SubjectsTemplateForm
 
 # keep session auth
 from django.contrib.auth import update_session_auth_hash
@@ -382,7 +382,26 @@ class GradeOrGradeBase(View):
         }
         return render(request, 'informacion/grados/gradeOrGradeBase.html', context)
     
-    
+class SubjectTemplate(View):
+    def post(self, request, grade_template_id, *args, **kwargs):
+        grade_template = get_object_or_404(
+            GradeTemplate,
+            id=grade_template_id,
+            school=request.user.school
+        )
+
+        form = SubjectsTemplateForm(
+            request.POST,
+            user=request.user,
+            grade_template=grade_template
+        )
+
+        if form.is_valid():
+            form.save()
+
+        return redirect('CreateGradeBase', grade_template_id=grade_template.id)
+
+
 class CreateGrados(View):
     def post(self, request, *args, **kwargs):
         colegio = request.user.school.pk
@@ -414,7 +433,7 @@ class CreateGrados(View):
             messages_error.errores_formularios(form.errors, mensaje, request)
             print(form.errors)
             print(form.errors)
-        return redirect('CrearGrado')
+        return redirect('CreateGradeBase')
     def get(self, request, *args, **kwargs):
         colegio = request.user.school.pk
         gradesBase = GradeBase.objects.filter(school=colegio)
@@ -460,6 +479,9 @@ class CreateGradosBase(View):
         school = request.user.school
         horario_partes = ScheduleParts.objects.filter(school=school)
 
+        # subjects templates form
+        subjectsTemplateForm = SubjectsTemplateForm(user=request.user)
+
         if not horario_partes.exists():
             return render(request, 'errors/error_no_schedules.html')
 
@@ -472,6 +494,7 @@ class CreateGradosBase(View):
             'abierto': 'ajustes',
             'gradesBase': gradesBase,
             'gradeTemplateForm': gradeTemplateForm,
+            'subjectsTemplateForm': subjectsTemplateForm,
         }
         return render(request, 'informacion/grados/createGradoBase.html', context)
 

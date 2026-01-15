@@ -102,20 +102,7 @@ class Subjects(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creador_materia')
 
     def __str__(self):
-        return f'{self.name_1}'
-    
-class SubjectsTemplate(models.Model):
-    name = models.TextField(blank=True, null=False)
-    state = models.BooleanField(default=True) #estado
-    created_on = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
-    school = models.ForeignKey(
-        School,
-        on_delete=models.CASCADE,
-    )
-
-    def __str__(self):
-        return f'{self.name} ({self.school.name})'    
+        return f'{self.name_1}'  
 
 class GradeBase(models.Model):
     grade_name = models.CharField(max_length=50)
@@ -136,11 +123,30 @@ class GradeTemplate(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
-    
-    subjects = models.ManyToManyField(SubjectsTemplate, blank=True)
 
     def __str__(self):
         return f"{self.name}"
+    
+class SubjectsTemplate(models.Model):
+    name = models.TextField(blank=True, null=False)
+    teacher = models.ForeignKey(UserProfes,on_delete=models.CASCADE, blank=True, related_name='teacher') #profe1
+    hourly_intensity = models.IntegerField(default=0)
+    state = models.BooleanField(default=True) #estado
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    school = models.ForeignKey(
+        School,
+        on_delete=models.CASCADE,
+    )
+    
+    grade_template = models.ForeignKey(
+        GradeTemplate,
+        on_delete=models.CASCADE,
+        related_name='subjects'
+    )
+
+    def __str__(self):
+        return f'{self.name} ({self.school.name})'  
 
 
 # Translate class: Grado 

@@ -54,10 +54,36 @@
                                     
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <form method="post" action="#">
+                                            <form method="post" action="">
                                                 {% csrf_token %}
-                                                <h5>Edita la plantilla de tu grado!</h5>
+
+                                                <h5>Agrega una materia al grado {{ template.name }}</h5>
+
+                                                <div class="form-group">
+                                                    {{ subjectsTemplateForm.name.label_tag }}
+                                                    {{ subjectsTemplateForm.name }}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    {{ subjectsTemplateForm.teacher.label_tag }}
+                                                    {{ subjectsTemplateForm.teacher }}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    {{ subjectsTemplateForm.hourly_intensity.label_tag }}
+                                                    {{ subjectsTemplateForm.hourly_intensity }}
+                                                </div>
+
+                                                <div class="form-group">
+                                                    {{ subjectsTemplateForm.author.label_tag }}
+                                                    {{ subjectsTemplateForm.author }}
+                                                </div>
+
+                                                <button type="submit" class="SkolaghButton-green">
+                                                    Guardar materia
+                                                </button>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div> 
@@ -96,7 +122,7 @@
                                 {{ gradeTemplateForm.as_p }}
                                 </div>
 
-                                <button class="btn btn-success">
+                                <button class="SkolaghButton-green">
                                     Guardar
                                 </button>
                                 </div>

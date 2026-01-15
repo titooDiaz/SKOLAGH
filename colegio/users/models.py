@@ -181,6 +181,17 @@ class CustomUserTeachers(CustomUser):
     blood_group = models.CharField(max_length=15, blank=True, null=True, choices=TIPO_SANGRE, default='Desconocido') #grupo sanguineo
     emergency_contact_name = models.CharField(max_length=255, blank=True, null=True) #contacto_emergencia_nombre
     emergency_contact_number = models.CharField(max_length=20, blank=True, null=True) #contacto_emergencia_telefono
+    
+    @classmethod
+    def get_by_school(cls, school):
+        """
+            get professors by school
+        """
+        return cls.objects.filter(
+            school=school,
+            state=True,
+            user_type='Profesor'
+        )
 
     def __str__(self):
         return f'{self.first_name} {self.last_name} - ({self.username}) - {self.user_type}'

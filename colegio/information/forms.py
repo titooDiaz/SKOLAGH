@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from .models import DailySchedule, GradeTemplate, SubjectsTemplate
-from users.models import CustomUserStudent
+from users.models import CustomUserStudent, CustomUserTeachers
 from .models import GradeBase, StudentAcademicYear
 
 
@@ -120,7 +120,7 @@ class StudentAcademicYearForm(forms.ModelForm):
 class GradeTemplateForm(forms.ModelForm):
     class Meta:
         model = GradeTemplate
-        fields = ['name', 'description', 'subjects']
+        fields = ['name', 'description']
 
         widgets = {
             'name': forms.TextInput(attrs={
@@ -131,9 +131,6 @@ class GradeTemplateForm(forms.ModelForm):
                 'class': 'form-control',
                 'placeholder': 'Descripción del grado',
                 'rows': 3
-            }),
-            'subjects': forms.SelectMultiple(attrs={
-                'class': 'form-control'
             }),
         }
     def __init__(self, *args, **kwargs):
@@ -146,17 +143,46 @@ class GradeTemplateForm(forms.ModelForm):
             )
         
 class SubjectsTemplateForm(forms.ModelForm):
-    model = SubjectsTemplate
-    fields = ['name', 'author']
-    widgets = {
-        'name': forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Nombre de la materia'
-        }),
-        'author': forms.TextInput(attrs={
-            'class': 'form-control',
-            'placeholder': 'Autor de la materia'
-        }),
-    }
+
+    class Meta:
+        model = SubjectsTemplate
+        fields = ['name', 'teacher', 'hourly_intensity']
+        widgets = {
+            'name': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Nombre de la materia'
+            }),
+            'teacher': forms.Select(attrs={
+                'class': 'form-control',
+            }),
+            'hourly_intensity': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Intensidad horaria (horas a la semana)'
+            }),
+        }
+
     def __init__(self, *args, **kwargs):
+        self.grade_template = kwargs.pop('grade_template', None)
+        self.user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
+
+        if self.user and self.user.school:
+            self.fields['teacher'].queryset = (
+                CustomUserTeachers.get_by_school(self.user.school)
+            )
+        else:
+            self.fields['teacher'].queryset = CustomUserTeachers.objects.none()
+
+    def save(self, commit=True):
+        obj = super().save(commit=False)
+        
+        if not self.grade_template:
+            raise ValueError("GradeTemplate is required")
+        obj.author = self.user
+        obj.grade_template = self.grade_template
+        obj.school = self.grade_template.school
+
+        if commit:
+            obj.save()
+
+        return obj
