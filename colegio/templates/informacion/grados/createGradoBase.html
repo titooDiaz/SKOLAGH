@@ -42,21 +42,40 @@
 
                 {% for template in grade.gradetemplate_set.all %}
                     <div class="student-grid p-8 mt-8">
-                        {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" %}
-
+                        {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk %}
+                        
+                        <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
+                            <div class="flex items-center justify-center min-h-screen">
+                                <div class="bg-white border-2 border-black p-4 rounded-lg">
+                                    <button onclick="closeVentana('information', '{{template.pk}}')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
+                                        <p class="mr-4">cerrar</p>
+                                        <i class="fa-solid fa-circle-xmark"></i>
+                                    </button>
+                                    
+                                    <div class="modal-dialog modal-lg">
+                                        <div class="modal-content">
+                                            <form method="post" action="#">
+                                                {% csrf_token %}
+                                                <h5>Edita la plantilla de tu grado!</h5>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div> 
+                            </div>
+                        </div>
                     </div>
                 {% empty %}
                     <p>No tiene templates</p>
                 {% endfor %}
 
-                <button onclick="showVentana('information', '{{grade.pk}}')" type="button" class="SkolaghButton-green">Crear Plantilla para los grados</button>
+                <button onclick="showVentana('information', '{{grade.pk}}G')" type="button" class="SkolaghButton-green">Crear Plantilla para los grados</button>
             </div>
         </div>
 
-        <div id="information{{grade.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
+        <div id="information{{grade.pk}}G" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
             <div class="flex items-center justify-center min-h-screen">
                 <div class="bg-white border-2 border-black p-4 rounded-lg">
-                    <button onclick="closeVentana('information', '{{grade.pk}}')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
+                    <button onclick="closeVentana('information', '{{grade.pk}}G')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
                         <p class="mr-4">cerrar</p>
                         <i class="fa-solid fa-circle-xmark"></i>
                     </button>
