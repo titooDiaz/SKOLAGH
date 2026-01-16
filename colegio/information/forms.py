@@ -146,13 +146,13 @@ class SubjectsTemplateForm(forms.ModelForm):
 
     class Meta:
         model = SubjectsTemplate
-        fields = ['name', 'teacher', 'hourly_intensity']
+        fields = ['name', 'teachers', 'hourly_intensity']
         widgets = {
             'name': forms.TextInput(attrs={
                 'class': 'form-control',
                 'placeholder': 'Nombre de la materia'
             }),
-            'teacher': forms.Select(attrs={
+            'teachers': forms.SelectMultiple(attrs={
                 'class': 'form-control',
             }),
             'hourly_intensity': forms.NumberInput(attrs={
@@ -167,22 +167,24 @@ class SubjectsTemplateForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         if self.user and self.user.school:
-            self.fields['teacher'].queryset = (
+            self.fields['teachers'].queryset = (
                 CustomUserTeachers.get_by_school(self.user.school)
             )
         else:
-            self.fields['teacher'].queryset = CustomUserTeachers.objects.none()
+            self.fields['teachers'].queryset = CustomUserTeachers.objects.none()
 
     def save(self, commit=True):
         obj = super().save(commit=False)
-        
+
         if not self.grade_template:
             raise ValueError("GradeTemplate is required")
+
         obj.author = self.user
         obj.grade_template = self.grade_template
         obj.school = self.grade_template.school
 
         if commit:
             obj.save()
+            self.save_m2m()
 
         return obj

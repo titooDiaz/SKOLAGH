@@ -297,9 +297,8 @@ class CreateProfesor(View):
             'form': form,
             'vista': vista,
             'abierto':abierto,
+            'grades': grados,
         }
-        if not grados:
-            return render(request, 'errors/error_no_grades.html', context)
         
         return render(request, 'users/teachers/create_profesores.html', context)
     
@@ -399,7 +398,7 @@ class SubjectTemplate(View):
         if form.is_valid():
             form.save()
 
-        return redirect('CreateGradeBase', grade_template_id=grade_template.id)
+        return redirect('CreateGradeBase')
 
 
 class CreateGrados(View):

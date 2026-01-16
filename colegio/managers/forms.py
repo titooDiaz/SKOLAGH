@@ -172,7 +172,7 @@ class CustomUserTeachersForm(UserCreationForm):
             self.fields['tenured'].queryset = titular
     class Meta:
         model = CustomUserTeachers
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'document_type', 'tenured', 'gender', 'password1','password2', 'description', 'school', 'photo_cords', 'photo', 'time_zone')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'document_type', 'gender', 'password1','password2', 'description', 'school', 'photo_cords', 'photo', 'time_zone')
 
         widgets = {
             'time_zone': forms.TextInput(attrs={'id':'time_zone','class': 'hidden'}),
@@ -198,8 +198,6 @@ class CustomUserTeachersForm(UserCreationForm):
             'password2': forms.TextInput(attrs={'id': 'password2','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Contraseña'}),
 
             'email': forms.EmailInput(attrs={'autocomplete': 'off','id':'email','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Email donde se puede contactar al usuario'}),
-
-            'tenured': forms.Select(attrs={'id':'titular','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
 
             'gender': forms.Select(attrs={'id':'sexo','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
 

@@ -7,6 +7,7 @@ import os
 import random
 from django.utils import timezone
 import pytz
+from django.db.models import Sum
 
 from django.contrib.auth import get_user_model
 User = get_user_model()
@@ -69,6 +70,23 @@ class ScheduleParts(models.Model):
 
     def __str__(self):
         return "HORARIO DE " + self.name
+    
+    @property
+    def remaining_hours(self):
+        total_available = self.hours * 5  # assuming 5 days a week
+
+        used_hours = (
+            self.gradebase_set
+            .aggregate(
+                total=Sum(
+                    'gradetemplate__subjects__hourly_intensity'
+                )
+            )
+            .get('total') or 0
+        )
+
+        return max(total_available - used_hours, 0)
+
 
 def picture_materia_1(instance, filename):
     profile_picture_name = 'materias/media/{0}/{1}/{2}/picture.png'.format(instance.name_1, instance.teacher_1, random.randint(1, 9999))
@@ -129,7 +147,11 @@ class GradeTemplate(models.Model):
     
 class SubjectsTemplate(models.Model):
     name = models.TextField(blank=True, null=False)
-    teacher = models.ForeignKey(UserProfes,on_delete=models.CASCADE, blank=True, related_name='teacher') #profe1
+    teachers = models.ManyToManyField(
+        UserProfes,
+        blank=True,
+        related_name='subject_templates'
+    )
     hourly_intensity = models.IntegerField(default=0)
     state = models.BooleanField(default=True) #estado
     created_on = models.DateTimeField(default=timezone.now)

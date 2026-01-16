@@ -54,10 +54,13 @@
                                     
                                     <div class="modal-dialog modal-lg">
                                         <div class="modal-content">
-                                            <form method="post" action="">
+                                            <form method="post" action="{% url 'add_subject_template' template.pk %}">
                                                 {% csrf_token %}
 
                                                 <h5>Agrega una materia al grado {{ template.name }}</h5>
+                                                <p>Intensidad horario diaria de {{template.grade_base.schedule_parts.hours}} horas</p>
+                                                <p>Horas restantes: {{ template.grade_base.schedule_parts.remaining_hours }}</p>
+
 
                                                 <div class="form-group">
                                                     {{ subjectsTemplateForm.name.label_tag }}
@@ -65,8 +68,8 @@
                                                 </div>
 
                                                 <div class="form-group">
-                                                    {{ subjectsTemplateForm.teacher.label_tag }}
-                                                    {{ subjectsTemplateForm.teacher }}
+                                                    {{ subjectsTemplateForm.teachers.label_tag }}
+                                                    {{ subjectsTemplateForm.teachers }}
                                                 </div>
 
                                                 <div class="form-group">
@@ -84,6 +87,20 @@
                                                 </button>
                                             </form>
 
+                                        </div>
+
+                                        <div>
+                                            <h5>Materias asignadas:</h5>
+                                            {% for subject in template.subjects.all %}
+                                                <p>Nombre: {{ subject.name }}</p>
+                                                <p>Profesores: 
+                                                    {% for teacher in subject.teachers.all %}
+                                                        {{ teacher.first_name }}{% if not forloop.last %}, {% endif %}
+                                                    {% endfor %}
+                                                </p>
+                                                <p>Intensidad horaria: {{ subject.hourly_intensity }} horas</p>
+                                                <hr>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div> 
