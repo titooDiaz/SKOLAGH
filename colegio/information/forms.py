@@ -3,6 +3,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import DailySchedule, GradeTemplate, SubjectsTemplate
 from users.models import CustomUserStudent, CustomUserTeachers
 from .models import GradeBase, StudentAcademicYear
+from django.core.exceptions import ValidationError
 
 
 # Grades Forms
@@ -157,8 +158,9 @@ class SubjectsTemplateForm(forms.ModelForm):
             }),
             'hourly_intensity': forms.NumberInput(attrs={
                 'class': 'form-control',
-                'placeholder': 'Intensidad horaria (horas a la semana)'
-            }),
+                'placeholder': 'Intensidad horaria (horas a la semana)',
+                'min': 0,
+            })
         }
 
     def __init__(self, *args, **kwargs):
@@ -172,7 +174,27 @@ class SubjectsTemplateForm(forms.ModelForm):
             )
         else:
             self.fields['teachers'].queryset = CustomUserTeachers.objects.none()
+            
+    def clean_hourly_intensity(self):
+        hours = self.cleaned_data.get('hourly_intensity')
+        
+        if hours is None or hours<0:
+            raise forms.ValidationError(
+            "La intensidad horaria debe ser un número mayor o igual a 0."
+            )
 
+        if not self.grade_template:
+            return hours
+
+        remaining = self.grade_template.remaining_hours
+
+        if hours > remaining:
+            raise ValidationError(
+                f"No hay suficientes horas disponibles. "
+                f"Quedan {remaining} horas y querias agregar {hours}."
+            )
+
+        return hours
     def save(self, commit=True):
         obj = super().save(commit=False)
 

@@ -397,6 +397,10 @@ class SubjectTemplate(View):
 
         if form.is_valid():
             form.save()
+        else:
+            for field, errors in form.errors.items():
+                for error in errors:
+                    messages.error(request, error)
 
         return redirect('CreateGradeBase')
 

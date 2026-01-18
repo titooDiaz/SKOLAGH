@@ -70,22 +70,6 @@ class ScheduleParts(models.Model):
 
     def __str__(self):
         return "HORARIO DE " + self.name
-    
-    @property
-    def remaining_hours(self):
-        total_available = self.hours * 5  # assuming 5 days a week
-
-        used_hours = (
-            self.gradebase_set
-            .aggregate(
-                total=Sum(
-                    'gradetemplate__subjects__hourly_intensity'
-                )
-            )
-            .get('total') or 0
-        )
-
-        return max(total_available - used_hours, 0)
 
 
 def picture_materia_1(instance, filename):
@@ -142,8 +126,25 @@ class GradeTemplate(models.Model):
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
 
+    @property
+    def used_hours(self):
+        return (
+            self.subjects
+            .aggregate(total=Sum('hourly_intensity'))
+            .get('total') or 0
+        )
+
+    @property
+    def remaining_hours(self):
+        schedule = self.grade_base.schedule_parts
+        if not schedule:
+            return 0
+
+        total_available = schedule.hours * 5
+        return max(total_available - self.used_hours, 0)
+
     def __str__(self):
-        return f"{self.name}"
+        return self.name
     
 class SubjectsTemplate(models.Model):
     name = models.TextField(blank=True, null=False)
