@@ -109,7 +109,12 @@ class CustomUserStudent(CustomUser):
     photo = models.ImageField(default='alumnos/profile.png', upload_to=user_directory_path_profile_alumnos, null=True, blank=True)
     user_type = models.CharField(max_length=50, choices=TIPO_USUARIO, default='Alumno') #tipo_usuario
     creation_date = models.DateTimeField(auto_now_add=True) #fecha_creacion
+    
+    # Real grade relationship
     grade = models.ForeignKey('information.Grade', on_delete=models.SET_NULL, blank=True, null=True)  # Utiliza 'information.Grade')  # Campo ForeignKey para relacionar con Grado
+    # Grade template relationship
+    grade_template = models.ForeignKey('information.GradeTemplate', on_delete=models.SET_NULL, blank=True, null=True)  # we use 'information.GradeTemplate')  # Campo Foreign
+    
     gender = models.CharField(max_length=20, choices=SEXO, default='Sin informacion') # genero
     state = models.BooleanField(default=True) #estado
     #Salud

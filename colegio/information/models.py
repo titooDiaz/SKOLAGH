@@ -125,6 +125,13 @@ class GradeTemplate(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     is_active = models.BooleanField(default=True)
+    
+    @classmethod
+    def by_school(cls, school):
+        return cls.objects.filter(
+            school=school,
+            is_active=True
+        )
 
     @property
     def used_hours(self):

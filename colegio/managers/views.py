@@ -125,8 +125,10 @@ class CreateAlumno(SchoolSetupRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         colegio = request.user.school.pk
         grados = obtener_grados_por_colegio(colegio)#obtenemos unicamente los grados de este colegio
+
+        grade_template = GradeTemplate.by_school(colegio)
         
-        form = CustomUserStudentForm(grado=grados)
+        form = CustomUserStudentForm(grado=grados, grade_template=grade_template)
         vista = 'gestor'
         abierto='personas'
         context = {
@@ -136,7 +138,7 @@ class CreateAlumno(SchoolSetupRequiredMixin, View):
         }
         
         if not grados:
-            return render(request, 'errors/error_no_grades.html', context)
+            messages.warning(request, "No hay anos escolares iniciados.")
         
         return render(request, 'users/student/create_students.html', context)
 

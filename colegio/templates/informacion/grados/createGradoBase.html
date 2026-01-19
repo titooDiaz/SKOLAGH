@@ -39,9 +39,9 @@
         <div class="card mb-4">
             <div class="card-body">
                 {% include "ui/titles/badge.html" with title=grade.grade_name badge=grade.schedule_parts %}
-
-                {% for template in grade.gradetemplate_set.all %}
-                    <div class="student-grid p-8 mt-8">
+                <div class="student-grid p-8 mt-8">
+                    {% for template in grade.gradetemplate_set.all %}
+                    
                         {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk %}
                         
                         <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
@@ -89,28 +89,46 @@
 
                                         </div>
 
-                                        <div>
+                                        <div class="mt-8">
                                             <h5>Materias asignadas:</h5>
-                                            {% for subject in template.subjects.all %}
-                                                <p>Nombre: {{ subject.name }}</p>
-                                                <p>Profesores: 
-                                                    {% for teacher in subject.teachers.all %}
-                                                        {{ teacher.first_name }}{% if not forloop.last %}, {% endif %}
-                                                    {% endfor %}
-                                                </p>
-                                                <p>Intensidad horaria: {{ subject.hourly_intensity }} horas</p>
-                                                <hr>
-                                            {% endfor %}
+                                            <div class="mt-4 bg-slate-200 p-4 rounded-lg border border-black">
+                                                {% for subject in template.subjects.all %}
+                                                    <p>Nombre: {{ subject.name }}</p>
+                                                    <p>Profesores: 
+                                                        {% for teacher in subject.teachers.all %}
+                                                            {{ teacher.first_name }}{% if not forloop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    </p>
+                                                    <p>Intensidad horaria: {{ subject.hourly_intensity }} horas</p>
+                                                    <hr>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h5>Estudiantes del curso:</h5>
+                                            <div class="mt-4 bg-slate-200 p-4 rounded-lg border border-black">
+                                                {% for subject in template.subjects.all %}
+                                                    <p>Nombre: {{ subject.name }}</p>
+                                                    <p>Profesores: 
+                                                        {% for teacher in subject.teachers.all %}
+                                                            {{ teacher.first_name }}{% if not forloop.last %}, {% endif %}
+                                                        {% endfor %}
+                                                    </p>
+                                                    <p>Intensidad horaria: {{ subject.hourly_intensity }} horas</p>
+                                                    <hr>
+                                                {% endfor %}
+                                            </div>
                                         </div>
                                     </div>
                                 </div> 
                             </div>
                         </div>
-                    </div>
-                {% empty %}
-                    <p>No tiene templates</p>
-                {% endfor %}
-
+                    {% empty %}
+                        <p>No tiene templates</p>
+                    {% endfor %}
+                </div>
+                
                 <button onclick="showVentana('information', '{{grade.pk}}G')" type="button" class="SkolaghButton-green">Crear Plantilla para los grados</button>
             </div>
         </div>

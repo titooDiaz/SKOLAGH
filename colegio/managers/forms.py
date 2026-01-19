@@ -12,14 +12,16 @@ from django.db import connection
 
 #Translate: CustomUserAlumnoForm
 class CustomUserStudentForm(UserCreationForm):
-    def __init__(self, *args, grado=None, **kwargs):
+    def __init__(self, *args, grado=None, grade_template=None, **kwargs):
         super().__init__(*args, **kwargs)
         # Filtra Grados por el colegio del estudiante por agregar (usuario en sesion)
         if grado:
             self.fields['grade'].queryset = grado
+        if grade_template:
+            self.fields['grade_template'].queryset = grade_template
     class Meta:
         model = CustomUserStudent
-        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'document_type', 'grade', 'gender','password1','password2','photo_cords','photo', 'school', 'time_zone')
+        fields = ('username', 'first_name', 'last_name', 'email', 'password', 'document_type', 'grade', 'grade_template', 'gender','password1','password2','photo_cords','photo', 'school', 'time_zone')
 
         widgets = {
             'time_zone': forms.TextInput(attrs={'id':'time_zone','class': 'hidden'}),
@@ -47,6 +49,8 @@ class CustomUserStudentForm(UserCreationForm):
             'email': forms.EmailInput(attrs={'id':'email','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Email donde se puede contactar al usuario','autocomplete':'off'}),
 
             'grade': forms.Select(attrs={'id':'grado','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
+
+            'grade_template': forms.Select(attrs={'id':'grade_template','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
 
             'gender': forms.Select(attrs={'id':'gender','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
             

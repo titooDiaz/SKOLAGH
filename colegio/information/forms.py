@@ -137,11 +137,6 @@ class GradeTemplateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         school = kwargs.pop('school', None)
         super().__init__(*args, **kwargs)
-
-        if school:
-            self.fields['subjects'].queryset = SubjectsTemplate.objects.filter(
-                school=school,
-            )
         
 class SubjectsTemplateForm(forms.ModelForm):
 
