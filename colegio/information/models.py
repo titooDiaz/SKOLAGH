@@ -133,6 +133,12 @@ class GradeTemplate(models.Model):
             is_active=True
         )
 
+    def students(self):
+        return CustomUserStudent.objects.filter(
+            grade_template=self,
+            state=True
+        )
+    
     @property
     def used_hours(self):
         return (
