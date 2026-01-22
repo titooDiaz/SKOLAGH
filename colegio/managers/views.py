@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .forms import *
 from users.forms import *
-from information.models import Grade, GradeBase, GradeTemplate, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType
+from information.models import Grade, GradeBase, GradeTemplate, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType, SubjectsTemplate
 from django.contrib import messages
 from users.models import CustomUserStudent
 from .forms import ScheduleCourtsForm, ActivitiesTypeForm
@@ -260,6 +260,37 @@ class ChangePassword(View):
         else:
             messages.error(request, formPassword.errors)
         return redirect('ViewProfile')
+    
+class CreateSchoolYear(View):
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        school = user.school
+        
+        # first, we are going to get all need data!
+        gradeTemplates = GradeTemplate.by_school(school.pk)
+        subjectsTemplates = SubjectsTemplate.by_school(school.pk)
+        return redirect('AjustesGestores')
+    
+    def get(self, request, *args, **kwargs):
+        
+        user = request.user
+        school = user.school
+        vista = 'gestor'
+        abierto='ajustes'
+        
+        # first, we are going to get all need data!
+        gradeTemplates = GradeTemplate.by_school(school.pk)
+        subjectsTemplates = SubjectsTemplate.by_school(school.pk)
+        gradeBase = GradeBase.objects.filter(school=school)
+        
+        context = {
+            'vista': vista,
+            'abierto':abierto,
+            'gradeTemplates': gradeTemplates,
+            'subjectsTemplates': subjectsTemplates,
+            'gradesBase': gradeBase,
+        }
+        return render(request, 'users/gestores/school/create_year.html', context)
     
 class CreateProfesor(View):
     def post(self, request, *args, **kwargs):

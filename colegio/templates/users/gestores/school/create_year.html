@@ -10,5 +10,64 @@
 {% block content %}
 {% load static %}
 
+    <h1>Plantilla de grados:</h1>
+    {% for grade in gradesBase %}
+        <div class="mt-6 bg-gray-50 p-4 rounded-lg border border-black">
+            <div class="card mb-4">
+                <div class="card-body">
+                    {% include "ui/titles/badge.html" with title=grade.grade_name badge=grade.schedule_parts %}
+                    <div class="student-grid p-8 mt-8">
+                        {% for template in grade.gradetemplate_set.all %}
+                        
+                            {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk %}
+                            
+                            <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
+                                <div class="flex items-center justify-center min-h-screen">
+                                    <div class="bg-white border-2 border-black p-4 rounded-lg">
+                                        <button onclick="closeVentana('information', '{{template.pk}}')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
+                                            <p class="mr-4">cerrar</p>
+                                            <i class="fa-solid fa-circle-xmark"></i>
+                                        </button>
+                                        
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="mt-8">
+                                                <h5>Materias asignadas:</h5>
+                                                <div class="mt-4 bg-slate-200 p-4 rounded-lg border border-black">
+                                                    {% for subject in template.subjects.all %}
+                                                        <p>Nombre: {{ subject.name }}</p>
+                                                        <p>Profesores: 
+                                                            {% for teacher in subject.teachers.all %}
+                                                                {{ teacher.first_name }}{% if not forloop.last %}, {% endif %}
+                                                            {% endfor %}
+                                                        </p>
+                                                        <p>Intensidad horaria: {{ subject.hourly_intensity }} horas</p>
+                                                        <hr>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
 
+                                            <div>
+                                                <h5>Estudiantes del curso:</h5>
+                                                <div class="mt-4 bg-slate-200 p-4 rounded-lg border border-black">
+                                                    {% for student in template.students.all %}
+                                                        {{ student.first_name }}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div> 
+                                </div>
+                            </div>
+                        {% empty %}
+                            <p>No tiene templates</p>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+<script src="{% static 'js/windows/modal_for.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
+<script src="{% static 'js/cards/students_cards.js' %}"></script>
 {% endblock content %} 

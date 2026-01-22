@@ -40,6 +40,9 @@ urlpatterns = [
     path('mensajes/',  ManagersMessages.as_view(), name='MessagesManagers'),
     
     #subjects tempalte
-    path('grade-template/<int:grade_template_id>/subject/add/', SubjectTemplate.as_view(), name='add_subject_template')
+    path('grade-template/<int:grade_template_id>/subject/add/', SubjectTemplate.as_view(), name='add_subject_template'),
+    
+    # Settings of school
+    path('create/school/year/', CreateSchoolYear.as_view(), name='CreateSchoolYear')
 
 ]

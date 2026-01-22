@@ -121,6 +121,8 @@ class GradeBase(models.Model):
 class GradeTemplate(models.Model):
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     grade_base = models.ForeignKey(GradeBase, on_delete=models.CASCADE)
+    
+    is_ready = models.BooleanField(default=False)
 
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
@@ -180,6 +182,12 @@ class SubjectsTemplate(models.Model):
         on_delete=models.CASCADE,
         related_name='subjects'
     )
+    
+    @classmethod
+    def by_school(cls, school):
+        return cls.objects.filter(
+            school=school,
+        )
 
     def __str__(self):
         return f'{self.name} ({self.school.name})'  

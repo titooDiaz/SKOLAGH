@@ -113,6 +113,7 @@
                                                 {% endfor %}
                                             </div>
                                         </div>
+                                    </div>
                                 </div> 
                             </div>
                         </div>
@@ -123,7 +124,6 @@
                 
                 <button onclick="showVentana('information', '{{grade.pk}}G')" type="button" class="SkolaghButton-green">Crear Plantilla para los grados</button>
             </div>
-        </div>
 
         <div id="information{{grade.pk}}G" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
             <div class="flex items-center justify-center min-h-screen">
@@ -139,19 +139,19 @@
                                 {% csrf_token %}
 
                                 <div class="modal-header">
-                                <h5 class="modal-title">
-                                    Crear grados para {{ grade.grade_name }}
-                                </h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                                </div>
+                                    <h5 class="modal-title">
+                                        Crear grados para {{ grade.grade_name }}
+                                    </h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                    </div>
 
-                                <div class="modal-body">
-                                {{ gradeTemplateForm.as_p }}
-                                </div>
+                                    <div class="modal-body">
+                                    {{ gradeTemplateForm.as_p }}
+                                    </div>
 
-                                <button class="SkolaghButton-green">
-                                    Guardar
-                                </button>
+                                    <button class="SkolaghButton-green">
+                                        Guardar
+                                    </button>
                                 </div>
 
                             </form>
@@ -160,10 +160,10 @@
                     </div>
                 </div> 
             </div>
-            
         </div>
     </div>
 {% endfor %}
+
 
 <script src="{% static 'js/windows/modal_for.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
