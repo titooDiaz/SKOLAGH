@@ -135,7 +135,6 @@ class GradeTemplateForm(forms.ModelForm):
             }),
         }
     def __init__(self, *args, **kwargs):
-        school = kwargs.pop('school', None)
         super().__init__(*args, **kwargs)
         
 class SubjectsTemplateForm(forms.ModelForm):

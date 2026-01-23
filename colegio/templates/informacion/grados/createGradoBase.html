@@ -41,8 +41,7 @@
                 {% include "ui/titles/badge.html" with title=grade.grade_name badge=grade.schedule_parts %}
                 <div class="student-grid p-8 mt-8">
                     {% for template in grade.gradetemplate_set.all %}
-                    
-                        {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk %}
+                        {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk color="green"%}
                         
                         <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
                             <div class="flex items-center justify-center min-h-screen">
