@@ -263,29 +263,19 @@ class ChangePassword(View):
         return redirect('ViewProfile')
 
 class MarkGradeTemplateReady(View):
-    def get(self, request, grade_template_id, *args, **kwargs):
+    def post(self, request, grade_template_id, *args, **kwargs):
         template = get_object_or_404(
             GradeTemplate,
             id=grade_template_id,
             school=request.user.school
         )
-        if not template.is_ready:
-            template.is_ready = True
-            
-            messages.success(request, '¡Grado Plantilla marcado como listo!')
-        else:
-            template.is_ready = False
-            messages.success(request, '¡Grado Plantilla marcado como no listo!')
-            
+
+        template.is_ready = not template.is_ready
         template.save()
+
         return JsonResponse({
             "success": True,
             "is_ready": template.is_ready,
-            "message": (
-                "¡Grado Plantilla marcado como listo!"
-                if template.is_ready
-                else "¡Grado Plantilla marcado como no listo!"
-            )
         })
     
 class CreateSchoolYear(View):

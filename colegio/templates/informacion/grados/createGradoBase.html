@@ -1,18 +1,13 @@
-<!DOCTYPE html>
-<head>
-    <title>Crear nuevos grados</title>
-</head>
 {% extends 'base.html' %}
 
-
 {% block content %}
+{% csrf_token %}
 {% load static %}
 
 <div id="subGradeDiv">
 
     <form method="post" action="{% url 'CreateGradeBase' %}">
         {% csrf_token %}
-
         <div id="gradeBaseDiv">
             {{ gradeForm.grade_name }}
             {{ gradeForm.description }}
@@ -56,17 +51,21 @@
                                     </button>
                                     
                                     <div class="modal-dialog modal-lg">
+                                        <button
+                                            class="toggle-ready-btn {% if template.is_ready %}SkolaghButton-red{% else %}SkolaghButton-green{% endif %} w-full mb-4"
+                                            data-url="{% url 'mark_grade_template_ready' template.pk %}"
+                                        >
+                                            {% if template.is_ready %}
+                                                Marcar como no listo!!
+                                            {% else %}
+                                                Marcar como listo!!
+                                            {% endif %}
+                                        </button>
 
-                                        {% if template.is_ready %}
-                                            <a href="{% url 'mark_grade_template_ready' template.pk %}" class="SkolaghButton-red w-full mb-4">Marcar como no listo!!</a>
-                                        {% else %}
-                                            <a href="{% url 'mark_grade_template_ready' template.pk %}" class="SkolaghButton-green w-full mb-4">Marcar como listo!!</a>
-                                        {% endif %}
 
                                         <div class="modal-content">
                                             <form method="post" action="{% url 'add_subject_template' template.pk %}">
                                                 {% csrf_token %}
-
                                                 <h5>Agrega una materia al grado {{ template.name }}</h5>
                                                 <p>Intensidad horario diaria de {{template.grade_base.schedule_parts.hours}} horas</p>
                                                 <p>Horas disponibles: {{ template.remaining_hours }}</p>
@@ -174,6 +173,50 @@
     </div>
 {% endfor %}
 
+<meta name="csrf-token" content="{{ csrf_token }}">
+
+<script>
+const csrftoken = document
+    .querySelector('meta[name="csrf-token"]')
+    .getAttribute('content');
+
+document.querySelectorAll('.toggle-ready-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+        btn.disabled = true;
+
+        try {
+            const res = await fetch(btn.dataset.url, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': csrftoken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+            });
+
+            if (!res.ok) throw new Error(res.status);
+
+            const data = await res.json();
+            if (!data.success) return;
+
+            if (data.is_ready) {
+                btn.textContent = 'Marcar como no listo!!';
+                btn.classList.remove('SkolaghButton-green');
+                btn.classList.add('SkolaghButton-red');
+            } else {
+                btn.textContent = 'Marcar como listo!!';
+                btn.classList.remove('SkolaghButton-red');
+                btn.classList.add('SkolaghButton-green');
+            }
+
+        } catch (err) {
+            console.error('CSRF / AJAX error:', err);
+            alert('Error al cambiar el estado');
+        } finally {
+            btn.disabled = false;
+        }
+    });
+});
+</script>
 
 <script src="{% static 'js/windows/modal_for.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
