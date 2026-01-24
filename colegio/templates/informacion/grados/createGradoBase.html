@@ -41,7 +41,11 @@
                 {% include "ui/titles/badge.html" with title=grade.grade_name badge=grade.schedule_parts %}
                 <div class="student-grid p-8 mt-8">
                     {% for template in grade.gradetemplate_set.all %}
-                        {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk color="green"%}
+                        {% if template.is_ready %}
+                            {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk color="green"%}
+                        {% else %}
+                            {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="completar" button_id=template.pk color="red"%}
+                        {% endif %}
                         
                         <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
                             <div class="flex items-center justify-center min-h-screen">
@@ -52,6 +56,13 @@
                                     </button>
                                     
                                     <div class="modal-dialog modal-lg">
+
+                                        {% if template.is_ready %}
+                                            <a href="{% url 'mark_grade_template_ready' template.pk %}" class="SkolaghButton-red w-full mb-4">Marcar como no listo!!</a>
+                                        {% else %}
+                                            <a href="{% url 'mark_grade_template_ready' template.pk %}" class="SkolaghButton-green w-full mb-4">Marcar como listo!!</a>
+                                        {% endif %}
+
                                         <div class="modal-content">
                                             <form method="post" action="{% url 'add_subject_template' template.pk %}">
                                                 {% csrf_token %}

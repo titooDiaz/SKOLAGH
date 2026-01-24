@@ -1,3 +1,4 @@
+from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .forms import *
@@ -260,6 +261,32 @@ class ChangePassword(View):
         else:
             messages.error(request, formPassword.errors)
         return redirect('ViewProfile')
+
+class MarkGradeTemplateReady(View):
+    def get(self, request, grade_template_id, *args, **kwargs):
+        template = get_object_or_404(
+            GradeTemplate,
+            id=grade_template_id,
+            school=request.user.school
+        )
+        if not template.is_ready:
+            template.is_ready = True
+            
+            messages.success(request, '¡Grado Plantilla marcado como listo!')
+        else:
+            template.is_ready = False
+            messages.success(request, '¡Grado Plantilla marcado como no listo!')
+            
+        template.save()
+        return JsonResponse({
+            "success": True,
+            "is_ready": template.is_ready,
+            "message": (
+                "¡Grado Plantilla marcado como listo!"
+                if template.is_ready
+                else "¡Grado Plantilla marcado como no listo!"
+            )
+        })
     
 class CreateSchoolYear(View):
     def post(self, request, *args, **kwargs):
