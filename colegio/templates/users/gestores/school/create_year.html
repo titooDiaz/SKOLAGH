@@ -9,8 +9,7 @@
 
 {% block content %}
 {% load static %}
-
-    <h1>Plantilla de grados:</h1>
+    {% include "ui/titles/subtitle.html" with subtitle="año escolar" title="Crear año escolar!!" description="Crea tu año escolar para que los profes puedan empezar a planificar!!" %}
     {% for grade in gradesBase %}
         <div class="mt-6 bg-gray-50 p-4 rounded-lg border border-black">
             <div class="card mb-4">
@@ -18,8 +17,12 @@
                     {% include "ui/titles/badge.html" with title=grade.grade_name badge=grade.schedule_parts %}
                     <div class="student-grid p-8 mt-8">
                         {% for template in grade.gradetemplate_set.all %}
-                        
-                            {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk %}
+                            {% if template.is_ready %}
+                                {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk color="green" %}
+                            {% else %}
+                                {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk color="red" %}
+                            {% endif %}
+                            
                             
                             <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
                                 <div class="flex items-center justify-center min-h-screen">
@@ -66,6 +69,32 @@
             </div>
         </div>
     {% endfor %}
+
+
+<button onclick="showVentana('information', 'CreateSchoolYear')" class="SkolaghButton-green mt-6">
+    Crear grado para {{ grade.grade_name }}
+</button>
+
+<div id="informationCreateSchoolYear" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-white border-2 border-black p-4 rounded-lg">
+            <button onclick="closeVentana('information', 'CreateSchoolYear')" class="hover:cursor-pointer w-full flex justify-end items-center py-1 px-2 text-red-500">
+                <p class="mr-4">cerrar</p>
+                <i class="fa-solid fa-circle-xmark"></i>
+            </button>
+            
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    {% include "ui/titles/subtitle.html" with subtitle="Proceso de creacion." title="Estas seguro de que toda tu plantilla esta lista?" description="Puede que te equivoques, no esta de mas revisar una vez mas, pero si estas listo, crea el nuevo a;o escolar!!" %}
+
+                    <button class="SkolaghButton-green mt-6">
+                        Crear año escolar
+                    </button>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
 
 <script src="{% static 'js/windows/modal_for.js' %}"></script>
 <link rel="stylesheet" href="{% static 'css/user_experience/cards/cards.css' %}">
