@@ -1,8 +1,8 @@
 <div class="group animate-fade-in-up relative">
 
-  <div class="card-shadow absolute inset-0 rotate-2 transform rounded-3xl bg-gradient-to-r from-{{color|default:'orange'}}-400 to-{{color|default:'orange'}}-200"></div>
+  <div id="background_{{background_id}}" class="card-shadow absolute inset-0 rotate-2 transform rounded-3xl bg-gradient-to-r from-{{color|default:'orange'}}-400 to-{{color|default:'orange'}}-200"></div>
   <div class="card-3d bg-gradient-card relative overflow-hidden rounded-3xl border border-white/40 shadow-2xl backdrop-blur-sm">
-      <div class="bg-{{color|default:'orange'}}-600 relative p-6 text-white">
+      <div id="card_{{background_id}}" class="bg-{{color|default:'orange'}}-600 relative p-6 text-white">
       <div class="absolute top-0 right-0 -mt-16 -mr-16 h-32 w-32 rounded-full bg-white/10"></div>
       <div class="absolute bottom-0 left-0 -mb-12 -ml-12 h-24 w-24 rounded-full bg-white/5"></div>
       <div class="relative z-10 text-center">
@@ -19,7 +19,7 @@
       </div>
       {% endif %}
         {% if button_text %}
-            <button onclick="showVentana('information', '{{ button_id }}')" class="SkolaghButton-{{ color|default:'orange' }} w-full">{{ button_text }}</button>
+            <button id="button_card_{{background_id}}" onclick="showVentana('information', '{{ button_id }}')" class="SkolaghButton-{{ color|default:'orange' }} w-full">{{ button_text }}</button>
         {% endif %}
     </div>
   </div>

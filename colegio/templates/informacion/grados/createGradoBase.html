@@ -37,9 +37,9 @@
                 <div class="student-grid p-8 mt-8">
                     {% for template in grade.gradetemplate_set.all %}
                         {% if template.is_ready %}
-                            {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk color="green"%}
+                            {% include "ui/cards/information.html" with background_id=template.pk name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="editar" button_id=template.pk color="green"%}
                         {% else %}
-                            {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="completar" button_id=template.pk color="red"%}
+                            {% include "ui/cards/information.html" with background_id=template.pk name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="completar informacion!!" button_id=template.pk color="red"%}
                         {% endif %}
                         
                         <div id="information{{template.pk}}" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
@@ -53,6 +53,7 @@
                                     <div class="modal-dialog modal-lg">
                                         <button
                                             class="toggle-ready-btn {% if template.is_ready %}SkolaghButton-red{% else %}SkolaghButton-green{% endif %} w-full mb-4"
+                                            id="{{template.pk}}"
                                             data-url="{% url 'mark_grade_template_ready' template.pk %}"
                                         >
                                             {% if template.is_ready %}
@@ -184,6 +185,11 @@ document.querySelectorAll('.toggle-ready-btn').forEach(btn => {
     btn.addEventListener('click', async () => {
         btn.disabled = true;
 
+        const templateId = btn.id;
+        const backgroundCard = document.getElementById(`background_${templateId}`);
+        const card = document.getElementById(`card_${templateId}`);
+        const btnCard = document.getElementById(`button_card_${templateId}`);
+
         try {
             const res = await fetch(btn.dataset.url, {
                 method: 'POST',
@@ -202,12 +208,31 @@ document.querySelectorAll('.toggle-ready-btn').forEach(btn => {
                 btn.textContent = 'Marcar como no listo!!';
                 btn.classList.remove('SkolaghButton-green');
                 btn.classList.add('SkolaghButton-red');
+                // card
+                backgroundCard.classList.remove('from-red-400');
+                backgroundCard.classList.add('from-green-400');
+                backgroundCard.classList.remove('from-red-200');
+                backgroundCard.classList.add('from-green-200');
+                card.classList.remove('bg-red-600');
+                card.classList.add('bg-green-600');
+                btnCard.textContent = 'editar';
+                btnCard.classList.remove('SkolaghButton-red');
+                btnCard.classList.add('SkolaghButton-green');
             } else {
                 btn.textContent = 'Marcar como listo!!';
                 btn.classList.remove('SkolaghButton-red');
                 btn.classList.add('SkolaghButton-green');
+                // card
+                backgroundCard.classList.remove('from-green-400');
+                backgroundCard.classList.add('from-red-400');
+                backgroundCard.classList.remove('from-green-200');
+                backgroundCard.classList.add('from-red-200');
+                card.classList.remove('bg-green-600');
+                card.classList.add('bg-red-600');
+                btnCard.textContent = 'completar informacion!!';
+                btnCard.classList.remove('SkolaghButton-green');
+                btnCard.classList.add('SkolaghButton-red');
             }
-
         } catch (err) {
             console.error('CSRF / AJAX error:', err);
             alert('Error al cambiar el estado');

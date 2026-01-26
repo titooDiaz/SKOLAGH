@@ -18,9 +18,9 @@
                     <div class="student-grid p-8 mt-8">
                         {% for template in grade.gradetemplate_set.all %}
                             {% if template.is_ready %}
-                                {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk color="green" %}
+                                {% include "ui/cards/information.html" with background_id=template.pk name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk color="green" %}
                             {% else %}
-                                {% include "ui/cards/information.html" with name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk color="red" %}
+                                {% include "ui/cards/information.html" with background_id=template.pk name=template.name role="Grado Plantilla" subtitle="Descripcion por defecto:" description=template.description button_text="ver detalles" button_id=template.pk color="red" %}
                             {% endif %}
                             
                             
@@ -72,7 +72,7 @@
 
 
 <button onclick="showVentana('information', 'CreateSchoolYear')" class="SkolaghButton-green mt-6">
-    Crear grado para {{ grade.grade_name }}
+    Crear año escolar!!
 </button>
 
 <div id="informationCreateSchoolYear" class="hidden fixed left-0 top-0 z-50 w-full h-screen bg-[#5858587c]">                   
