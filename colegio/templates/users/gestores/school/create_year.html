@@ -87,9 +87,27 @@
                 <div class="modal-content">
                     {% include "ui/titles/subtitle.html" with subtitle="Proceso de creacion." title="Estas seguro de que toda tu plantilla esta lista?" description="Puede que te equivoques, no esta de mas revisar una vez mas, pero si estas listo, crea el nuevo a;o escolar!!" %}
 
-                    <button class="SkolaghButton-green mt-6">
-                        Crear año escolar
-                    </button>
+                    <p>Estas a punto de crear {{gradeTemplates.count}} grados!! Si no estas seguro, revisa antes de continuar.
+                        <br>
+                        Si cometes algun error, no te preocupes, hay otras soluciones!!
+                    </p>
+
+                    <form method="post" action="{% url 'CreateSchoolYear' %}">
+                        {% csrf_token %}
+
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+
+                            <div class="modal-body">
+                            {{ gradeTemplateForm.as_p }}
+                            </div>
+
+                            <button class="SkolaghButton-green mt-6">
+                                Crear año escolar
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div> 

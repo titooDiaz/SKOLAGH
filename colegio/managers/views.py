@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import View
 from .forms import *
 from users.forms import *
-from information.models import Grade, GradeBase, GradeTemplate, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType, SubjectsTemplate
+from information.models import Grade, GradeBase, GradeTemplate, ScheduleParts, DailySchedule, ScheduleCourts, ActivitiesType, SchoolYear, SubjectsTemplate
 from django.contrib import messages
 from users.models import CustomUserStudent
 from .forms import ScheduleCourtsForm, ActivitiesTypeForm
@@ -283,10 +283,32 @@ class CreateSchoolYear(View):
         user = request.user
         school = user.school
         
-        # first, we are going to get all need data!
-        gradeTemplates = GradeTemplate.by_school(school.pk)
-        subjectsTemplates = SubjectsTemplate.by_school(school.pk)
-        return redirect('AjustesGestores')
+        if GradeTemplate.all_ready(school):
+            school_year, _ = SchoolYear.objects.get_or_create(
+                school=school,
+                year=timezone.now().year,
+                defaults={"is_active": True}
+            )
+
+            # first, we are going to get all need data!
+            gradeTemplates = GradeTemplate.by_school(school)
+            subjectsTemplates = SubjectsTemplate.by_school(school)
+        
+            for gradeTemplate in gradeTemplates:
+                Grade.objects.get_or_create(
+                    grade_name=gradeTemplate.name,
+                    description=gradeTemplate.description,
+                    school_year=school_year,
+                    school=school,
+                    defaults={
+                        "grade_base": gradeTemplate.grade_base,
+                        "state": True,
+                        "year_creation": timezone.now().year
+                    }
+                )
+        else:
+            messages.error(request, "¡No todos los grados estan listos para iniciar el año escolar!")
+        return redirect('CreateSchoolYear')
     
     def get(self, request, *args, **kwargs):
         

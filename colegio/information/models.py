@@ -158,6 +158,14 @@ class GradeTemplate(models.Model):
         total_available = schedule.hours * 5
         return max(total_available - self.used_hours, 0)
 
+    @classmethod
+    def all_ready(cls, school):
+        return not cls.objects.filter(
+            school=school,
+            is_active=True,
+            is_ready=False
+        ).exists()
+
     def __str__(self):
         return self.name
     
