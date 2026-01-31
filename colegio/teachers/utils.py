@@ -3,7 +3,7 @@ from utils.date_utils import get_current_date, get_current_time, get_midnight
 
 def get_teacher_subjects(user):
     """Get all subjects for a teacher (user)."""
-    return Subjects.objects.filter(teacher_1_id=user.pk) | Subjects.objects.filter(teacher_2_id=user.pk)
+    return Subjects.objects.filter(teachers=user.pk)
 
 def get_teacher_grades(teacher_subjects):
     """Get all grades for a set of subjects."""
@@ -11,7 +11,7 @@ def get_teacher_grades(teacher_subjects):
 
 def get_current_court_for_grade(grade, user):
     """Get the current court for a grade and user."""
-    schedule = grade.schedule_parts
+    schedule = grade.grade_base.schedule_parts
     court = ScheduleCourts.objects.filter(schedule=schedule).first()
     current_date = get_current_date(user)
     if court:

@@ -295,7 +295,8 @@ class CreateSchoolYear(View):
             subjectsTemplates = SubjectsTemplate.by_school(school)
         
             for gradeTemplate in gradeTemplates:
-                Grade.objects.get_or_create(
+                
+                grade, created = Grade.objects.get_or_create(
                     grade_name=gradeTemplate.name,
                     description=gradeTemplate.description,
                     school_year=school_year,
@@ -306,6 +307,23 @@ class CreateSchoolYear(View):
                         "year_creation": timezone.now().year
                     }
                 )
+                
+                students = gradeTemplate.students()
+                students.update(grade=grade)
+                
+                # subjects of template
+                subject_templates = gradeTemplate.subjects.all()
+                
+                for subject_template in subject_templates:
+                    subject = Subjects.objects.create(
+                        name_1=subject_template.name,
+                        grade=grade,
+                        author=subject_template.author,
+                        state=subject_template.state,
+                        year_creation=timezone.now().year,
+                    )
+                    
+                    subject.teachers.set(subject_template.teachers.all())
         else:
             messages.error(request, "¡No todos los grados estan listos para iniciar el año escolar!")
         return redirect('CreateSchoolYear')

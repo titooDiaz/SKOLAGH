@@ -80,32 +80,6 @@ def picture_materia_1(instance, filename):
     return profile_picture_name
 
 
-# Translate class: Materias
-class Subjects(models.Model):   
-    elective = models.BooleanField(default=False) #electiva
-    year_creation = models.IntegerField(default=ano_actual()) #ano_creacion
-    ##################electivas##############
-    photo = models.ImageField(default='materias/picture.png', upload_to=picture_materia_1, null=True, blank=True) #picture1
-    cords = models.TextField(blank=True, null=False) #cords
-    teacher_1 = models.ForeignKey(UserProfes,on_delete=models.CASCADE, blank=True, related_name='profesor_0') #profe1
-    name_1 = models.TextField(blank=True, null=False) #titulo1
-    description_1 = models.TextField(blank=True, null=False) #descripcion1
-    location_1 = models.TextField(blank=True, null=False) #locate1
-    students_1 = models.ManyToManyField(UserAlumno, blank=True, related_name='alumnos_electiva1') #alumnos1
-
-    teacher_2 = models.ForeignKey(UserProfes,on_delete=models.CASCADE, blank=True, null=True, related_name='profesor_1') #profe2
-    name_2 = models.TextField(blank=True, null=True) #titulo2
-    location_2 = models.TextField(blank=True, null=False) #locate2
-    description_2 = models.TextField(blank=True, null=True) #descripcion2
-    students_2 = models.ManyToManyField(UserAlumno, blank=True, related_name='alumnos_electiva2') #alumnos2
-    ##########################################
-    state = models.BooleanField(default=True) #estado
-    created_on = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creador_materia')
-
-    def __str__(self):
-        return f'{self.name_1}'  
-
 class GradeBase(models.Model):
     grade_name = models.CharField(max_length=50)
     schedule_parts = models.ForeignKey(ScheduleParts, on_delete=models.SET_NULL, blank=True, null=True)
@@ -138,7 +112,6 @@ class GradeTemplate(models.Model):
     def students(self):
         return CustomUserStudent.objects.filter(
             grade_template=self,
-            state=True
         )
     
     @property
@@ -217,7 +190,7 @@ class Grade(models.Model):
     state = models.BooleanField(default=True) #estado
     created_on = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creador_grado')
-    subjects = models.ManyToManyField(Subjects, blank=True, related_name='materias_grado') #materias
+    #subjects = models.ManyToManyField(Subjects, blank=True, related_name='materias_grado') #materias
     school = models.ForeignKey(School, on_delete=models.CASCADE, null=True, blank=True, related_name='ColegioGrado') #COLEGIO AL QUE PERTENECE EL USUARIO #colegio
 
     def __str__(self):
@@ -294,6 +267,42 @@ def get_current_date():
 def get_current_time():
     now = timezone.now()
     return now.replace(second=0, microsecond=0).time()
+
+# Translate class: Materias
+class Subjects(models.Model):   
+    elective = models.BooleanField(default=False) #electiva
+    
+    teachers = models.ManyToManyField(
+        UserProfes,
+        blank=True,
+        related_name='subject'
+    )
+    
+    grade = models.ForeignKey(
+        Grade,
+        on_delete=models.CASCADE,
+        related_name='subjects',
+    )
+
+    year_creation = models.IntegerField(default=ano_actual()) #ano_creacion
+    ##################electivas##############
+    photo = models.ImageField(default='materias/picture.png', upload_to=picture_materia_1, null=True, blank=True) #picture1
+    cords = models.TextField(blank=True, null=False) #cords
+    name_1 = models.TextField(blank=True, null=False) #titulo1
+    description_1 = models.TextField(blank=True, null=False) #descripcion1
+    location_1 = models.TextField(blank=True, null=False) #locate1
+    students_1 = models.ManyToManyField(UserAlumno, blank=True, related_name='alumnos_electiva1') #alumnos1
+    name_2 = models.TextField(blank=True, null=True) #titulo2
+    location_2 = models.TextField(blank=True, null=False) #locate2
+    description_2 = models.TextField(blank=True, null=True) #descripcion2
+    students_2 = models.ManyToManyField(UserAlumno, blank=True, related_name='alumnos_electiva2') #alumnos2
+    ##########################################
+    state = models.BooleanField(default=True) #estado
+    created_on = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='creador_materia')
+
+    def __str__(self):
+        return f'{self.name_1}'
 
 class StudentAcademicYear(models.Model):
     student = models.ForeignKey(CustomUserStudent, on_delete=models.CASCADE)

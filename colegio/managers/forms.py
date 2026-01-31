@@ -304,14 +304,12 @@ class SubjectsForm(forms.ModelForm):
             self.fields['students_2'].queryset = estudiantes_grado
     class Meta:
         model = Subjects
-        fields = ['teacher_1', 'photo', 'cords', 'location_1', 'location_2', 'teacher_2', 'elective', 'name_1', 'description_1', 'students_1', 'name_2', 'description_2', 'students_2']
+        fields = ['photo','teachers', 'cords', 'location_1', 'location_2', 'elective', 'name_1', 'description_1', 'students_1', 'name_2', 'description_2', 'students_2']
         widgets = {
-            'teacher_1': forms.Select(attrs={'id':'profe1','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
-            
             'photo': ClearableFileInput(attrs={ "class":"block w-full text-lg text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 p-2.5", "id":"input-file", "type":"file","accept":".png,.jpg,.jpeg","name":"input-file"}),
-
-            'teacher_2': forms.Select(attrs={'id':'profe2','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5'}),
-
+            
+            'teachers': forms.CheckboxSelectMultiple(attrs={'class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-orange-600 block w-20 p-2.5 ', 'placeholder': 'profesores', 'id':'checkbox_teachers'}),
+            
             'elective': forms.CheckboxInput(attrs={'class': 'w-12 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 focus:ring-2', 'id':'Checkbox'}),
 
             'name_1': forms.TextInput(attrs={'id':'titulo1','class': 'bg-gray-50 border border-gray-300 text-gray-900 text-lg rounded-lg focus:ring-red-600 focus:border-red-600 block w-full p-2.5', 'placeholder': 'Titulo1'}),
